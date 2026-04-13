@@ -1,0 +1,59 @@
+'use client'
+
+import { useSWRConfig } from 'swr'
+import AnimatedSection from '@/components/shared/AnimatedSection'
+import SuggestionForm from '@/components/suggestions/SuggestionForm'
+import SuggestionWall from '@/components/suggestions/SuggestionWall'
+
+export default function SuggestionsSection() {
+  const { mutate } = useSWRConfig()
+
+  function handleSuccess() {
+    setTimeout(() => mutate('/api/suggestions'), 2000)
+  }
+
+  return (
+    <section id="podnety" className="relative py-28 sm:py-36" style={{ background: 'linear-gradient(180deg, #020810 0%, #04101f 100%)' }}>
+      <div className="section-divider mb-0" />
+      <div className="aurora-orb w-[35vw] h-[35vw] top-0 right-[-5vw] opacity-50"
+        style={{ background: 'radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 70%)' }} aria-hidden />
+
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10 pt-28">
+        <AnimatedSection className="text-center mb-16">
+          <span className="inline-block text-xs font-semibold text-blue-400 uppercase tracking-[0.2em] mb-4">
+            Podnety
+          </span>
+          <h2 className="text-4xl sm:text-5xl font-black text-white mb-4">
+            Čo chceš zmeniť?
+          </h2>
+          <p className="text-blue-200/55 max-w-2xl mx-auto text-base">
+            Pošli nám nápad, sťažnosť alebo návrh. Každý podnet čítame osobne a
+            pretavíme ho do konkrétnych krokov v senáte.
+          </p>
+        </AnimatedSection>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+          {/* Form */}
+          <AnimatedSection direction="left">
+            <div className="glass glow-ring-blue rounded-3xl p-7 sm:p-8">
+              <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
+                ✉️ <span>Pošli podnet</span>
+              </h3>
+              <SuggestionForm onSuccess={handleSuccess} />
+            </div>
+          </AnimatedSection>
+
+          {/* Wall */}
+          <AnimatedSection direction="right" delay={0.15}>
+            <div className="glass rounded-3xl p-7 sm:p-8">
+              <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
+                💡 <span>Podnety od študentov</span>
+              </h3>
+              <SuggestionWall />
+            </div>
+          </AnimatedSection>
+        </div>
+      </div>
+    </section>
+  )
+}
