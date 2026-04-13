@@ -1,3 +1,4 @@
+'use client'
 import { Separator } from '@/components/ui/separator'
 
 export default function Footer() {
@@ -49,6 +50,15 @@ export default function Footer() {
         </div>
 
         <Separator className="bg-blue-500/8 mb-6" />
+
+        {/* Newsletter mini */}
+        <div className="flex flex-col sm:flex-row items-center gap-3 mb-6 p-4 rounded-2xl" style={{background: 'rgba(59,130,246,0.06)', border: '1px solid rgba(59,130,246,0.12)'}}>
+          <span className="text-sm text-blue-200/60 whitespace-nowrap">📬 Dostávaj aktualizácie:</span>
+          <form className="flex gap-2 w-full sm:w-auto" onSubmit={(e) => e.preventDefault()}>
+            <input type="email" placeholder="tvoj@email.com" className="flex-1 sm:w-56 px-3 py-1.5 text-sm rounded-lg bg-white/5 border border-blue-500/20 text-white placeholder:text-blue-300/30 focus:outline-none focus:border-blue-500/50" />
+            <button type="submit" className="px-4 py-1.5 text-sm bg-orange-500 hover:bg-orange-400 text-white rounded-lg transition-colors font-medium">Prihlásiť</button>
+          </form>
+        </div>
 
         <div className="flex flex-col sm:flex-row justify-between items-center gap-2 text-xs text-blue-200/25">
           <span>© 2026 Tomáš Mucha & Martin Buček · FEI VŠB-TUO, Ostrava</span>

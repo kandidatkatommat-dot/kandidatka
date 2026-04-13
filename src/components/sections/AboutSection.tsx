@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
+import { ExternalLink } from 'lucide-react'
 import AnimatedSection from '@/components/shared/AnimatedSection'
 import type { Candidate } from '@/types'
 
@@ -14,7 +15,7 @@ const candidates: Candidate[] = [
     department: 'FEI VŠB-TUO',
     bio: 'Študujem na FEI a verím, že každý student si zaslúži byť vypočutý. Zaujímam sa o transparentnosť akademického prostredia a modernizáciu systémov pre študentov.',
     whyRunning:
-      '"Chcem, aby hlasy študentov dosiahli tam, kde sa rozhoduje o rozpočte, pravidlách a budúcnosti fakulty — nie len počas kampane, ale každý deň."',
+      'Chcem, aby hlasy študentov dosiahli tam, kde sa rozhoduje o rozpočte, pravidlách a budúcnosti fakulty — nie len počas kampane, ale každý deň.',
     photoUrl: '/photos/tomas-mucha.jpg',
   },
   {
@@ -24,7 +25,7 @@ const candidates: Candidate[] = [
     department: 'FEI VŠB-TUO',
     bio: 'Dobrá komunikácia medzi vedením a študentmi je základ kvalitného štúdia. Chcem byť tým spojovacím článkom, ktorý prináša konkrétne výsledky.',
     whyRunning:
-      '"Senát schvaľuje rozpočet, pravidlá, volí dekana. To je presne miesto, kde môžeme systematicky meniť veci k lepšiemu — nie len sľubovať."',
+      'Senát schvaľuje rozpočet, pravidlá, volí dekana. To je presne miesto, kde môžeme systematicky meniť veci k lepšiemu — nie len sľubovať.',
     photoUrl: '/photos/martin-bucek.jpg',
   },
 ]
@@ -32,15 +33,22 @@ const candidates: Candidate[] = [
 const stats = [
   { value: '3', suffix: 'roky', label: 'funkčného obdobia' },
   { value: '2026', suffix: '–29', label: 'termín mandátu' },
-  { value: '100', suffix: '%', label: 'oddanosť vec' },
+  { value: '100', suffix: '%', label: 'oddanosť veci' },
 ]
 
-function CandidateCard({ c, direction }: { c: Candidate; direction: 'left' | 'right' }) {
+const cardAccents = [
+  { border: 'rgba(59,130,246,0.4)', quoteColor: 'text-blue-500/20', quoteBorder: 'border-blue-500/30', quoteText: 'text-blue-200/60' },
+  { border: 'rgba(249,115,22,0.4)', quoteColor: 'text-orange-500/20', quoteBorder: 'border-orange-500/30', quoteText: 'text-blue-200/60' },
+]
+
+function CandidateCard({ c, direction, accentIdx }: { c: Candidate; direction: 'left' | 'right'; accentIdx: number }) {
   const initials = c.name.split(' ').map((n) => n[0]).join('')
+  const accent = cardAccents[accentIdx]
   return (
     <AnimatedSection direction={direction}>
       <motion.div
-        className="glass glass-hover rounded-3xl p-8 h-full flex flex-col gap-6 group"
+        className="glass glass-hover rounded-3xl p-8 h-full flex flex-col gap-6 group transition-transform duration-300 hover:-translate-y-1"
+        style={{ borderTop: `2px solid ${accent.border}` }}
         whileHover={{ scale: 1.015 }}
         transition={{ type: 'spring', stiffness: 280, damping: 22 }}
       >
@@ -63,17 +71,30 @@ function CandidateCard({ c, direction }: { c: Candidate; direction: 'left' | 'ri
               </Badge>
               <span className="text-xs text-blue-400/50">FEI VŠB-TUO</span>
             </div>
+            {c.linkedIn && (
+              <a
+                href={c.linkedIn}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 mt-1.5 text-xs text-blue-400/50 hover:text-blue-300 transition-colors"
+              >
+                <ExternalLink size={11} />
+                LinkedIn
+              </a>
+            )}
           </div>
         </div>
 
         {/* Bio */}
         <p className="text-blue-100/65 text-sm leading-relaxed flex-1">{c.bio}</p>
 
-        {/* Quote */}
-        <blockquote className="relative pl-5 text-sm italic text-blue-100/75 leading-relaxed">
-          <span className="absolute left-0 top-0 w-0.5 h-full rounded-full bg-gradient-to-b from-orange-500 to-orange-500/0" />
-          {c.whyRunning}
-        </blockquote>
+        {/* Quote — prominent with large decorative mark */}
+        <div className="relative mt-4">
+          <span className={`absolute -top-2 -left-1 text-4xl ${accent.quoteColor} font-serif leading-none select-none`}>&ldquo;</span>
+          <blockquote className={`pl-4 border-l-2 ${accent.quoteBorder} text-sm ${accent.quoteText} italic leading-relaxed`}>
+            {c.whyRunning}
+          </blockquote>
+        </div>
       </motion.div>
     </AnimatedSection>
   )
@@ -102,7 +123,7 @@ export default function AboutSection() {
         {/* Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-10">
           {candidates.map((c, i) => (
-            <CandidateCard key={c.id} c={c} direction={i === 0 ? 'left' : 'right'} />
+            <CandidateCard key={c.id} c={c} direction={i === 0 ? 'left' : 'right'} accentIdx={i} />
           ))}
         </div>
 

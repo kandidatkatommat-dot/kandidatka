@@ -2,6 +2,14 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
+@font-face {
+  font-family: 'Cal Sans';
+  src: url('https://cdn.jsdelivr.net/npm/cal-sans@1.0.1/fonts/CalSans-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -9,6 +17,7 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-cal: 'Cal Sans', var(--font-geist-sans), sans-serif;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -40,8 +49,12 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
 
+  /* Layout */
+  --section-gap: 8rem;
+
   /* Brand colors */
-  --color-navy-950: #020810;
+  --color-navy-950: #03080f;
+  --color-mid-surface: #0a1628;
   --color-navy-900: #060f1e;
   --color-navy-800: #0c1f3d;
   --color-navy-700: #142d57;
@@ -87,7 +100,8 @@
 
 /* ─── THEME ──────────────────────────────── */
 :root {
-  --background: #020810;
+  --background: #03080f;
+  --mid-surface: #0a1628;
   --foreground: #f0f4ff;
   --card: #0c1f3d;
   --card-foreground: #f0f4ff;
@@ -117,7 +131,8 @@
 }
 
 .dark {
-  --background: #020810;
+  --background: #03080f;
+  --mid-surface: #0a1628;
   --foreground: #f0f4ff;
   --card: #0c1f3d;
   --card-foreground: #f0f4ff;
@@ -149,17 +164,36 @@
 @layer base {
   * { @apply border-border outline-ring/50; }
   body { @apply bg-background text-foreground; }
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 128px 128px;
+  }
   html {
     @apply font-sans;
     scroll-behavior: smooth;
     scroll-padding-top: 80px;
   }
+  h1, h2, h3 {
+    font-family: var(--font-cal);
+  }
+}
+
+/* ─── FONT CAL ──────────────────────────── */
+.font-cal {
+  font-family: var(--font-cal);
 }
 
 /* ─── AURORA BACKGROUND ─────────────────── */
 .aurora-bg {
   position: relative;
-  background: #020810;
+  background: #03080f;
   overflow: hidden;
 }
 
@@ -205,6 +239,7 @@
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(59, 130, 246, 0.14);
+  box-shadow: 0 0 0 1px rgba(59,130,246,0.08) inset;
 }
 
 .glass-sm {
@@ -306,4 +341,37 @@
 .glow-ring-orange {
   box-shadow: 0 0 0 1px rgba(249, 115, 22, 0.2),
               0 0 20px rgba(249, 115, 22, 0.1);
+}
+
+/* ─── CUSTOM CURSOR ─────────────────────── */
+.cursor-outer {
+  position: fixed;
+  top: 0; left: 0;
+  width: 32px; height: 32px;
+  border: 1.5px solid rgba(59,130,246,0.7);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99999;
+  opacity: 0;
+  transition: transform 0.12s ease, width 0.2s, height 0.2s, border-color 0.2s;
+  mix-blend-mode: difference;
+}
+.cursor-outer.cursor-grow {
+  width: 48px; height: 48px;
+  border-color: rgba(249,115,22,0.8);
+  margin-top: -8px; margin-left: -8px;
+}
+.cursor-inner {
+  position: fixed;
+  top: 0; left: 0;
+  width: 6px; height: 6px;
+  background: #3b82f6;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99999;
+  opacity: 0;
+  transition: transform 0.04s linear;
+}
+@media (pointer: coarse) {
+  .cursor-outer, .cursor-inner { display: none; }
 }

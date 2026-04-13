@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Mail, ExternalLink, Camera, MessageCircle } from 'lucide-react'
 import AnimatedSection from '@/components/shared/AnimatedSection'
@@ -41,6 +42,21 @@ const socials = [
 ]
 
 export default function SocialSection() {
+  const [email, setEmail] = useState('')
+  const [subStatus, setSubStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
+
+  async function handleSubscribe(e: React.FormEvent) {
+    e.preventDefault()
+    if (!email || subStatus === 'loading') return
+    setSubStatus('loading')
+    const res = await fetch('/api/newsletter/subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email }),
+    })
+    setSubStatus(res.ok ? 'success' : 'error')
+  }
+
   return (
     <section id="socialne-siete" className="relative py-28 sm:py-36" style={{ background: '#04101f' }}>
       <div className="section-divider mb-0" />
@@ -60,6 +76,42 @@ export default function SocialSection() {
           </p>
         </AnimatedSection>
 
+        {/* Newsletter signup */}
+        <AnimatedSection delay={0.05}>
+          <div id="newsletter" className="glass rounded-3xl p-8 mb-12 text-center">
+            <p className="text-xs font-semibold text-orange-400 uppercase tracking-[0.2em] mb-3">Newsletter</p>
+            <h3 className="text-2xl font-black text-white mb-2">Zostань informovaný</h3>
+            <p className="text-sm text-blue-200/50 mb-6">Dostávaj správy o dianí v senáte priamo do emailu.</p>
+            {subStatus === 'success' ? (
+              <p className="text-green-400 font-semibold">✓ Prihlásený! Ďakujeme.</p>
+            ) : (
+              <>
+                <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-3 max-w-sm mx-auto">
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
+                    placeholder="tvoj@email.com"
+                    required
+                    className="flex-1 px-4 py-3 rounded-xl bg-white/5 border border-blue-500/20 text-white placeholder:text-blue-300/30 focus:outline-none focus:border-blue-500/50 text-sm"
+                  />
+                  <button
+                    type="submit"
+                    disabled={subStatus === 'loading'}
+                    className="px-6 py-3 bg-orange-500 hover:bg-orange-400 text-white font-bold rounded-xl transition-colors text-sm disabled:opacity-60 whitespace-nowrap"
+                  >
+                    {subStatus === 'loading' ? '...' : 'Prihlásiť sa'}
+                  </button>
+                </form>
+                {subStatus === 'error' && (
+                  <p className="text-red-400 text-xs mt-3">Niečo sa pokazilo. Skús to znova.</p>
+                )}
+              </>
+            )}
+          </div>
+        </AnimatedSection>
+
+        {/* Social cards */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-12">
           {socials.map((s, i) => {
             const Icon = s.icon

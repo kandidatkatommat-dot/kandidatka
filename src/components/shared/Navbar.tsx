@@ -61,6 +61,7 @@ export default function Navbar() {
           <a href="#podnety" className="hidden md:block">
             <Button
               size="sm"
+              data-cursor
               className="bg-orange-500 hover:bg-orange-400 text-white border-0 shadow-lg shadow-orange-500/20 transition-all duration-200"
             >
               Pošli podnět
@@ -80,7 +81,7 @@ export default function Navbar() {
       <AnimatePresence>
         {menuOpen && (
           <motion.div
-            className="md:hidden backdrop-blur-xl bg-[#050d1a]/95 border-t border-blue-500/20"
+            className="md:hidden backdrop-blur-2xl bg-[#03080f]/95 border-t border-blue-500/20 shadow-2xl shadow-blue-950/50"
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}

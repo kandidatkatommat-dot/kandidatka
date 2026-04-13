@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
+import LenisProvider from "@/components/shared/LenisProvider";
+import CustomCursor from "@/components/shared/CustomCursor";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -33,10 +35,13 @@ export default function RootLayout({
   return (
     <html
       lang="cs"
-      className={`${geistSans.variable} ${geistMono.variable} dark`}
+      className={`${geistSans.variable} ${geistMono.variable} dark cursor-none md:cursor-none`}
     >
       <body className="min-h-full flex flex-col antialiased">
-        {children}
+        <CustomCursor />
+        <LenisProvider>
+          {children}
+        </LenisProvider>
         <Toaster richColors position="bottom-right" />
       </body>
     </html>
