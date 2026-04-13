@@ -66,7 +66,7 @@ export default function SocialSection() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 relative z-10 pt-28">
         <AnimatedSection className="text-center mb-14">
           <span className="inline-block text-xs font-semibold text-orange-400 uppercase tracking-[0.2em] mb-4">
-            Zostň v obraze
+            Zostaň v obraze
           </span>
           <h2 className="text-4xl sm:text-5xl font-black text-white mb-4">
             Sleduj kampaň
@@ -80,7 +80,7 @@ export default function SocialSection() {
         <AnimatedSection delay={0.05}>
           <div id="newsletter" className="glass rounded-3xl p-8 mb-12 text-center">
             <p className="text-xs font-semibold text-orange-400 uppercase tracking-[0.2em] mb-3">Newsletter</p>
-            <h3 className="text-2xl font-black text-white mb-2">Zostань informovaný</h3>
+            <h3 className="text-2xl font-black text-white mb-2">Zostaň informovaný</h3>
             <p className="text-sm text-blue-200/50 mb-6">Dostávaj správy o dianí v senáte priamo do emailu.</p>
             {subStatus === 'success' ? (
               <p className="text-green-400 font-semibold">✓ Prihlásený! Ďakujeme.</p>

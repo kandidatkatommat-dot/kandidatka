@@ -64,7 +64,7 @@ export default function Navbar() {
               data-cursor
               className="bg-orange-500 hover:bg-orange-400 text-white border-0 shadow-lg shadow-orange-500/20 transition-all duration-200"
             >
-              Pošli podnět
+              Pošli podnet
             </Button>
           </a>
           <button
@@ -100,7 +100,7 @@ export default function Navbar() {
               ))}
               <a href="#podnety" onClick={() => setMenuOpen(false)}>
                 <Button className="w-full mt-2 bg-orange-500 hover:bg-orange-400 text-white border-0">
-                  Pošli podnět
+                  Pošli podnet
                 </Button>
               </a>
             </div>

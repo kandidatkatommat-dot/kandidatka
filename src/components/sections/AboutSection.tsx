@@ -13,7 +13,7 @@ const candidates: Candidate[] = [
     name: 'Tomáš Mucha',
     role: 'Kandidát do AS FEI',
     department: 'FEI VŠB-TUO',
-    bio: 'Študujem na FEI a verím, že každý student si zaslúži byť vypočutý. Zaujímam sa o transparentnosť akademického prostredia a modernizáciu systémov pre študentov.',
+    bio: 'Študujem na FEI a verím, že každý študent si zaslúži byť vypočutý. Zaujímam sa o transparentnosť akademického prostredia a modernizáciu systémov pre študentov.',
     whyRunning:
       'Chcem, aby hlasy študentov dosiahli tam, kde sa rozhoduje o rozpočte, pravidlách a budúcnosti fakulty — nie len počas kampane, ale každý deň.',
     photoUrl: '/photos/tomas-mucha.jpg',

@@ -60,7 +60,7 @@ const promises = [
   {
     icon: Users,
     title: 'Verejné Q&A každý semester',
-    description: 'Každý semester usporiadame verejné stretnutie kde odpovieme na otázky a porozprávame sa o dianí na FEI.',
+    description: 'Každý semester usporiadame verejné stretnutie, kde odpovieme na otázky a porozprávame sa o dianí na FEI.',
     tag: 'Dialóg',
     accent: 'teal',
     span: '',
