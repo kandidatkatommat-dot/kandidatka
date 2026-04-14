@@ -148,7 +148,7 @@ export default function HeroSection() {
 
   const particles = useMemo<Particle[]>(
     () =>
-      Array.from({ length: 16 }, (_, i) => ({
+      Array.from({ length: 23 }, (_, i) => ({
         id: i,
         x: (i * 37 + 11) % 100,
         y: (i * 53 + 7) % 90,
