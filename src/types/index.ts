@@ -7,6 +7,8 @@ export interface Suggestion {
   category: SuggestionCategory
   suggestion: string
   vote_count: number
+  approved: boolean
+  ip_hash?: string | null
 }
 
 export type PollOption = {

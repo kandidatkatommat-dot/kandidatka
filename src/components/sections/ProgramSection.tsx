@@ -2,12 +2,12 @@
 
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { FileText, MessageSquare, DollarSign, Scale, Monitor, Users } from 'lucide-react'
+import { DocumentEye, CoinStack, ChatBubbleHeart, Scales, ScreenCode, PeopleTalk } from '@/components/shared/Icons'
 import AnimatedSection from '@/components/shared/AnimatedSection'
 
 const promises = [
   {
-    icon: FileText,
+    icon: DocumentEye,
     title: 'Transparentné správy',
     description: 'Každý mesiac zverejníme zrozumiteľný súhrn rozhodnutí senátu. Žiadna byrokracia — len jasné info pre každého.',
     tag: 'Komunikácia',
@@ -18,7 +18,7 @@ const promises = [
     link: '#podnety',
   },
   {
-    icon: DollarSign,
+    icon: CoinStack,
     title: 'Hlas pri rozpočte',
     description: 'Pri schvaľovaní rozpočtu fakulty budeme aktívne presadzovať priority študentov — lepšie vybavenie, dostupné priestory.',
     tag: 'Financie',
@@ -28,7 +28,7 @@ const promises = [
     link: '#podnety',
   },
   {
-    icon: MessageSquare,
+    icon: ChatBubbleHeart,
     title: 'Otvorený kanál podnetov',
     description: 'Táto stránka zostane aktívna počas celého funkčného obdobia 2026–2029.',
     tag: 'Zapojenie',
@@ -38,7 +38,7 @@ const promises = [
     link: '#podnety',
   },
   {
-    icon: Scale,
+    icon: Scales,
     title: 'Férovejší skúšobný poriadok',
     description: 'Iniciujeme revíziu skúšobného poriadku s dôrazom na transparentnosť hodnotenia a férovosť opravných termínov.',
     tag: 'Akademické pravidlá',
@@ -48,7 +48,7 @@ const promises = [
     link: '#podnety',
   },
   {
-    icon: Monitor,
+    icon: ScreenCode,
     title: 'Lepšie digitálne nástroje',
     description: 'Podporíme modernizáciu systémov pre študentov — od portálov až po e-learningové platformy.',
     tag: 'Digitalizácia',
@@ -58,7 +58,7 @@ const promises = [
     link: '#podnety',
   },
   {
-    icon: Users,
+    icon: PeopleTalk,
     title: 'Verejné Q&A každý semester',
     description: 'Každý semester usporiadame verejné stretnutie, kde odpovieme na otázky a porozprávame sa o dianí na FEI.',
     tag: 'Dialóg',

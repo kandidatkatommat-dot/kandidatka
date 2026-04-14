@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import LenisProvider from "@/components/shared/LenisProvider";
 import CustomCursor from "@/components/shared/CustomCursor";
+import MuchaFly from "@/components/shared/MuchaFly";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -39,6 +40,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col antialiased">
         <CustomCursor />
+        <MuchaFly />
         <LenisProvider>
           {children}
         </LenisProvider>
