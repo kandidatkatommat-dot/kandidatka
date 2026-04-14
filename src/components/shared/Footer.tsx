@@ -1,5 +1,6 @@
 'use client'
 import { Separator } from '@/components/ui/separator'
+import { Mail } from '@/components/shared/Icons'
 
 export default function Footer() {
   return (
@@ -74,7 +75,10 @@ export default function Footer() {
 
         {/* Newsletter mini */}
         <div className="flex flex-col sm:flex-row items-center gap-3 mb-6 p-4 rounded-2xl" style={{background: 'rgba(59,130,246,0.06)', border: '1px solid rgba(59,130,246,0.12)'}}>
-          <span className="text-sm text-blue-200/60 whitespace-nowrap">📬 Dostávaj aktualizácie:</span>
+          <span className="text-sm text-blue-200/60 whitespace-nowrap flex items-center gap-1.5">
+            <Mail size={14} className="text-blue-400/60" />
+            Dostávaj aktualizácie:
+          </span>
           <form className="flex gap-2 w-full sm:w-auto" onSubmit={(e) => e.preventDefault()}>
             <input type="email" placeholder="tvoj@email.com" className="flex-1 sm:w-56 px-3 py-1.5 text-sm rounded-lg bg-white/5 border border-blue-500/20 text-white placeholder:text-blue-300/30 focus:outline-none focus:border-blue-500/50" />
             <button type="submit" className="px-4 py-1.5 text-sm bg-gradient-to-br from-[#4f46e5] to-[#6d28d9] hover:from-[#6366f1] hover:to-[#7c3aed] text-white rounded-lg transition-all font-medium">Prihlásiť</button>

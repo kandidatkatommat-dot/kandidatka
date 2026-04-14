@@ -314,19 +314,6 @@ export default function TestimonialsSection() {
               </div>
             </div>
 
-            {/* Dots */}
-            <div className="flex justify-center gap-1.5 mt-5">
-              {testimonials.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => { setDir(i > cur ? 1 : -1); setCur(i) }}
-                  aria-label={`Strana ${i + 1}`}
-                  className={`rounded-full transition-all duration-300 ${
-                    i === cur ? 'w-5 h-1.5 bg-teal-400' : 'w-1.5 h-1.5 bg-blue-500/25 hover:bg-blue-500/50'
-                  }`}
-                />
-              ))}
-            </div>
           </div>
         </AnimatedSection>
 

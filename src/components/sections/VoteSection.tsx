@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import { Button } from '@/components/ui/button'
 import AnimatedSection from '@/components/shared/AnimatedSection'
+import { BallotBox } from '@/components/shared/Icons'
 
 const steps = [
   { step: '01', label: 'Prihlásiš sa', desc: 'Cez systém UNIS VŠB-TUO svojimi FEI prihlasovacími údajmi.' },
@@ -63,7 +64,9 @@ export default function VoteSection() {
             {/* Glow behind button */}
             <div className="absolute inset-0 blur-3xl bg-[#4f46e5]/15 scale-150 pointer-events-none" />
             <div className="relative glass glow-ring-orange rounded-3xl p-8 sm:p-12 flex flex-col items-center gap-5">
-              <span className="text-5xl">🗳️</span>
+              <div className="w-16 h-16 rounded-2xl flex items-center justify-center" style={{ background: 'rgba(79,70,229,0.15)', border: '1px solid rgba(79,70,229,0.3)' }}>
+                <BallotBox size={32} className="text-[#818cf8]" />
+              </div>
               <h3 className="text-2xl sm:text-3xl font-black text-white text-center">
                 Volíme 12.–15. mája 2026
               </h3>
