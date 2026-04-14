@@ -136,9 +136,10 @@ export default function HeroSection() {
   const [isChrome, setIsChrome] = useState(false)
 
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end start'] })
-  // On Chrome, keep transforms static — eliminates JS scroll callbacks every pixel
-  const y = useTransform(scrollYProgress, [0, 1], ['0%', isChrome ? '0%' : '30%'])
-  const opacity = useTransform(scrollYProgress, [0, 0.6], [1, isChrome ? 1 : 0])
+  // On Chrome and touch devices, keep transforms static — eliminates scroll callbacks every pixel
+  const noParallax = isChrome || isTouch
+  const y = useTransform(scrollYProgress, [0, 1], ['0%', noParallax ? '0%' : '30%'])
+  const opacity = useTransform(scrollYProgress, [0, 0.6], [1, noParallax ? 1 : 0])
 
   useEffect(() => {
     setIsTouch(window.matchMedia('(pointer: coarse)').matches)
@@ -168,7 +169,7 @@ export default function HeroSection() {
   return (
     <section ref={sectionRef} className="aurora-bg relative min-h-screen flex flex-col items-center justify-center overflow-hidden">
       <AuroraMesh noFilter={isChrome} />
-      {!isTouch && !isChrome && <FloatingParticles particles={particles} />}
+      <FloatingParticles particles={particles} />
 
       <motion.div
         style={{ y, opacity }}

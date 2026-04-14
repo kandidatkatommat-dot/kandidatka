@@ -16,6 +16,7 @@ const links = [
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const [activeSection, setActiveSection] = useState('')
 
   useEffect(() => {
     let ticking = false
@@ -29,6 +30,22 @@ export default function Navbar() {
     }
     window.addEventListener('scroll', handler, { passive: true })
     return () => window.removeEventListener('scroll', handler)
+  }, [])
+
+  useEffect(() => {
+    const sectionIds = links.map(l => l.href.slice(1))
+    const observers: IntersectionObserver[] = []
+    sectionIds.forEach(id => {
+      const el = document.getElementById(id)
+      if (!el) return
+      const obs = new IntersectionObserver(
+        ([entry]) => { if (entry.isIntersecting) setActiveSection(id) },
+        { threshold: 0.25, rootMargin: '-80px 0px -35% 0px' }
+      )
+      obs.observe(el)
+      observers.push(obs)
+    })
+    return () => observers.forEach(o => o.disconnect())
   }, [])
 
   return (
@@ -53,15 +70,22 @@ export default function Navbar() {
 
         {/* Desktop links */}
         <div className="hidden md:flex items-center gap-1">
-          {links.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className="px-4 py-2 text-sm text-blue-100/70 hover:text-white transition-colors duration-200 rounded-lg hover:bg-blue-500/10"
-            >
-              {link.label}
-            </a>
-          ))}
+          {links.map((link) => {
+            const isActive = activeSection === link.href.slice(1)
+            return (
+              <a
+                key={link.href}
+                href={link.href}
+                className={`px-4 py-2 text-sm transition-colors duration-200 rounded-lg ${
+                  isActive
+                    ? 'text-white bg-blue-500/12 font-medium'
+                    : 'text-blue-100/70 hover:text-white hover:bg-blue-500/10'
+                }`}
+              >
+                {link.label}
+              </a>
+            )
+          })}
         </div>
 
         {/* CTA + Hamburger */}

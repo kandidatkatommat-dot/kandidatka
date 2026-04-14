@@ -2,7 +2,7 @@ import { Suspense } from 'react'
 import dynamic from 'next/dynamic'
 import Navbar from '@/components/shared/Navbar'
 import HeroSection from '@/components/sections/HeroSection'
-import AboutSection from '@/components/sections/AboutSection'
+import BackToTop from '@/components/shared/BackToTop'
 import { ErrorBoundary } from '@/components/shared/ErrorBoundary'
 
 /* Minimal skeleton shown while a lazy section JS chunk loads */
@@ -13,6 +13,7 @@ function SectionSkeleton() {
 /* ── Lazy-load all below-fold sections ────────────────────────────
    JS chunks load only when the browser needs them — dramatically
    reduces initial parse/execute time on all devices.              */
+const AboutSection      = dynamic(() => import('@/components/sections/AboutSection'))
 const ProgramSection    = dynamic(() => import('@/components/sections/ProgramSection'))
 const InsightsSection   = dynamic(() => import('@/components/sections/InsightsSection'))
 const TestimonialsSection = dynamic(() => import('@/components/sections/TestimonialsSection'))
@@ -30,7 +31,9 @@ export default function Home() {
       <Navbar />
       <main>
         <HeroSection />
-        <AboutSection />
+        <Suspense fallback={<SectionSkeleton />}>
+          <AboutSection />
+        </Suspense>
         <Suspense fallback={<SectionSkeleton />}>
           <ProgramSection />
         </Suspense>
@@ -70,6 +73,7 @@ export default function Home() {
       <Suspense fallback={null}>
         <Footer />
       </Suspense>
+      <BackToTop />
     </>
   )
 }

@@ -60,6 +60,13 @@ export default function RootLayout({
           type="font/woff2"
           crossOrigin="anonymous"
         />
+        {/* Preconnect to Supabase — API calls start sooner */}
+        {process.env.NEXT_PUBLIC_SUPABASE_URL && (
+          <>
+            <link rel="preconnect" href={process.env.NEXT_PUBLIC_SUPABASE_URL} />
+            <link rel="dns-prefetch" href={process.env.NEXT_PUBLIC_SUPABASE_URL} />
+          </>
+        )}
         {/* Runs synchronously before first paint — adds 'no-backdrop' class on
             Chrome so CSS can disable backdrop-filter without a visible flash.
             Chrome's backdrop-filter is ~4× slower than Safari on macOS Retina. */}

@@ -72,6 +72,12 @@ const promises = [
 
 type PromiseItem = typeof promises[0]
 
+/* Hoisted — not recreated inside map() on every render */
+const cardVariants = {
+  hidden: { opacity: 0, y: 16, scale: 0.97 },
+  visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.5, ease: 'easeOut' as const } },
+}
+
 const accentMap = {
   blue:   { icon: 'text-blue-400',   bg: 'bg-blue-500/12',   tag: 'bg-blue-500/10 text-blue-300 border-blue-500/20',   glow: 'hover:shadow-blue-500/10',   iconBg: 'bg-blue-500/12',   iconColor: 'text-blue-400',   accent: 'text-blue-300'   },
   orange: { icon: 'text-[#818cf8]', bg: 'bg-[#4f46e5]/12', tag: 'bg-[#4f46e5]/10 text-[#a5b4fc] border-[#4f46e5]/20', glow: 'hover:shadow-[#6d28d9]/10', iconBg: 'bg-[#4f46e5]/12', iconColor: 'text-[#818cf8]', accent: 'text-[#a5b4fc]' },
@@ -135,10 +141,7 @@ export default function ProgramSection() {
               <motion.div
                 key={p.title}
                 className={`glass glass-hover rounded-3xl p-6 sm:p-7 flex flex-col gap-4 group cursor-pointer transition-all duration-300 hover:shadow-xl ${a.glow} ${p.span}`}
-                variants={{
-                  hidden: { opacity: 0, y: 16, scale: 0.97 },
-                  visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.5, ease: 'easeOut' as const } },
-                }}
+                variants={cardVariants}
                 whileHover={{ scale: 1.015 }}
                 transition={{ type: 'spring', stiffness: 300, damping: 22 }}
                 onClick={() => setSelectedItem(p)}

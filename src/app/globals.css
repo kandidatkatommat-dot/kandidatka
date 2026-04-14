@@ -365,13 +365,13 @@
   pointer-events: none;
   z-index: 99999;
   opacity: 0;
-  transition: transform 0.12s ease, width 0.2s, height 0.2s, border-color 0.2s;
+  /* scale is a separate composited property — avoids layout reflow on hover */
+  transition: transform 0.12s ease, scale 0.2s ease, border-color 0.2s;
   mix-blend-mode: difference;
 }
 .cursor-outer.cursor-grow {
-  width: 48px; height: 48px;
+  scale: 1.5;
   border-color: rgba(249,115,22,0.8);
-  margin-top: -8px; margin-left: -8px;
 }
 .cursor-inner {
   position: fixed;
