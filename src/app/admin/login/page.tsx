@@ -14,13 +14,19 @@ export default function AdminLoginPage() {
     e.preventDefault()
     setLoading(true)
     setError('')
-    const res = await signIn('credentials', { password, redirect: false })
-    if (res?.ok) {
-      router.push('/admin')
-    } else {
-      setError('Nesprávne heslo.')
+    try {
+      const res = await signIn('credentials', { password, redirect: false })
+      if (res?.ok) {
+        router.push('/admin')
+        router.refresh()
+      } else {
+        setError(res?.error ? `Chyba: ${res.error}` : 'Nesprávne heslo.')
+        setLoading(false)
+      }
+    } catch (err) {
+      setError(`Neočakávaná chyba: ${err instanceof Error ? err.message : String(err)}`)
+      setLoading(false)
     }
-    setLoading(false)
   }
 
   return (
