@@ -4,7 +4,9 @@ import { suggestionSchema } from '@/lib/validations'
 
 async function hashIp(ip: string): Promise<string> {
   const encoder = new TextEncoder()
-  const data = encoder.encode(ip + process.env.NEXT_PUBLIC_SITE_URL)
+  // Use private NEXTAUTH_SECRET as salt — not the public site URL
+  const salt = process.env.NEXTAUTH_SECRET ?? process.env.NEXT_PUBLIC_SITE_URL ?? 'fallback'
+  const data = encoder.encode(ip + salt)
   const hashBuffer = await crypto.subtle.digest('SHA-256', data)
   const hashArray = Array.from(new Uint8Array(hashBuffer))
   return hashArray.map((b) => b.toString(16).padStart(2, '0')).join('')

@@ -9,7 +9,7 @@ export async function GET() {
     const supabase = createServerClient()
     const { data, error } = await supabase
       .from('suggestions')
-      .select('id, created_at, name, category, suggestion')
+      .select('id, created_at, name, category, suggestion, vote_count')
       .eq('approved', true)
       .eq('honeypot', false)
       .order('created_at', { ascending: false })

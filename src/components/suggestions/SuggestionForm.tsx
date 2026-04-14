@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/select'
 import type { SuggestionCategory } from '@/types'
 
-const categories: SuggestionCategory[] = ['Výuka', 'Digitalizace', 'Kampus', 'Zkoušky', 'Jiné']
+const categories: SuggestionCategory[] = ['Výuka', 'Digitalizácia', 'Kampus', 'Skúšky', 'Iné']
 
 const MAX_LEN = 500
 

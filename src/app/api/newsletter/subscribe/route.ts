@@ -8,16 +8,17 @@ const schema = z.object({
   first_name: z.string().max(100).optional(),
 })
 
-// In-memory rate limiter: max 3 subscribe attempts per IP per 10 minutes
+// In-memory rate limit — imperfect on serverless (per-instance), but sufficient
+// for a campaign site. Max 3 subscribe attempts per hashed IP per 10 minutes.
 const rateMap = new Map<string, { count: number; resetAt: number }>()
 const RATE_LIMIT = 3
 const RATE_WINDOW_MS = 10 * 60 * 1000
 
-function checkRateLimit(ip: string): boolean {
+function checkRateLimit(ipKey: string): boolean {
   const now = Date.now()
-  const entry = rateMap.get(ip)
+  const entry = rateMap.get(ipKey)
   if (!entry || now > entry.resetAt) {
-    rateMap.set(ip, { count: 1, resetAt: now + RATE_WINDOW_MS })
+    rateMap.set(ipKey, { count: 1, resetAt: now + RATE_WINDOW_MS })
     return true
   }
   if (entry.count >= RATE_LIMIT) return false
@@ -26,9 +27,9 @@ function checkRateLimit(ip: string): boolean {
 }
 
 export async function POST(req: NextRequest) {
-  // Rate limiting by hashed IP
   const rawIp = req.headers.get('x-forwarded-for') ?? req.headers.get('x-real-ip') ?? 'unknown'
-  const ipKey = createHash('sha256').update(rawIp).digest('hex').slice(0, 16)
+  const secret = process.env.NEXTAUTH_SECRET ?? 'fallback'
+  const ipKey = createHash('sha256').update(rawIp + secret).digest('hex').slice(0, 16)
 
   if (!checkRateLimit(ipKey)) {
     return NextResponse.json(
@@ -48,20 +49,17 @@ export async function POST(req: NextRequest) {
 
   const supabase = createServerClient()
 
-  // Upsert — ak email existuje, update token
+  // Upsert + auto-confirm in one call (campaign site — no email verification needed)
   const { error } = await supabase
     .from('newsletter_subs')
-    .upsert({ email, first_name, confirm_token: token, confirmed: false }, { onConflict: 'email' })
+    .upsert(
+      { email, first_name, confirm_token: token, confirmed: true },
+      { onConflict: 'email' }
+    )
 
   if (error) {
     return NextResponse.json({ error: 'Chyba pri ukladaní' }, { status: 500 })
   }
-
-  // Auto-confirm (no Resend integration yet)
-  await supabase
-    .from('newsletter_subs')
-    .update({ confirmed: true })
-    .eq('email', email)
 
   return NextResponse.json({ success: true })
 }

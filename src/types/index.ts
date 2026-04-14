@@ -1,4 +1,4 @@
-export type SuggestionCategory = 'Výuka' | 'Digitalizace' | 'Kampus' | 'Zkoušky' | 'Jiné'
+export type SuggestionCategory = 'Výuka' | 'Digitalizácia' | 'Kampus' | 'Skúšky' | 'Iné'
 
 export interface Suggestion {
   id: string

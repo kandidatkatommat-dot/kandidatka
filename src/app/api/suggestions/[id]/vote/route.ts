@@ -1,12 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createServerClient } from '@/lib/supabase/server'
 import { createHash } from 'crypto'
+import { z } from 'zod'
+
+const uuidSchema = z.string().uuid()
 
 export async function POST(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params
+
+  if (!uuidSchema.safeParse(id).success) {
+    return NextResponse.json({ error: 'Invalid id' }, { status: 400 })
+  }
+
   const secret = process.env.NEXTAUTH_SECRET
   if (!secret) return NextResponse.json({ error: 'Server misconfiguration' }, { status: 500 })
 

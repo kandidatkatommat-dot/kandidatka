@@ -7,10 +7,10 @@ import type { Suggestion, SuggestionCategory } from '@/types'
 
 const categoryColors: Record<SuggestionCategory, string> = {
   Výuka: 'bg-blue-500/15 text-blue-300 border-blue-500/25',
-  Digitalizace: 'bg-purple-500/15 text-purple-300 border-purple-500/25',
+  Digitalizácia: 'bg-purple-500/15 text-purple-300 border-purple-500/25',
   Kampus: 'bg-green-500/15 text-green-300 border-green-500/25',
-  Zkoušky: 'bg-[#4f46e5]/15 text-[#a5b4fc] border-[#4f46e5]/25',
-  Jiné: 'bg-slate-500/15 text-slate-300 border-slate-500/25',
+  Skúšky: 'bg-[#4f46e5]/15 text-[#a5b4fc] border-[#4f46e5]/25',
+  Iné: 'bg-slate-500/15 text-slate-300 border-slate-500/25',
 }
 
 function formatDate(iso: string) {
