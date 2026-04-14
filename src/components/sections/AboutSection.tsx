@@ -38,7 +38,7 @@ const stats = [
 
 const cardAccents = [
   { border: 'rgba(59,130,246,0.4)', quoteColor: 'text-blue-500/20', quoteBorder: 'border-blue-500/30', quoteText: 'text-blue-200/60' },
-  { border: 'rgba(232,99,74,0.4)', quoteColor: 'text-[#e8634a]/20', quoteBorder: 'border-[#e8634a]/30', quoteText: 'text-blue-200/60' },
+  { border: 'rgba(232,99,74,0.4)', quoteColor: 'text-[#4f46e5]/20', quoteBorder: 'border-[#4f46e5]/30', quoteText: 'text-blue-200/60' },
 ]
 
 function CandidateCard({ c, direction, accentIdx }: { c: Candidate; direction: 'left' | 'right'; accentIdx: number }) {
@@ -116,7 +116,7 @@ export default function AboutSection() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
         {/* Heading */}
         <AnimatedSection className="text-center mb-16">
-          <span className="inline-block text-xs font-semibold text-[#f07560] uppercase tracking-[0.2em] mb-4">
+          <span className="inline-block text-xs font-semibold text-[#818cf8] uppercase tracking-[0.2em] mb-4">
             Kandidáti
           </span>
           <h2 className="text-4xl sm:text-5xl font-black text-white mb-4 leading-tight">

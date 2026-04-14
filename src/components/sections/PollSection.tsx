@@ -12,14 +12,14 @@ function PollBar({ option, total, isWinner }: { option: PollOption; total: numbe
       <div className="flex-1">
         <div className="flex justify-between items-center mb-1.5">
           <span className="text-sm text-blue-100/80 font-medium">{option.option_text}</span>
-          <span className={`text-sm font-bold tabular-nums ${isWinner ? 'text-[#f07560]' : 'text-blue-400/60'}`}>{pct}%</span>
+          <span className={`text-sm font-bold tabular-nums ${isWinner ? 'text-[#818cf8]' : 'text-blue-400/60'}`}>{pct}%</span>
         </div>
         <div className="h-2 bg-white/5 rounded-full overflow-hidden">
           <motion.div
             className="h-full rounded-full"
             style={{
               background: isWinner
-                ? 'linear-gradient(90deg, #e8634a, #c84870)'
+                ? 'linear-gradient(90deg, #4f46e5, #6d28d9)'
                 : 'linear-gradient(90deg, #3b82f6, #60a5fa)',
             }}
             initial={{ width: 0 }}
@@ -127,14 +127,14 @@ export default function PollSection() {
                       onClick={() => setSelectedId(option.id)}
                       className={`w-full text-left p-4 rounded-2xl border transition-all duration-200 ${
                         selectedId === option.id
-                          ? 'border-[#e8634a]/50 bg-[#e8634a]/8 text-white'
+                          ? 'border-[#4f46e5]/50 bg-[#4f46e5]/8 text-white'
                           : 'border-blue-500/15 bg-white/[0.02] text-blue-100/70 hover:border-blue-500/30 hover:bg-white/[0.04]'
                       }`}
                     >
                       <div className="flex items-center gap-3">
                         <div
                           className={`w-4 h-4 rounded-full border-2 flex-shrink-0 transition-colors ${
-                            selectedId === option.id ? 'border-[#e8634a] bg-[#e8634a]' : 'border-blue-500/30'
+                            selectedId === option.id ? 'border-[#4f46e5] bg-[#4f46e5]' : 'border-blue-500/30'
                           }`}
                         />
                         <span className="text-sm font-medium">{option.option_text}</span>
@@ -144,7 +144,7 @@ export default function PollSection() {
                   <button
                     onClick={handleVote}
                     disabled={!selectedId || submitting}
-                    className="w-full mt-2 py-3.5 rounded-2xl bg-gradient-to-br from-[#e8634a] to-[#c84870] hover:from-[#f07055] hover:to-[#d45580] disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold text-sm transition-all duration-200 hover:scale-[1.02]"
+                    className="w-full mt-2 py-3.5 rounded-2xl bg-gradient-to-br from-[#4f46e5] to-[#6d28d9] hover:from-[#6366f1] hover:to-[#7c3aed] disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold text-sm transition-all duration-200 hover:scale-[1.02]"
                   >
                     {submitting ? 'Odosielam...' : 'Hlasovať →'}
                   </button>

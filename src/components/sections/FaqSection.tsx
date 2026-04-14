@@ -41,7 +41,7 @@ export default function FaqSection() {
       <div className="section-divider mb-0" />
       <div className="max-w-3xl mx-auto px-4 sm:px-6 relative z-10 pt-28">
         <AnimatedSection className="text-center mb-14">
-          <span className="inline-block text-xs font-semibold text-[#f07560] uppercase tracking-[0.2em] mb-4">
+          <span className="inline-block text-xs font-semibold text-[#818cf8] uppercase tracking-[0.2em] mb-4">
             Otázky & odpovede
           </span>
           <h2 className="text-4xl sm:text-5xl font-black text-white mb-4">

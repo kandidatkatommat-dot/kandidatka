@@ -137,7 +137,7 @@ export default function SuggestionForm({ onSuccess }: { onSuccess?: () => void }
         <div className="flex justify-end">
           <span
             className={`text-xs ${
-              remaining < 50 ? 'text-[#f07560]' : 'text-blue-400/40'
+              remaining < 50 ? 'text-[#818cf8]' : 'text-blue-400/40'
             }`}
           >
             {remaining} znakov zostáva

@@ -73,7 +73,7 @@ type PromiseItem = typeof promises[0]
 
 const accentMap = {
   blue:   { icon: 'text-blue-400',   bg: 'bg-blue-500/12',   tag: 'bg-blue-500/10 text-blue-300 border-blue-500/20',   glow: 'hover:shadow-blue-500/10',   iconBg: 'bg-blue-500/12',   iconColor: 'text-blue-400',   accent: 'text-blue-300'   },
-  orange: { icon: 'text-[#f07560]', bg: 'bg-[#e8634a]/12', tag: 'bg-[#e8634a]/10 text-[#f09070] border-[#e8634a]/20', glow: 'hover:shadow-[#c84870]/10', iconBg: 'bg-[#e8634a]/12', iconColor: 'text-[#f07560]', accent: 'text-[#f09070]' },
+  orange: { icon: 'text-[#818cf8]', bg: 'bg-[#4f46e5]/12', tag: 'bg-[#4f46e5]/10 text-[#a5b4fc] border-[#4f46e5]/20', glow: 'hover:shadow-[#6d28d9]/10', iconBg: 'bg-[#4f46e5]/12', iconColor: 'text-[#818cf8]', accent: 'text-[#a5b4fc]' },
   teal:   { icon: 'text-teal-400',   bg: 'bg-teal-500/12',   tag: 'bg-teal-500/10 text-teal-300 border-teal-500/20',   glow: 'hover:shadow-teal-500/10',   iconBg: 'bg-teal-500/12',   iconColor: 'text-teal-400',   accent: 'text-teal-300'   },
 }
 
@@ -97,7 +97,7 @@ export default function ProgramSection() {
           </h2>
           <p className="text-blue-200/55 max-w-2xl mx-auto text-base">
             Len reálne záväzky v rámci právomocí akademického senátu.{' '}
-            <span className="text-[#f07560]/80 font-medium">Žiadne prázdne sľuby.</span>
+            <span className="text-[#818cf8]/80 font-medium">Žiadne prázdne sľuby.</span>
           </p>
         </AnimatedSection>
 
@@ -142,7 +142,7 @@ export default function ProgramSection() {
 
                 {/* Bottom rule — subtle accent line */}
                 <div className={`mt-auto h-0.5 rounded-full w-12 opacity-40 group-hover:w-20 transition-all duration-500 ${
-                  p.accent === 'blue' ? 'bg-blue-400' : p.accent === 'orange' ? 'bg-[#e8634a]' : 'bg-teal-400'
+                  p.accent === 'blue' ? 'bg-blue-400' : p.accent === 'orange' ? 'bg-[#4f46e5]' : 'bg-teal-400'
                 }`} />
               </motion.div>
             )
@@ -201,7 +201,7 @@ export default function ProgramSection() {
               <a
                 href={selectedItem.link ?? '#podnety'}
                 onClick={() => setSelectedItem(null)}
-                className="inline-flex items-center gap-2 text-sm text-[#f07560] hover:text-[#f09070] font-semibold transition-colors"
+                className="inline-flex items-center gap-2 text-sm text-[#818cf8] hover:text-[#a5b4fc] font-semibold transition-colors"
               >
                 Súvisí s podnetmi →
               </a>

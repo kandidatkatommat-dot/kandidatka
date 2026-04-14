@@ -146,7 +146,7 @@ export default function HeroSection() {
         dur: 6 + (i % 6),
         delay: (i % 10) * 0.35,
         color:
-          i % 5 === 0 ? '#e8634a'
+          i % 5 === 0 ? '#4f46e5'
           : i % 5 === 1 ? '#06b6d4'
           : i % 5 === 2 ? '#3b82f6'
           : i % 5 === 3 ? '#8b5cf6'
@@ -201,7 +201,7 @@ export default function HeroSection() {
               <Button
                 size="lg"
                 data-cursor
-                className="group relative overflow-hidden bg-gradient-to-br from-[#e8634a] to-[#c84870] hover:from-[#f07055] hover:to-[#d45580] text-white border-0 shadow-2xl shadow-[#e8634a]/25 px-9 py-6 text-base font-bold w-full sm:w-auto transition-all duration-300 hover:scale-[1.04] hover:shadow-[#c84870]/40"
+                className="group relative overflow-hidden bg-gradient-to-br from-[#4f46e5] to-[#6d28d9] hover:from-[#6366f1] hover:to-[#7c3aed] text-white border-0 shadow-2xl shadow-[#4f46e5]/25 px-9 py-6 text-base font-bold w-full sm:w-auto transition-all duration-300 hover:scale-[1.04] hover:shadow-[#6d28d9]/40"
               >
                 <span className="relative z-10">Náš program →</span>
               </Button>

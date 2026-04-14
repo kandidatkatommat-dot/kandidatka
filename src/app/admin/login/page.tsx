@@ -57,7 +57,7 @@ export default function AdminLoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 bg-gradient-to-br from-[#e8634a] to-[#c84870] hover:from-[#f07055] hover:to-[#d45580] disabled:opacity-60 text-white font-bold rounded-xl transition-all text-sm"
+            className="w-full py-3 bg-gradient-to-br from-[#4f46e5] to-[#6d28d9] hover:from-[#6366f1] hover:to-[#7c3aed] disabled:opacity-60 text-white font-bold rounded-xl transition-all text-sm"
           >
             {loading ? 'Prihlasovanie...' : 'Prihlásiť sa'}
           </button>

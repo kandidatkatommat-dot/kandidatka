@@ -65,7 +65,7 @@ export default function SocialSection() {
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 relative z-10 pt-28">
         <AnimatedSection className="text-center mb-14">
-          <span className="inline-block text-xs font-semibold text-[#f07560] uppercase tracking-[0.2em] mb-4">
+          <span className="inline-block text-xs font-semibold text-[#818cf8] uppercase tracking-[0.2em] mb-4">
             Zostaň v obraze
           </span>
           <h2 className="text-4xl sm:text-5xl font-black text-white mb-4">
@@ -79,7 +79,7 @@ export default function SocialSection() {
         {/* Newsletter signup */}
         <AnimatedSection delay={0.05}>
           <div id="newsletter" className="glass rounded-3xl p-8 mb-12 text-center">
-            <p className="text-xs font-semibold text-[#f07560] uppercase tracking-[0.2em] mb-3">Newsletter</p>
+            <p className="text-xs font-semibold text-[#818cf8] uppercase tracking-[0.2em] mb-3">Newsletter</p>
             <h3 className="text-2xl font-black text-white mb-2">Zostaň informovaný</h3>
             <p className="text-sm text-blue-200/50 mb-6">Dostávaj správy o dianí v senáte priamo do emailu.</p>
             {subStatus === 'success' ? (
@@ -98,7 +98,7 @@ export default function SocialSection() {
                   <button
                     type="submit"
                     disabled={subStatus === 'loading'}
-                    className="px-6 py-3 bg-gradient-to-br from-[#e8634a] to-[#c84870] hover:from-[#f07055] hover:to-[#d45580] text-white font-bold rounded-xl transition-all text-sm disabled:opacity-60 whitespace-nowrap"
+                    className="px-6 py-3 bg-gradient-to-br from-[#4f46e5] to-[#6d28d9] hover:from-[#6366f1] hover:to-[#7c3aed] text-white font-bold rounded-xl transition-all text-sm disabled:opacity-60 whitespace-nowrap"
                   >
                     {subStatus === 'loading' ? '...' : 'Prihlásiť sa'}
                   </button>

@@ -62,7 +62,7 @@ export default function Navbar() {
             <Button
               size="sm"
               data-cursor
-              className="bg-gradient-to-br from-[#e8634a] to-[#c84870] hover:from-[#f07055] hover:to-[#d45580] text-white border-0 shadow-lg shadow-[#e8634a]/20 transition-all duration-200"
+              className="bg-gradient-to-br from-[#4f46e5] to-[#6d28d9] hover:from-[#6366f1] hover:to-[#7c3aed] text-white border-0 shadow-lg shadow-[#4f46e5]/20 transition-all duration-200"
             >
               Pošli podnet
             </Button>
@@ -99,7 +99,7 @@ export default function Navbar() {
                 </a>
               ))}
               <a href="#podnety" onClick={() => setMenuOpen(false)}>
-                <Button className="w-full mt-2 bg-gradient-to-br from-[#e8634a] to-[#c84870] hover:from-[#f07055] hover:to-[#d45580] text-white border-0">
+                <Button className="w-full mt-2 bg-gradient-to-br from-[#4f46e5] to-[#6d28d9] hover:from-[#6366f1] hover:to-[#7c3aed] text-white border-0">
                   Pošli podnet
                 </Button>
               </a>

@@ -61,9 +61,9 @@
   --color-navy-600: #1e3f78;
   --color-blue-brand: #3b82f6;
   --color-blue-bright: #60a5fa;
-  --color-warm-primary: #e8634a;
-  --color-warm-secondary: #c84870;
-  --color-warm-bright: #f07560;
+  --color-cta-primary: #4f46e5;
+  --color-cta-secondary: #6d28d9;
+  --color-cta-bright: #818cf8;
   --color-teal-brand: #06b6d4;
 
   /* Animations */
@@ -114,7 +114,7 @@
   --secondary-foreground: #f0f4ff;
   --muted: #142d57;
   --muted-foreground: #7aa3d4;
-  --accent: #e8634a;
+  --accent: #4f46e5;
   --accent-foreground: #ffffff;
   --destructive: oklch(0.704 0.191 22.216);
   --border: rgba(59, 130, 246, 0.12);
@@ -145,7 +145,7 @@
   --secondary-foreground: #f0f4ff;
   --muted: #142d57;
   --muted-foreground: #7aa3d4;
-  --accent: #e8634a;
+  --accent: #4f46e5;
   --accent-foreground: #ffffff;
   --destructive: oklch(0.704 0.191 22.216);
   --border: rgba(59, 130, 246, 0.12);
@@ -261,13 +261,13 @@
 }
 
 .glass-orange-hover:hover {
-  border-color: rgba(232, 99, 74, 0.3);
-  box-shadow: 0 8px 40px rgba(200, 72, 112, 0.12);
+  border-color: rgba(79, 70, 229, 0.3);
+  box-shadow: 0 8px 40px rgba(109, 40, 217, 0.12);
 }
 
 /* ─── GRADIENT TEXT ─────────────────────── */
 .gradient-text {
-  background: linear-gradient(135deg, #60a5fa 0%, #93c5fd 45%, #e8634a 100%);
+  background: linear-gradient(135deg, #60a5fa 0%, #93c5fd 45%, #818cf8 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -281,7 +281,7 @@
 }
 
 .gradient-text-orange {
-  background: linear-gradient(135deg, #f07560 0%, #e8634a 50%, #c84870 100%);
+  background: linear-gradient(135deg, #818cf8 0%, #4f46e5 50%, #6d28d9 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -340,8 +340,8 @@
 }
 
 .glow-ring-orange {
-  box-shadow: 0 0 0 1px rgba(232, 99, 74, 0.2),
-              0 0 24px rgba(200, 72, 112, 0.14);
+  box-shadow: 0 0 0 1px rgba(79, 70, 229, 0.2),
+              0 0 24px rgba(109, 40, 217, 0.14);
 }
 
 /* ─── CUSTOM CURSOR ─────────────────────── */

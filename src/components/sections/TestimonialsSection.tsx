@@ -23,7 +23,7 @@ const testimonials = [
     initial: 'BK',
     lang: 'cs',
     flag: '🇨🇿',
-    color: 'from-[#e8634a] to-[#a8306a]',
+    color: 'from-[#4f46e5] to-[#6d28d9]',
   },
   {
     quote: 'Transparentní zprávy ze senátu? To by byla revoluce. Dosud nikdo ani netušil, co se tam vlastně rozhoduje.',
@@ -70,7 +70,7 @@ const testimonials = [
     initial: 'ML',
     lang: 'en',
     flag: '🇰🇷',
-    color: 'from-[#e8634a] to-[#db2777]',
+    color: 'from-[#4f46e5] to-[#7c3aed]',
   },
 ]
 
@@ -324,7 +324,7 @@ export default function TestimonialsSection() {
             <p className="text-sm text-blue-200/70 mb-3">
               Aj ty chceš vyjadriť podporu alebo podeliť sa s názorom?
             </p>
-            <a href="#podnety" className="text-[#f07560] hover:text-[#f09070] font-semibold text-sm transition-colors">
+            <a href="#podnety" className="text-[#818cf8] hover:text-[#a5b4fc] font-semibold text-sm transition-colors">
               Pošli nám podnet →
             </a>
           </div>
