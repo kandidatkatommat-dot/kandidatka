@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { motion, useInView, animate } from 'framer-motion'
 import AnimatedSection from '@/components/shared/AnimatedSection'
 
@@ -65,11 +65,11 @@ const segsData = computeSegs()
 function PieChart3D() {
   const containerRef = useRef<HTMLDivElement>(null)
   const inView = useInView(containerRef, { once: true, margin: '-60px' })
-  const [triggered, setTriggered] = useState(false)
+  const triggeredRef = useRef(false)
 
   useEffect(() => {
-    if (!inView || triggered) return
-    setTriggered(true)
+    if (!inView || triggeredRef.current) return
+    triggeredRef.current = true
 
     const svgEl = containerRef.current
     if (!svgEl) return
@@ -90,7 +90,7 @@ function PieChart3D() {
     })
 
     return () => timers.forEach(clearTimeout)
-  }, [inView, triggered])
+  }, [inView])
 
   // Side walls — iba pre spodnú (viditeľnú) časť
   const sideWalls = segsData.map((s) => {
