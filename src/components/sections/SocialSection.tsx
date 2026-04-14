@@ -97,12 +97,12 @@ export default function SocialSection() {
                     onChange={e => setEmail(e.target.value)}
                     placeholder="tvoj@email.com"
                     required
-                    className="flex-1 px-4 py-3 rounded-xl bg-white/5 border border-blue-500/20 text-white placeholder:text-blue-300/30 focus:outline-none focus:border-blue-500/50 text-sm"
+                    className="flex-1 px-4 py-3 rounded-xl bg-white/5 border border-blue-500/20 text-white placeholder:text-blue-300/30 focus:outline-none focus:border-blue-500/50 text-base sm:text-sm min-h-[44px]"
                   />
                   <button
                     type="submit"
                     disabled={subStatus === 'loading'}
-                    className="px-6 py-3 bg-gradient-to-br from-[#4f46e5] to-[#6d28d9] hover:from-[#6366f1] hover:to-[#7c3aed] text-white font-bold rounded-xl transition-all text-sm disabled:opacity-60 whitespace-nowrap"
+                    className="px-6 py-3 min-h-[44px] bg-gradient-to-br from-[#4f46e5] to-[#6d28d9] hover:from-[#6366f1] hover:to-[#7c3aed] text-white font-bold rounded-xl transition-all text-sm disabled:opacity-60 whitespace-nowrap"
                   >
                     {subStatus === 'loading' ? '...' : 'Prihlásiť sa'}
                   </button>

@@ -34,13 +34,13 @@ function CountUnit({ value, label }: { value: number; label: string }) {
     <div className="flex flex-col items-center gap-1.5">
       <div className="relative">
         <div className="absolute inset-0 rounded-2xl bg-blue-500/10 blur-md" />
-        <div className="relative glass rounded-2xl h-[64px] flex items-center justify-center border border-blue-500/15" style={{ width: 'clamp(58px,14vw,76px)' }}>
-          <span className="text-[28px] font-bold tabular-nums text-white leading-none" style={{ fontFamily: 'var(--font-cal, inherit)' }}>
+        <div className="relative glass rounded-2xl h-[58px] sm:h-[64px] flex items-center justify-center border border-blue-500/15" style={{ width: 'clamp(52px,13vw,76px)' }}>
+          <span className="text-[24px] sm:text-[28px] font-bold tabular-nums text-white leading-none" style={{ fontFamily: 'var(--font-cal, inherit)' }}>
             {String(value).padStart(2, '0')}
           </span>
         </div>
       </div>
-      <span className="text-[10px] text-blue-400/50 uppercase tracking-[0.2em] font-medium">{label}</span>
+      <span className="text-[11px] text-blue-400/50 uppercase tracking-[0.2em] font-medium">{label}</span>
     </div>
   )
 }
@@ -233,7 +233,7 @@ export default function HeroSection() {
               <p className="text-[11px] text-blue-400/40 uppercase tracking-[0.25em] font-medium">
                 Do začiatku hlasovania zostáva
               </p>
-              <div className="flex items-start gap-3 sm:gap-4">
+              <div className="flex items-start gap-2 sm:gap-4">
                 <CountUnit value={d} label="dní" />
                 <span className="text-blue-400/25 text-2xl font-thin mt-5">:</span>
                 <CountUnit value={h} label="hodín" />

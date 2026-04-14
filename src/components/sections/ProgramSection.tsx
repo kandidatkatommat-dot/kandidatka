@@ -199,7 +199,7 @@ export default function ProgramSection() {
                 ref={closeButtonRef}
                 onClick={() => setSelectedItem(null)}
                 aria-label="Zavrieť"
-                className="absolute top-4 right-4 text-blue-400/40 hover:text-white transition-colors text-lg leading-none"
+                className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center text-blue-400/40 hover:text-white transition-colors text-lg leading-none"
               >
                 ✕
               </button>

@@ -54,13 +54,13 @@ function CandidateCard({ c, direction, accentIdx }: { c: Candidate; direction: '
   return (
     <AnimatedSection direction={direction}>
       <motion.div
-        className="glass glass-hover rounded-3xl p-8 h-full flex flex-col gap-6 group transition-transform duration-300 hover:-translate-y-1"
+        className="glass glass-hover rounded-3xl p-6 sm:p-8 h-full flex flex-col gap-6 group transition-transform duration-300 hover:-translate-y-1"
         style={{ borderTop: `2px solid ${accent.border}` }}
         whileHover={{ scale: 1.015 }}
         transition={{ type: 'spring', stiffness: 280, damping: 22 }}
       >
         {/* Avatar row */}
-        <div className="flex items-center gap-5">
+        <div className="flex items-center gap-3 sm:gap-5">
           <div className="relative">
             <div className="absolute inset-0 rounded-full blur-lg bg-blue-500/25 scale-110" />
             <Avatar className="relative w-20 h-20 ring-2 ring-blue-500/20 ring-offset-2 ring-offset-[#020810]">

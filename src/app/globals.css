@@ -163,7 +163,7 @@
 
 /* ─── BASE ───────────────────────────────── */
 @layer base {
-  * { @apply border-border; outline: none; }
+  * { @apply border-border; outline: none; -webkit-tap-highlight-color: transparent; }
   /* Visible keyboard focus ring — only when navigating by keyboard, not mouse */
   *:focus-visible {
     outline: 2px solid rgba(129, 140, 248, 0.8);
@@ -448,6 +448,15 @@
     animation: none;
     opacity: 0;
   }
+  /* Disable decorative CSS blurs — can trigger paint on every scroll */
+  .blur-2xl, .blur-3xl { filter: none !important; }
+}
+
+/* ─── iOS: prevent auto-zoom on input focus ────────────────────
+   iOS Safari zooms in when focused input font-size < 16px.
+   Force 16px on mobile — layout is already compact at ≤640px. */
+@media (max-width: 640px) {
+  input, textarea, select { font-size: 16px !important; }
 }
 
 /* ─── CHROME: aggressive GPU offload ───────────────────────────

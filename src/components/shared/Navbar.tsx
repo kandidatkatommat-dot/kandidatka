@@ -76,7 +76,7 @@ export default function Navbar() {
             </Button>
           </a>
           <button
-            className="md:hidden p-2 text-blue-200 hover:text-white"
+            className="md:hidden p-3 min-w-[44px] min-h-[44px] flex items-center justify-center text-blue-200 hover:text-white"
             onClick={() => setMenuOpen((v) => !v)}
             aria-label="Menu"
           >
@@ -95,12 +95,12 @@ export default function Navbar() {
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <div className="px-4 pb-4 pt-2 flex flex-col gap-1">
+            <div className="px-4 pb-4 pt-4 flex flex-col gap-1">
               {links.map((link) => (
                 <a
                   key={link.href}
                   href={link.href}
-                  className="px-4 py-3 text-sm text-blue-100/80 hover:text-white hover:bg-blue-500/10 rounded-xl transition-colors"
+                  className="px-4 py-4 text-sm text-blue-100/80 hover:text-white hover:bg-blue-500/10 rounded-xl transition-colors"
                   onClick={() => setMenuOpen(false)}
                 >
                   {link.label}

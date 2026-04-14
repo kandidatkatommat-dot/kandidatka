@@ -255,7 +255,7 @@ export default function TestimonialsSection() {
                     initial="enter"
                     animate="center"
                     exit="exit"
-                    className="absolute inset-0 flex flex-col justify-between p-5 pl-14 pb-6"
+                    className="absolute inset-0 flex flex-col justify-between p-5 pl-10 sm:pl-14 pb-6"
                     drag="x"
                     dragConstraints={{ left: 0, right: 0 }}
                     dragElastic={0.1}
@@ -269,7 +269,7 @@ export default function TestimonialsSection() {
                     </div>
 
                     {/* Quote — line-height matches ruled lines */}
-                    <p className="flex-1 flex items-center text-sm sm:text-[14.5px] text-blue-100/80 leading-[30px] italic">
+                    <p className="flex-1 flex items-center text-sm sm:text-[14.5px] text-blue-100/80 leading-[26px] sm:leading-[30px] italic">
                       {t.quote}
                     </p>
 

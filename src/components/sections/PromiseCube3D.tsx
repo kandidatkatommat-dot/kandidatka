@@ -112,7 +112,7 @@ export default function PromiseCube3D() {
     const measure = () => {
       if (!containerRef.current) return
       const w = containerRef.current.offsetWidth
-      setFaceSize(Math.min(304, Math.max(200, w - 32)))
+      setFaceSize(Math.min(290, Math.max(200, w - 32)))
     }
     measure()
     const ro = new ResizeObserver(measure)
@@ -241,12 +241,14 @@ export default function PromiseCube3D() {
             key={i}
             onClick={() => setStep(i)}
             aria-label={`Strana ${i + 1}`}
-            className={`rounded-full transition-all duration-300 ${
+            className="p-2 flex items-center justify-center"
+          >
+            <span className={`rounded-full transition-all duration-300 block ${
               currentFaceIdx === i
                 ? 'w-5 h-1.5 bg-[#818cf8]'
                 : 'w-1.5 h-1.5 bg-blue-500/25 hover:bg-blue-500/50'
-            }`}
-          />
+            }`} />
+          </button>
         ))}
       </div>
     </div>
