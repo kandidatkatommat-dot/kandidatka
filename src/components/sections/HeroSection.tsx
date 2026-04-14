@@ -4,7 +4,7 @@ import { useEffect, useState, useMemo, useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { ChevronDown } from '@/components/shared/Icons'
+import { ChevronDown, Mail } from '@/components/shared/Icons'
 
 /* ── Countdown ─────────────────────────────────────────────── */
 const VOTE_DATE = new Date('2026-05-12T08:00:00')
@@ -213,7 +213,7 @@ export default function HeroSection() {
                 data-cursor
                 className="border-blue-500/20 bg-white/[0.03] text-blue-200 hover:bg-blue-500/8 hover:border-blue-500/40 backdrop-blur-sm px-9 py-6 text-base font-semibold w-full sm:w-auto transition-all duration-300 hover:scale-[1.02]"
               >
-                Pošli podnet ✉️
+                Pošli podnet <Mail size={15} className="ml-0.5" />
               </Button>
             </a>
           </motion.div>
