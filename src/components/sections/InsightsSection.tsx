@@ -4,24 +4,18 @@ import { useEffect, useRef, useState } from 'react'
 import { motion, useInView, animate } from 'framer-motion'
 import AnimatedSection from '@/components/shared/AnimatedSection'
 
-/* ── Data ───────────────────────────────────────────────── */
+/* ── Segment data — FEI priorities, paleta stránky ─── */
 const segments = [
-  { label: 'Digitalizácia',        pct: 28, color: '#3b82f6', dark: '#1d4ed8' },
-  { label: 'Výuka & hodnotenie',   pct: 24, color: '#f97316', dark: '#c2410c' },
-  { label: 'Skúšobný poriadok',    pct: 22, color: '#06b6d4', dark: '#0e7490' },
-  { label: 'Kampus & priestory',   pct: 16, color: '#8b5cf6', dark: '#6d28d9' },
-  { label: 'Komunikácia',          pct: 10, color: '#10b981', dark: '#047857' },
+  { label: 'Digitalizácia',       sub: '28% podnetov',  value: 28, color: '#3b82f6', dark: '#1d4ed8' },
+  { label: 'Výuka & hodnotenie',  sub: '24% podnetov',  value: 24, color: '#f97316', dark: '#c2410c' },
+  { label: 'Skúšobný poriadok',   sub: '22% podnetov',  value: 22, color: '#06b6d4', dark: '#0e7490' },
+  { label: 'Kampus & priestory',  sub: '16% podnetov',  value: 16, color: '#8b5cf6', dark: '#6d28d9' },
+  { label: 'Komunikácia',         sub: '10% podnetov',  value: 10, color: '#10b981', dark: '#047857' },
 ]
 
-const filmFrames = [
-  { title: 'Transparentnosť',  score: 94, desc: 'Mesačné správy zo senátu', color: '#3b82f6' },
-  { title: 'Skúšky férovejšie', score: 91, desc: 'Revízia skúšobného poriadku', color: '#f97316' },
-  { title: 'Váš hlas v rozpočte', score: 88, desc: 'Priame zastupovanie potrieb', color: '#06b6d4' },
-  { title: 'Digitálne nástroje', score: 85, desc: 'Modernizácia systémov FEI', color: '#8b5cf6' },
-  { title: 'Verejné Q&A',       score: 96, desc: 'Každý semester bez výnimky', color: '#10b981' },
-]
+const total = segments.reduce((s, d) => s + d.value, 0)
 
-/* ── Animated counter ───────────────────────────────────── */
+/* ── Animated counter ───────────────────────────────── */
 function Counter({ to, suffix = '' }: { to: number; suffix?: string }) {
   const ref = useRef<HTMLSpanElement>(null)
   const inView = useInView(ref, { once: true })
@@ -37,109 +31,206 @@ function Counter({ to, suffix = '' }: { to: number; suffix?: string }) {
   return <span ref={ref}>0{suffix}</span>
 }
 
-/* ── SVG Donut Chart ────────────────────────────────────── */
-const CX = 110, CY = 110, R = 80, r = 50
-const STROKE = R - r
+/* ── 3D Pie Chart — technika z referencie ───────────── */
+const CX = 240, CY = 150, RX = 108, RY = 40, DEPTH = 30
+const FF = 'inherit'
 
-function polarToXY(deg: number, radius: number) {
-  const rad = (deg - 90) * (Math.PI / 180)
-  return { x: CX + radius * Math.cos(rad), y: CY + radius * Math.sin(rad) }
+function ep(a: number) {
+  return { x: CX + RX * Math.cos(a), y: CY + RY * Math.sin(a) }
 }
 
-function segmentPath(startDeg: number, endDeg: number) {
-  const mid = (R + r) / 2
-  const o1 = polarToXY(startDeg, R), o2 = polarToXY(endDeg, R)
-  const i1 = polarToXY(endDeg, r), i2 = polarToXY(startDeg, r)
-  const large = endDeg - startDeg > 180 ? 1 : 0
-  return `M${o1.x},${o1.y} A${R},${R} 0 ${large},1 ${o2.x},${o2.y} L${i1.x},${i1.y} A${r},${r} 0 ${large},0 ${i2.x},${i2.y} Z`
+function topFacePath(a1: number, a2: number) {
+  const p1 = ep(a1), p2 = ep(a2)
+  const large = (a2 - a1) > Math.PI ? 1 : 0
+  return `M ${CX} ${CY} L ${p1.x} ${p1.y} A ${RX} ${RY} 0 ${large} 1 ${p2.x} ${p2.y} Z`
 }
 
-function DonutChart() {
-  const ref = useRef<SVGSVGElement>(null)
-  const inView = useInView(ref, { once: true, margin: '-60px' })
-  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null)
-  const [visible, setVisible] = useState(segments.map(() => false))
+interface SegData {
+  label: string; sub: string; value: number; color: string; dark: string
+  a1: number; a2: number; mid: number
+}
+
+function computeSegs(): SegData[] {
+  let ang = -Math.PI / 2
+  return segments.map((s) => {
+    const sweep = (s.value / total) * 2 * Math.PI
+    const a1 = ang, a2 = ang + sweep, mid = ang + sweep / 2
+    ang += sweep
+    return { ...s, a1, a2, mid }
+  })
+}
+
+const segsData = computeSegs()
+
+function PieChart3D() {
+  const containerRef = useRef<HTMLDivElement>(null)
+  const inView = useInView(containerRef, { once: true, margin: '-60px' })
+  const [triggered, setTriggered] = useState(false)
 
   useEffect(() => {
-    if (!inView) return
-    segments.forEach((_, i) => {
-      setTimeout(() => {
-        setVisible((prev) => { const n = [...prev]; n[i] = true; return n })
-      }, i * 180)
-    })
-  }, [inView])
+    if (!inView || triggered) return
+    setTriggered(true)
 
-  let cumDeg = 0
-  const segs = segments.map((s) => {
-    const start = cumDeg
-    cumDeg += (s.pct / 100) * 360
-    return { ...s, start, end: cumDeg }
-  })
+    const svgEl = containerRef.current
+    if (!svgEl) return
+
+    // Staggered segment reveal — presne ako referencia
+    svgEl.querySelectorAll<HTMLElement>('.pie-seg').forEach((el, i) => {
+      setTimeout(() => el.classList.add('pie-visible'), i * 110)
+    })
+    // Callout lines draw-in
+    svgEl.querySelectorAll<HTMLElement>('.callout-line').forEach((el, i) => {
+      setTimeout(() => el.classList.add('c-visible'), 320 + i * 90)
+    })
+    // Labels fade in
+    svgEl.querySelectorAll<HTMLElement>('.callout-label').forEach((el, i) => {
+      setTimeout(() => el.classList.add('c-visible'), 460 + i * 70)
+    })
+  }, [inView, triggered])
+
+  // Side walls — iba pre spodnú (viditeľnú) časť
+  const sideWalls = segsData.map((s) => {
+    const norm = (a: number) => ((a % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI)
+    const na1 = norm(s.a1)
+    const na2 = na1 + (s.a2 - s.a1)
+    const ca1 = Math.max(na1, 0)
+    const ca2 = Math.min(na2, Math.PI)
+    if (ca2 <= ca1 + 0.01) return null
+    const p1 = ep(ca1), p2 = ep(ca2)
+    const large = (ca2 - ca1) > Math.PI ? 1 : 0
+    return { s, ca1, ca2, p1, p2, large }
+  }).filter(Boolean) as Array<{ s: SegData; ca1: number; ca2: number; p1: {x:number;y:number}; p2: {x:number;y:number}; large: number }>
 
   return (
-    <div className="flex flex-col items-center gap-6">
-      <div className="relative">
-        {/* Outer glow */}
-        <div className="absolute inset-0 rounded-full blur-2xl opacity-20"
-          style={{ background: 'radial-gradient(circle, #3b82f6 0%, transparent 70%)' }} />
-        <svg ref={ref} width={220} height={220} className="relative drop-shadow-2xl">
-          {segs.map((s, i) => (
-            <motion.path
-              key={i}
-              d={segmentPath(s.start, s.end)}
-              fill={hoveredIdx === i ? s.color : s.dark}
-              initial={{ opacity: 0, scale: 0.7 }}
-              animate={visible[i] ? {
-                opacity: 1,
-                scale: hoveredIdx === i ? 1.04 : 1,
-                transformOrigin: `${CX}px ${CY}px`,
-              } : { opacity: 0, scale: 0.7 }}
-              transition={{ duration: 0.45, ease: [0.34, 1.56, 0.64, 1] }}
-              onMouseEnter={() => setHoveredIdx(i)}
-              onMouseLeave={() => setHoveredIdx(null)}
-              className="cursor-pointer"
-              style={{ filter: hoveredIdx === i ? `drop-shadow(0 0 8px ${s.color}80)` : 'none' }}
-            />
-          ))}
-          {/* Center */}
-          <circle cx={CX} cy={CY} r={r - 4} fill="#020810" />
-          <text x={CX} y={CY - 6} textAnchor="middle" fill="white" fontSize="22" fontWeight="800" fontFamily="inherit">
-            {hoveredIdx !== null ? segments[hoveredIdx].pct + '%' : '5'}
-          </text>
-          <text x={CX} y={CY + 14} textAnchor="middle" fill="#60a5fa" fontSize="9" fontFamily="inherit" fontWeight="600" letterSpacing="1">
-            {hoveredIdx !== null ? 'PODNETOV' : 'KATEGÓRIÍ'}
-          </text>
-        </svg>
-      </div>
+    <div ref={containerRef} className="w-full flex items-center justify-center">
+      <svg
+        viewBox="0 0 480 290"
+        width="100%"
+        style={{ maxWidth: 520, overflow: 'visible' }}
+      >
+        <defs>
+          <filter id="pglow3d" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="b"/>
+            <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <filter id="lglow3d" x="-15%" y="-15%" width="130%" height="130%">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="1.5" result="b"/>
+            <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
 
-      {/* Legend */}
-      <div className="grid grid-cols-1 gap-2 w-full max-w-[260px]">
-        {segs.map((s, i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, x: -16 }}
-            animate={visible[i] ? { opacity: 1, x: 0 } : { opacity: 0, x: -16 }}
-            transition={{ duration: 0.35, delay: i * 0.18 + 0.3 }}
-            onMouseEnter={() => setHoveredIdx(i)}
-            onMouseLeave={() => setHoveredIdx(null)}
-            className={`flex items-center gap-3 px-3 py-2 rounded-xl transition-all duration-200 cursor-default ${hoveredIdx === i ? 'bg-white/5' : ''}`}
-          >
-            <span className="w-3 h-3 rounded-sm flex-shrink-0" style={{ background: s.color }} />
-            <span className="text-xs text-blue-200/70 flex-1">{s.label}</span>
-            <span className="text-xs font-bold tabular-nums" style={{ color: s.color }}>{s.pct}%</span>
-          </motion.div>
+        {/* Shadow */}
+        <ellipse cx={CX} cy={CY + DEPTH + 8} rx={RX + 12} ry={RY + 5} fill="rgba(0,0,0,0.25)" />
+
+        {/* Side walls */}
+        {sideWalls.map(({ s, p1, p2, ca1, ca2, large }, i) => (
+          <g key={i}>
+            <path
+              d={`M ${p1.x} ${p1.y} A ${RX} ${RY} 0 ${large} 1 ${p2.x} ${p2.y} L ${p2.x} ${p2.y + DEPTH} A ${RX} ${RY} 0 ${large} 0 ${p1.x} ${p1.y + DEPTH} Z`}
+              fill={s.dark}
+              opacity="0.85"
+            />
+            {[{ p: p1, a: ca1 }, { p: p2, a: ca2 }].map(({ p }, j) => (
+              <line key={j} x1={p.x} y1={p.y} x2={p.x} y2={p.y + DEPTH}
+                stroke="rgba(0,0,0,0.3)" strokeWidth="0.6" />
+            ))}
+          </g>
         ))}
-      </div>
+
+        {/* Top faces — staggered fade-in via CSS */}
+        {segsData.map((s, i) => (
+          <path
+            key={i}
+            d={topFacePath(s.a1, s.a2)}
+            fill={s.color}
+            opacity="0.92"
+            stroke="rgba(2,8,16,0.6)"
+            strokeWidth="0.8"
+            filter="url(#pglow3d)"
+            className="pie-seg"
+          />
+        ))}
+
+        {/* Callout lines + labels */}
+        {segsData.map((s, i) => {
+          const cosM = Math.cos(s.mid), sinM = Math.sin(s.mid)
+          const startX = CX + (RX + 14) * cosM
+          const startY = CY + (RY + 10) * sinM
+          const elbowLen = 24
+          const elbowX = startX + cosM * elbowLen
+          const elbowY = startY + sinM * elbowLen
+          const isRight = cosM >= 0
+          const extLen = 44
+          const endX = elbowX + (isRight ? extLen : -extLen)
+          const textX = endX + (isRight ? 6 : -6)
+          const anchor = isRight ? 'start' : 'end'
+
+          return (
+            <g key={i}>
+              {/* Start dot */}
+              <circle cx={startX} cy={startY} r="2.2" fill={s.color} className="callout-label" />
+              {/* Polyline */}
+              <polyline
+                points={`${startX},${startY} ${elbowX},${elbowY} ${endX},${elbowY}`}
+                stroke={s.color}
+                strokeWidth="1"
+                fill="none"
+                filter="url(#lglow3d)"
+                opacity="0.75"
+                className="callout-line"
+              />
+              {/* End dot */}
+              <circle cx={endX} cy={elbowY} r="2.8" fill={s.color} className="callout-label" />
+              {/* Label */}
+              <text x={textX} y={elbowY - 3}
+                textAnchor={anchor}
+                fontSize="11" fill="#cbd5e1"
+                fontFamily={FF} fontWeight="600"
+                className="callout-label"
+              >
+                {s.label}
+              </text>
+              {/* Sub */}
+              <text x={textX} y={elbowY + 11}
+                textAnchor={anchor}
+                fontSize="9.5" fill={s.color}
+                fontFamily={FF} fontWeight="700"
+                opacity="0.9"
+                className="callout-label"
+              >
+                {s.sub}
+              </text>
+            </g>
+          )
+        })}
+
+        {/* Center label */}
+        <ellipse cx={CX} cy={CY} rx={28} ry={14} fill="#020810" opacity="0.9" />
+        <text x={CX} y={CY - 2} textAnchor="middle" fontSize="13" fill="white" fontWeight="800" fontFamily={FF}>
+          FEI
+        </text>
+        <text x={CX} y={CY + 9} textAnchor="middle" fontSize="7" fill="#60a5fa" fontWeight="600" fontFamily={FF} letterSpacing="1">
+          PRIORITY
+        </text>
+      </svg>
     </div>
   )
 }
 
-/* ── Film Frame ─────────────────────────────────────────── */
-function Perforation({ y }: { y: number }) {
+/* ── Film Frame ─────────────────────────────────────── */
+const filmFrames = [
+  { title: 'Transparentnosť',    score: 94, desc: 'Mesačné správy zo senátu', color: '#3b82f6' },
+  { title: 'Skúšky férovejšie',  score: 91, desc: 'Revízia skúšobného poriadku', color: '#f97316' },
+  { title: 'Hlas v rozpočte',    score: 88, desc: 'Priame zastupovanie potrieb', color: '#06b6d4' },
+  { title: 'Digitálne nástroje', score: 85, desc: 'Modernizácia systémov FEI', color: '#8b5cf6' },
+  { title: 'Verejné Q&A',        score: 96, desc: 'Každý semester bez výnimky', color: '#10b981' },
+]
+
+function Perf({ y }: { y: number }) {
   return (
     <>
-      {[12, 30, 48, 66, 84, 102].map((x) => (
-        <rect key={x} x={x} y={y} width="8" height="6" rx="1.5" fill="#0a1628" />
+      {[10, 28, 46, 64, 82, 100].map((x) => (
+        <rect key={x} x={x} y={y} width="9" height="6" rx="1.5" fill="#020810" />
       ))}
     </>
   )
@@ -147,82 +238,65 @@ function Perforation({ y }: { y: number }) {
 
 function FilmFrame({ frame, index, inView }: { frame: typeof filmFrames[0]; index: number; inView: boolean }) {
   const [shown, setShown] = useState(false)
-  const scoreRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     if (!inView) return
-    const t = setTimeout(() => setShown(true), index * 200)
+    const t = setTimeout(() => setShown(true), index * 180)
     return () => clearTimeout(t)
   }, [inView, index])
 
+  const circumference = 2 * Math.PI * 28
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 40, rotateX: -25 }}
-      animate={shown ? { opacity: 1, y: 0, rotateX: 0 } : { opacity: 0, y: 40, rotateX: -25 }}
-      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-      className="relative flex-shrink-0 w-[136px] group"
-      style={{ perspective: 400 }}
+      initial={{ opacity: 0, y: 36, rotateX: -20 }}
+      animate={shown ? { opacity: 1, y: 0, rotateX: 0 } : {}}
+      transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+      className="relative flex-shrink-0 w-[130px]"
+      style={{ perspective: 500 }}
     >
-      {/* Film strip SVG shell */}
-      <svg width="136" height="200" className="absolute inset-0" viewBox="0 0 136 200">
-        <rect width="136" height="200" rx="4" fill="#0a1628" />
-        <rect x="6" y="0" width="124" height="200" fill="#060f1e" />
-        <Perforation y={8} />
-        <Perforation y={186} />
+      <svg width="130" height="190" className="absolute inset-0" viewBox="0 0 130 190">
+        <rect width="130" height="190" rx="3" fill="#0a1628" />
+        <rect x="6" y="0" width="118" height="190" fill="#060f1e" />
+        <Perf y={7} />
+        <Perf y={177} />
       </svg>
 
-      {/* Content inside frame */}
-      <div className="relative z-10 mx-[6px] mt-[22px] mb-[22px] h-[156px] rounded-sm overflow-hidden flex flex-col"
-        style={{ background: `linear-gradient(160deg, ${frame.color}15 0%, #020810 100%)` }}>
-
-        {/* Score arc */}
-        <div className="flex-1 flex flex-col items-center justify-center gap-2 px-3">
-          <svg width="80" height="80" viewBox="0 0 80 80" className="overflow-visible">
-            {/* Track */}
-            <circle cx="40" cy="40" r="30" fill="none" stroke="#ffffff08" strokeWidth="6" />
-            {/* Arc */}
+      <div className="relative z-10 mx-[6px] mt-[21px] mb-[21px] h-[148px] rounded-sm overflow-hidden flex flex-col"
+        style={{ background: `linear-gradient(160deg, ${frame.color}18 0%, #020810 100%)` }}>
+        <div className="flex-1 flex flex-col items-center justify-center gap-2 px-2 pt-2">
+          <svg width="72" height="72" viewBox="0 0 72 72">
+            <circle cx="36" cy="36" r="28" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="5" />
             <motion.circle
-              cx="40" cy="40" r="30"
-              fill="none"
-              stroke={frame.color}
-              strokeWidth="6"
+              cx="36" cy="36" r="28"
+              fill="none" stroke={frame.color} strokeWidth="5"
               strokeLinecap="round"
-              strokeDasharray={`${2 * Math.PI * 30}`}
-              initial={{ strokeDashoffset: 2 * Math.PI * 30 }}
-              animate={shown ? { strokeDashoffset: 2 * Math.PI * 30 * (1 - frame.score / 100) } : { strokeDashoffset: 2 * Math.PI * 30 }}
-              transition={{ duration: 1.2, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              transform="rotate(-90 40 40)"
-              style={{ filter: `drop-shadow(0 0 4px ${frame.color}80)` }}
+              strokeDasharray={circumference}
+              initial={{ strokeDashoffset: circumference }}
+              animate={shown ? { strokeDashoffset: circumference * (1 - frame.score / 100) } : {}}
+              transition={{ duration: 1.1, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
+              transform="rotate(-90 36 36)"
+              style={{ filter: `drop-shadow(0 0 4px ${frame.color}90)` }}
             />
-            {/* Score text */}
-            <text x="40" y="36" textAnchor="middle" fill="white" fontSize="18" fontWeight="800" fontFamily="inherit">
-              {frame.score}
-            </text>
-            <text x="40" y="50" textAnchor="middle" fill={frame.color} fontSize="7" fontWeight="600" fontFamily="inherit" letterSpacing="1">
-              / 100
-            </text>
+            <text x="36" y="32" textAnchor="middle" fill="white" fontSize="16" fontWeight="800" fontFamily="inherit">{frame.score}</text>
+            <text x="36" y="44" textAnchor="middle" fill={frame.color} fontSize="6.5" fontWeight="600" letterSpacing="0.8" fontFamily="inherit">/ 100</text>
           </svg>
-
-          <div className="text-center">
-            <p className="text-[11px] font-bold text-white leading-tight">{frame.title}</p>
-            <p className="text-[9px] text-blue-300/40 mt-0.5 leading-tight">{frame.desc}</p>
+          <div className="text-center px-1">
+            <p className="text-[10.5px] font-bold text-white leading-tight">{frame.title}</p>
+            <p className="text-[8.5px] text-blue-300/40 mt-0.5 leading-tight">{frame.desc}</p>
           </div>
         </div>
-
-        {/* Bottom color bar */}
-        <motion.div
-          className="h-1 w-full"
-          style={{ background: frame.color }}
+        <motion.div className="h-[2px]" style={{ background: frame.color }}
           initial={{ scaleX: 0 }}
-          animate={shown ? { scaleX: 1 } : { scaleX: 0 }}
-          transition={{ duration: 0.5, delay: 0.8 }}
+          animate={shown ? { scaleX: 1 } : {}}
+          transition={{ duration: 0.45, delay: 0.7 }}
         />
       </div>
     </motion.div>
   )
 }
 
-/* ── Main Section ───────────────────────────────────────── */
+/* ── Main Section ───────────────────────────────────── */
 export default function InsightsSection() {
   const filmRef = useRef<HTMLDivElement>(null)
   const filmInView = useInView(filmRef, { once: true, margin: '-80px' })
@@ -232,15 +306,13 @@ export default function InsightsSection() {
       style={{ background: 'linear-gradient(180deg, #04101f 0%, #020810 100%)' }}>
       <div className="section-divider mb-0" />
 
-      {/* BG orbs */}
-      <div className="aurora-orb w-[40vw] h-[40vw] top-[5%] right-[-10vw] opacity-40"
-        style={{ background: 'radial-gradient(circle, rgba(139,92,246,0.08) 0%, transparent 70%)' }} aria-hidden />
-      <div className="aurora-orb w-[30vw] h-[30vw] bottom-[10%] left-[-8vw] opacity-30"
-        style={{ background: 'radial-gradient(circle, rgba(59,130,246,0.07) 0%, transparent 70%)' }} aria-hidden />
+      <div className="aurora-orb w-[40vw] h-[40vw] top-[5%] right-[-10vw] opacity-35"
+        style={{ background: 'radial-gradient(circle, rgba(139,92,246,0.09) 0%, transparent 70%)' }} aria-hidden />
+      <div className="aurora-orb w-[30vw] h-[30vw] bottom-[5%] left-[-8vw] opacity-25"
+        style={{ background: 'radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 70%)' }} aria-hidden />
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10 pt-28">
 
-        {/* Heading */}
         <AnimatedSection className="text-center mb-16">
           <span className="inline-block text-xs font-semibold text-purple-400 uppercase tracking-[0.2em] mb-4">
             Dáta & Priority
@@ -249,118 +321,86 @@ export default function InsightsSection() {
             Čo FEI naozaj potrebuje?
           </h2>
           <p className="text-blue-200/55 max-w-2xl mx-auto text-base">
-            Analýza podnetov od študentov. Každé rozhodnutie v senáte vychádza z týchto dát.
+            Analýza podnetov od študentov FEI. Každé rozhodnutie v senáte vychádza z týchto dát.
           </p>
         </AnimatedSection>
 
-        {/* Top row: Donut + Stats */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-20 items-center">
-          {/* Donut */}
-          <AnimatedSection direction="left">
-            <div className="glass rounded-3xl p-8 flex flex-col items-center">
-              <p className="text-xs font-semibold text-blue-400/60 uppercase tracking-[0.2em] mb-6">
-                Rozloženie podnetov od študentov
-              </p>
-              <DonutChart />
+        {/* 3D Pie chart */}
+        <AnimatedSection className="mb-10">
+          <div className="glass rounded-3xl p-6 sm:p-10">
+            <p className="text-xs font-semibold text-blue-400/50 uppercase tracking-[0.2em] text-center mb-8">
+              Rozloženie podnetov — čo študentov trápi najviac
+            </p>
+            <PieChart3D />
+            <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 mt-8">
+              {segments.map((s, i) => (
+                <motion.div key={i} className="flex items-center gap-2"
+                  initial={{ opacity: 0, y: 8 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.5 + i * 0.1, duration: 0.4 }}>
+                  <span className="w-2.5 h-2.5 rounded-sm flex-shrink-0" style={{ background: s.color }} />
+                  <div>
+                    <p className="text-[10px] font-semibold text-white/80 leading-tight">{s.label}</p>
+                    <p className="text-[9px] font-bold tabular-nums" style={{ color: s.color }}>{s.value}%</p>
+                  </div>
+                </motion.div>
+              ))}
             </div>
-          </AnimatedSection>
+          </div>
+        </AnimatedSection>
 
-          {/* Right stats */}
-          <AnimatedSection direction="right">
-            <div className="space-y-5">
-              <div className="glass rounded-3xl p-7">
-                <p className="text-xs text-blue-400/50 uppercase tracking-widest mb-5">Kľúčové čísla</p>
-                <div className="grid grid-cols-2 gap-4">
-                  {[
-                    { n: 847, s: '+', label: 'podnetov zebrali sme', color: 'text-blue-400' },
-                    { n: 3,   s: ' roky', label: 'mandát 2026–2029', color: 'text-orange-400' },
-                    { n: 5,   s: ' miest', label: 'senát má pre študentov', color: 'text-teal-400' },
-                    { n: 100, s: '%', label: 'záväzkov verejných', color: 'text-purple-400' },
-                  ].map((item, i) => (
-                    <motion.div
-                      key={i}
-                      className="glass rounded-2xl p-4 text-center"
-                      initial={{ opacity: 0, scale: 0.85 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.5, delay: i * 0.1 }}
-                    >
-                      <div className={`text-2xl font-black tabular-nums ${item.color}`}>
-                        <Counter to={item.n} suffix={item.s} />
-                      </div>
-                      <div className="text-[10px] text-blue-400/45 mt-1 leading-tight uppercase tracking-wider">
-                        {item.label}
-                      </div>
-                    </motion.div>
-                  ))}
+        {/* Stats strip */}
+        <AnimatedSection className="mb-20">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            {[
+              { n: 847, s: '+', label: 'zozbieraných podnetov', color: 'text-blue-400' },
+              { n: 3,   s: ' roky', label: 'funkčného mandátu', color: 'text-orange-400' },
+              { n: 5,   s: ' miest', label: 'pre študentov v senáte', color: 'text-teal-400' },
+              { n: 100, s: '%', label: 'záväzkov je verejných', color: 'text-purple-400' },
+            ].map((item, i) => (
+              <motion.div key={i} className="glass rounded-2xl p-5 text-center"
+                initial={{ opacity: 0, scale: 0.88 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.45, delay: i * 0.1 }}>
+                <div className={`text-2xl sm:text-3xl font-black tabular-nums ${item.color}`}>
+                  <Counter to={item.n} suffix={item.s} />
                 </div>
-              </div>
-
-              {/* Priority bars */}
-              <div className="glass rounded-3xl p-7">
-                <p className="text-xs text-blue-400/50 uppercase tracking-widest mb-5">Top priority podľa hlasov</p>
-                <div className="space-y-4">
-                  {segments.slice(0, 3).map((s, i) => (
-                    <div key={i}>
-                      <div className="flex justify-between items-center mb-1.5">
-                        <span className="text-sm text-blue-100/75 font-medium">{s.label}</span>
-                        <span className="text-sm font-bold tabular-nums" style={{ color: s.color }}>{s.pct}%</span>
-                      </div>
-                      <div className="h-2 bg-white/5 rounded-full overflow-hidden">
-                        <motion.div
-                          className="h-full rounded-full"
-                          style={{ background: `linear-gradient(90deg, ${s.dark}, ${s.color})` }}
-                          initial={{ width: 0 }}
-                          whileInView={{ width: `${s.pct}%` }}
-                          viewport={{ once: true }}
-                          transition={{ duration: 1.2, delay: i * 0.15 + 0.3, ease: [0.16, 1, 0.3, 1] }}
-                        />
-                      </div>
-                    </div>
-                  ))}
+                <div className="text-[10px] text-blue-400/45 mt-1 leading-tight uppercase tracking-wider">
+                  {item.label}
                 </div>
-              </div>
-            </div>
-          </AnimatedSection>
-        </div>
+              </motion.div>
+            ))}
+          </div>
+        </AnimatedSection>
 
         {/* Film strip */}
         <div ref={filmRef}>
           <AnimatedSection className="text-center mb-10">
             <span className="inline-block text-xs font-semibold text-orange-400 uppercase tracking-[0.2em] mb-3">
-              Naše hodnotenia záväzkov
+              Hodnotenie záväzkov
             </span>
             <h3 className="text-2xl sm:text-3xl font-black text-white">
               Každý sľub — skóre pripravenosti
             </h3>
           </AnimatedSection>
 
-          {/* Film strip container */}
           <div className="relative">
-            {/* Gradient fade edges */}
-            <div className="absolute left-0 top-0 bottom-0 w-16 z-10 pointer-events-none"
+            <div className="absolute left-0 top-0 bottom-0 w-12 z-10 pointer-events-none"
               style={{ background: 'linear-gradient(to right, #020810, transparent)' }} />
-            <div className="absolute right-0 top-0 bottom-0 w-16 z-10 pointer-events-none"
+            <div className="absolute right-0 top-0 bottom-0 w-12 z-10 pointer-events-none"
               style={{ background: 'linear-gradient(to left, #020810, transparent)' }} />
-
-            {/* Horizontal film strip line */}
-            <div className="flex items-center justify-center gap-3 overflow-x-auto pb-4 scrollbar-none"
-              style={{ scrollbarWidth: 'none' }}>
-
-              {/* Sprocket strip top */}
-              <div className="hidden sm:flex flex-col items-center gap-0 relative">
-                <div className="w-px h-full absolute left-1/2 bg-blue-500/5" />
-              </div>
-
+            <div className="flex items-center justify-center gap-2 sm:gap-3 overflow-x-auto pb-2 scrollbar-none px-4">
               {filmFrames.map((frame, i) => (
                 <FilmFrame key={i} frame={frame} index={i} inView={filmInView} />
               ))}
             </div>
           </div>
 
-          <AnimatedSection delay={0.4} className="text-center mt-8">
-            <p className="text-xs text-blue-400/30">
-              Skóre vychádza z konkrétnosti sľubu, právomocí senátu a podnetov od študentov
+          <AnimatedSection delay={0.4} className="text-center mt-6">
+            <p className="text-xs text-blue-400/25">
+              Skóre vychádza z konkrétnosti sľubu, zákonných právomocí senátu a podnetov od študentov
             </p>
           </AnimatedSection>
         </div>

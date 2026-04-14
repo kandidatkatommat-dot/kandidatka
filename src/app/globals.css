@@ -375,3 +375,31 @@
 @media (pointer: coarse) {
   .cursor-outer, .cursor-inner { display: none; }
 }
+
+/* ─── PIE CHART ANIMATIONS (presne ako v referencii) ─── */
+.pie-seg {
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.pie-seg.pie-visible {
+  opacity: 1;
+}
+.callout-line {
+  stroke-dasharray: 140;
+  stroke-dashoffset: 140;
+  transition: stroke-dashoffset 0.55s ease;
+}
+.callout-line.c-visible {
+  stroke-dashoffset: 0;
+}
+.callout-label {
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+.callout-label.c-visible {
+  opacity: 1;
+}
+
+/* ─── SCROLLBAR NONE ───────────────────────── */
+.scrollbar-none { scrollbar-width: none; }
+.scrollbar-none::-webkit-scrollbar { display: none; }
