@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useMemo, useRef } from 'react'
+import { useEffect, useState, useMemo, useRef, memo } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -34,7 +34,7 @@ function CountUnit({ value, label }: { value: number; label: string }) {
     <div className="flex flex-col items-center gap-1.5">
       <div className="relative">
         <div className="absolute inset-0 rounded-2xl bg-blue-500/10 blur-md" />
-        <div className="relative glass rounded-2xl w-[72px] h-[64px] flex items-center justify-center border border-blue-500/15">
+        <div className="relative glass rounded-2xl h-[64px] flex items-center justify-center border border-blue-500/15" style={{ width: 'clamp(58px,14vw,76px)' }}>
           <span className="text-[28px] font-bold tabular-nums text-white leading-none" style={{ fontFamily: 'var(--font-cal, inherit)' }}>
             {String(value).padStart(2, '0')}
           </span>
@@ -46,7 +46,7 @@ function CountUnit({ value, label }: { value: number; label: string }) {
 }
 
 /* ── Aurora Mesh background ─────────────────────────────────── */
-function AuroraMesh() {
+const AuroraMesh = memo(function AuroraMesh() {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden>
       {/* Primary orb */}
@@ -72,7 +72,7 @@ function AuroraMesh() {
       <div className="absolute inset-0 dot-grid opacity-20" />
     </div>
   )
-}
+})
 
 /* ── Floating particles (CSS only, no Three.js needed for fallback) */
 interface Particle {
@@ -86,7 +86,7 @@ interface Particle {
   opacity: number
 }
 
-function FloatingParticles({ particles }: { particles: Particle[] }) {
+const FloatingParticles = memo(function FloatingParticles({ particles }: { particles: Particle[] }) {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden>
       {particles.map((p) => (
@@ -100,7 +100,7 @@ function FloatingParticles({ particles }: { particles: Particle[] }) {
       ))}
     </div>
   )
-}
+})
 
 /* ── Scroll indicator ─────────────────────────────────────── */
 function ScrollIndicator() {

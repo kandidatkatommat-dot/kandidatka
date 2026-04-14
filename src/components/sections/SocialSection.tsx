@@ -49,12 +49,16 @@ export default function SocialSection() {
     e.preventDefault()
     if (!email || subStatus === 'loading') return
     setSubStatus('loading')
-    const res = await fetch('/api/newsletter/subscribe', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email }),
-    })
-    setSubStatus(res.ok ? 'success' : 'error')
+    try {
+      const res = await fetch('/api/newsletter/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      })
+      setSubStatus(res.ok ? 'success' : 'error')
+    } catch {
+      setSubStatus('error')
+    }
   }
 
   return (

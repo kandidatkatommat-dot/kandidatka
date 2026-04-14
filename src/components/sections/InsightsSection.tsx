@@ -74,18 +74,22 @@ function PieChart3D() {
     const svgEl = containerRef.current
     if (!svgEl) return
 
-    // Staggered segment reveal — presne ako referencia
+    const timers: ReturnType<typeof setTimeout>[] = []
+
+    // Staggered segment reveal
     svgEl.querySelectorAll<HTMLElement>('.pie-seg').forEach((el, i) => {
-      setTimeout(() => el.classList.add('pie-visible'), i * 110)
+      timers.push(setTimeout(() => el.classList.add('pie-visible'), i * 110))
     })
     // Callout lines draw-in
     svgEl.querySelectorAll<HTMLElement>('.callout-line').forEach((el, i) => {
-      setTimeout(() => el.classList.add('c-visible'), 320 + i * 90)
+      timers.push(setTimeout(() => el.classList.add('c-visible'), 320 + i * 90))
     })
     // Labels fade in
     svgEl.querySelectorAll<HTMLElement>('.callout-label').forEach((el, i) => {
-      setTimeout(() => el.classList.add('c-visible'), 460 + i * 70)
+      timers.push(setTimeout(() => el.classList.add('c-visible'), 460 + i * 70))
     })
+
+    return () => timers.forEach(clearTimeout)
   }, [inView, triggered])
 
   // Side walls — iba pre spodnú (viditeľnú) časť

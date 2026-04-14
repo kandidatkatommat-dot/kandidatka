@@ -282,12 +282,12 @@ export default function TestimonialsSection() {
                       </div>
 
                       <div className="flex items-center gap-1 flex-shrink-0">
-                        <button onClick={() => go(-1)} aria-label="Predchádzajúca"
-                          className="w-8 h-8 rounded-full glass flex items-center justify-center text-lg text-blue-400/50 hover:text-teal-400 transition-colors">
+                        <button onClick={() => go(-1)} aria-label="Predchádzajúce vyjadrenie"
+                          className="w-10 h-10 rounded-full glass flex items-center justify-center text-lg text-blue-400/50 hover:text-teal-400 transition-colors">
                           ‹
                         </button>
-                        <button onClick={() => go(1)} aria-label="Ďalšia"
-                          className="w-8 h-8 rounded-full glass flex items-center justify-center text-lg text-blue-400/50 hover:text-teal-400 transition-colors">
+                        <button onClick={() => go(1)} aria-label="Ďalšie vyjadrenie"
+                          className="w-10 h-10 rounded-full glass flex items-center justify-center text-lg text-blue-400/50 hover:text-teal-400 transition-colors">
                           ›
                         </button>
                       </div>

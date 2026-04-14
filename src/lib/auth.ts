@@ -8,7 +8,9 @@ function verifyPassword(plain: string, stored: string): boolean {
     return bcrypt.compareSync(plain, stored)
   }
   // Plain-text fallback (warn once during migration period)
-  console.warn('[auth] Plain-text password in use — please migrate ADMIN_PASSWORD to a bcrypt hash')
+  if (process.env.NODE_ENV !== 'production') {
+    console.warn('[auth] Plain-text password in use — please migrate ADMIN_PASSWORD to a bcrypt hash')
+  }
   return plain === stored
 }
 

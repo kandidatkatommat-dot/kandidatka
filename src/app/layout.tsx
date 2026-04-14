@@ -44,7 +44,7 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="cs"
+      lang="sk"
       className={`${geistSans.variable} ${geistMono.variable} dark cursor-none md:cursor-none`}
     >
       <head>

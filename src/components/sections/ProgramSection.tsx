@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { DocumentEye, CoinStack, ChatBubbleHeart, Scales, ScreenCode, PeopleTalk } from '@/components/shared/Icons'
 import AnimatedSection from '@/components/shared/AnimatedSection'
@@ -80,6 +80,14 @@ const accentMap = {
 
 export default function ProgramSection() {
   const [selectedItem, setSelectedItem] = useState<PromiseItem | null>(null)
+  const closeButtonRef = useRef<HTMLButtonElement>(null)
+
+  // Move focus to close button when modal opens
+  useEffect(() => {
+    if (selectedItem) {
+      requestAnimationFrame(() => closeButtonRef.current?.focus())
+    }
+  }, [selectedItem])
 
   return (
     <section id="program" className="relative py-28 sm:py-36" style={{ background: 'linear-gradient(180deg, #020810 0%, #04101f 100%)' }}>
@@ -188,7 +196,9 @@ export default function ProgramSection() {
               onClick={e => e.stopPropagation()}
             >
               <button
+                ref={closeButtonRef}
                 onClick={() => setSelectedItem(null)}
+                aria-label="Zavrieť"
                 className="absolute top-4 right-4 text-blue-400/40 hover:text-white transition-colors text-lg leading-none"
               >
                 ✕

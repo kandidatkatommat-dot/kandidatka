@@ -68,22 +68,25 @@ export default function PollSection() {
   async function handleVote() {
     if (!poll || !selectedId || submitting) return
     setSubmitting(true)
-
-    const res = await fetch('/api/polls/vote', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ poll_id: poll.id, option_id: selectedId }),
-    })
-
-    if (res.ok || res.status === 409) {
-      setLocalCounts((prev) => ({
-        ...prev,
-        [selectedId]: (prev[selectedId] ?? 0) + (res.ok ? 1 : 0),
-      }))
-      setVoted(true)
-      localStorage.setItem('poll_voted', '1')
+    try {
+      const res = await fetch('/api/polls/vote', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ poll_id: poll.id, option_id: selectedId }),
+      })
+      if (res.ok || res.status === 409) {
+        setLocalCounts((prev) => ({
+          ...prev,
+          [selectedId]: (prev[selectedId] ?? 0) + (res.ok ? 1 : 0),
+        }))
+        setVoted(true)
+        localStorage.setItem('poll_voted', '1')
+      }
+    } catch {
+      // network error — silently ignore, user can retry
+    } finally {
+      setSubmitting(false)
     }
-    setSubmitting(false)
   }
 
   if (loading) {

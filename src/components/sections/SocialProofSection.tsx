@@ -81,7 +81,7 @@ export default function SocialProofSection() {
           transition={{ duration: 40, ease: 'linear', repeat: Infinity }}
           style={{ width: 'max-content', willChange: 'transform' }}
         >
-          {doubled.map((c, i) => <Card key={i} {...c} />)}
+          {doubled.map((c, i) => <Card key={`${i}-${c.name}`} {...c} />)}
         </motion.div>
       </div>
     </section>

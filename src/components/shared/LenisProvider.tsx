@@ -12,7 +12,11 @@ export default function LenisProvider({ children }: { children: React.ReactNode 
   const tickerFnRef = useRef<((time: number) => void) | null>(null)
 
   useEffect(() => {
-    const lenis = new Lenis({ lerp: 0.08, smoothWheel: true })
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const lenis = new Lenis({
+      lerp: prefersReduced ? 1 : 0.08,
+      smoothWheel: !prefersReduced,
+    })
     lenisRef.current = lenis
 
     const tickerFn = (time: number) => lenis.raf(time * 1000)
