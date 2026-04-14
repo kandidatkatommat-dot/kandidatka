@@ -55,6 +55,10 @@ export default function RootLayout({
           type="font/woff2"
           crossOrigin="anonymous"
         />
+        {/* Runs synchronously before first paint — adds 'no-backdrop' class on
+            Chrome so CSS can disable backdrop-filter without a visible flash.
+            Chrome's backdrop-filter is ~4× slower than Safari on macOS Retina. */}
+        <script dangerouslySetInnerHTML={{ __html: `(function(){var ua=navigator.userAgent;var isChrome=/Chrome\\//.test(ua)&&!/Chromium\\//.test(ua)&&!/Edg\\//.test(ua)&&navigator.vendor==='Google Inc.';if(isChrome)document.documentElement.classList.add('no-backdrop');})();` }} />
       </head>
       <body className="min-h-full flex flex-col antialiased">
         <CustomCursor />
