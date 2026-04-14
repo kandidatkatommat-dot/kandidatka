@@ -13,6 +13,11 @@ export default function LenisProvider({ children }: { children: React.ReactNode 
 
   useEffect(() => {
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const isTouch = window.matchMedia('(pointer: coarse)').matches
+
+    // On touch devices native momentum scroll is better — skip Lenis entirely
+    if (isTouch) return
+
     const lenis = new Lenis({
       lerp: prefersReduced ? 1 : 0.08,
       smoothWheel: !prefersReduced,

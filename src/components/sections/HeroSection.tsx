@@ -132,9 +132,14 @@ const item = {
 export default function HeroSection() {
   const { d, h, m, s, mounted } = useCountdown()
   const sectionRef = useRef<HTMLElement>(null)
+  const [isTouch, setIsTouch] = useState(false)
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end start'] })
   const y = useTransform(scrollYProgress, [0, 1], ['0%', '30%'])
   const opacity = useTransform(scrollYProgress, [0, 0.6], [1, 0])
+
+  useEffect(() => {
+    setIsTouch(window.matchMedia('(pointer: coarse)').matches)
+  }, [])
 
   const particles = useMemo<Particle[]>(
     () =>
@@ -159,7 +164,7 @@ export default function HeroSection() {
   return (
     <section ref={sectionRef} className="aurora-bg relative min-h-screen flex flex-col items-center justify-center overflow-hidden">
       <AuroraMesh />
-      <FloatingParticles particles={particles} />
+      {!isTouch && <FloatingParticles particles={particles} />}
 
       <motion.div
         style={{ y, opacity }}

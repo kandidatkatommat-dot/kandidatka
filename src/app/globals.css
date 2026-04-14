@@ -171,10 +171,8 @@
     border-radius: 4px;
   }
   /* Prevent aurora orbs and decorative absolutes from causing horizontal scroll */
-  /* contain: layout style isolates repaints per-section — big GPU win on macOS */
   section {
     overflow-x: hidden;
-    contain: layout style;
   }
   body { @apply bg-background text-foreground; }
   body::after {
@@ -425,6 +423,31 @@
 .aurora-bg::before,
 .aurora-bg::after {
   will-change: transform;
+}
+
+/* ─── TOUCH / MOBILE: remove backdrop-filter ───────────────────
+   backdrop-filter: blur() is the #1 GPU killer on mobile.
+   Replace with solid opaque backgrounds on coarse-pointer devices. */
+@media (pointer: coarse) {
+  .glass {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: rgba(8, 20, 48, 0.97);
+  }
+  .glass-sm {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: rgba(4, 12, 28, 0.99);
+  }
+  .aurora-orb {
+    animation: none;
+    opacity: 0;
+  }
+  .aurora-bg::before,
+  .aurora-bg::after {
+    animation: none;
+    opacity: 0;
+  }
 }
 
 /* ─── REDUCED MOTION ────────────────────────── */

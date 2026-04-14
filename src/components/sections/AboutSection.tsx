@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion'
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
-import { ExternalLink, FlyIcon, DiscordIcon } from '@/components/shared/Icons'
+import { ExternalLink, DiscordIcon } from '@/components/shared/Icons'
 import AnimatedSection from '@/components/shared/AnimatedSection'
 import type { Candidate } from '@/types'
 
@@ -73,11 +73,6 @@ function CandidateCard({ c, direction, accentIdx }: { c: Candidate; direction: '
           <div>
             <h3 className="text-xl font-bold text-white flex items-center gap-2 flex-wrap">
               {c.name}
-              {c.id === 'MUC0075' && (
-                <span title="Mucha 🪰" className="text-blue-400/40 hover:text-blue-300/70 transition-colors cursor-default">
-                  <FlyIcon size={14} className="inline" />
-                </span>
-              )}
               {discordNick && (
                 <>
                   <span className="text-[#5865F2]/25 font-light select-none">·</span>

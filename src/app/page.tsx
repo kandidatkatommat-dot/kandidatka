@@ -1,17 +1,22 @@
+import dynamic from 'next/dynamic'
 import Navbar from '@/components/shared/Navbar'
-import Footer from '@/components/shared/Footer'
 import HeroSection from '@/components/sections/HeroSection'
 import AboutSection from '@/components/sections/AboutSection'
-import ProgramSection from '@/components/sections/ProgramSection'
-import TestimonialsSection from '@/components/sections/TestimonialsSection'
-import SocialProofSection from '@/components/sections/SocialProofSection'
-import PollSection from '@/components/sections/PollSection'
-import SuggestionsSection from '@/components/sections/SuggestionsSection'
-import FaqSection from '@/components/sections/FaqSection'
-import VoteSection from '@/components/sections/VoteSection'
-import SocialSection from '@/components/sections/SocialSection'
-import InsightsSection from '@/components/sections/InsightsSection'
 import { ErrorBoundary } from '@/components/shared/ErrorBoundary'
+
+/* ── Lazy-load all below-fold sections ────────────────────────────
+   JS chunks load only when the browser needs them — dramatically
+   reduces initial parse/execute time on all devices.              */
+const ProgramSection    = dynamic(() => import('@/components/sections/ProgramSection'))
+const InsightsSection   = dynamic(() => import('@/components/sections/InsightsSection'))
+const TestimonialsSection = dynamic(() => import('@/components/sections/TestimonialsSection'))
+const SocialProofSection  = dynamic(() => import('@/components/sections/SocialProofSection'))
+const PollSection       = dynamic(() => import('@/components/sections/PollSection'))
+const SuggestionsSection = dynamic(() => import('@/components/sections/SuggestionsSection'))
+const FaqSection        = dynamic(() => import('@/components/sections/FaqSection'))
+const VoteSection       = dynamic(() => import('@/components/sections/VoteSection'))
+const SocialSection     = dynamic(() => import('@/components/sections/SocialSection'))
+const Footer            = dynamic(() => import('@/components/shared/Footer'))
 
 export default function Home() {
   return (
