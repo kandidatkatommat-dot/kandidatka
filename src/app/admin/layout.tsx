@@ -1,4 +1,7 @@
 import type { Metadata } from 'next'
+import { redirect } from 'next/navigation'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/lib/auth'
 import AdminNav from './AdminNav'
 
 export const metadata: Metadata = {
@@ -6,7 +9,12 @@ export const metadata: Metadata = {
   robots: 'noindex, nofollow',
 }
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
+export default async function AdminLayout({ children }: { children: React.ReactNode }) {
+  const session = await getServerSession(authOptions)
+  if (!session) {
+    redirect('/admin/login')
+  }
+
   return (
     <div className="min-h-screen" style={{ background: '#020810' }}>
       <AdminNav />

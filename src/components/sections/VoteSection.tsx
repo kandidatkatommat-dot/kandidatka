@@ -72,12 +72,19 @@ export default function VoteSection() {
                 Použi ho — za ľudí, ktorí budú počúvať.
               </p>
               <div className="flex flex-col sm:flex-row gap-3">
-                <Button
-                  size="lg"
-                  className="bg-gradient-to-br from-[#4f46e5] to-[#6d28d9] hover:from-[#6366f1] hover:to-[#7c3aed] text-white border-0 shadow-xl shadow-[#6d28d9]/30 px-8 py-6 text-base font-bold transition-all duration-200 hover:scale-[1.03]"
+                <motion.div
+                  whileHover={{ x: [0, -7, 7, -7, 7, -4, 4, 0] }}
+                  transition={{ duration: 0.55, ease: 'easeInOut' }}
                 >
-                  Mucha & Buček — zavolíme!
-                </Button>
+                  <a href="https://www.vsb.cz/volby-as" target="_blank" rel="noopener noreferrer">
+                    <Button
+                      size="lg"
+                      className="bg-gradient-to-br from-[#4f46e5] to-[#6d28d9] hover:from-[#6366f1] hover:to-[#7c3aed] text-white border-0 shadow-xl shadow-[#6d28d9]/30 px-8 py-6 text-base font-bold transition-all duration-200 hover:scale-[1.03]"
+                    >
+                      Mucha & Buček — zavolíme!
+                    </Button>
+                  </a>
+                </motion.div>
               </div>
               <p className="text-xs text-blue-400/35">
                 MUC0075 · BUC0130 · FEI VŠB-TUO

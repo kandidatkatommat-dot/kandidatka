@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { DocumentEye, CoinStack, ChatBubbleHeart, Scales, ScreenCode, PeopleTalk } from '@/components/shared/Icons'
 import AnimatedSection from '@/components/shared/AnimatedSection'
+import PromiseCube3D from '@/components/sections/PromiseCube3D'
 
 const promises = [
   {
@@ -99,6 +100,16 @@ export default function ProgramSection() {
             Len reálne záväzky v rámci právomocí akademického senátu.{' '}
             <span className="text-[#818cf8]/80 font-medium">Žiadne prázdne sľuby.</span>
           </p>
+        </AnimatedSection>
+
+        {/* 3D Promise Cube */}
+        <AnimatedSection className="mb-14">
+          <div className="glass rounded-3xl p-6 sm:p-10">
+            <p className="text-xs font-semibold text-blue-400/50 uppercase tracking-[0.2em] text-center mb-8">
+              4 piliere nášho programu — interaktívna kocka
+            </p>
+            <PromiseCube3D />
+          </div>
         </AnimatedSection>
 
         {/* Bento Grid */}

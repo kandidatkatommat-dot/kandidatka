@@ -16,13 +16,13 @@ export default function Footer() {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-8 text-sm">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 text-sm">
             <div className="space-y-3">
               <h4 className="text-xs font-semibold text-blue-400/70 uppercase tracking-[0.15em]">Termíny</h4>
               <ul className="space-y-2 text-blue-200/45">
-                <li>📋 Nominácie: 7.–21. 4. 2026</li>
-                <li>🗳️ Hlasovanie: 12.–15. 5. 2026</li>
-                <li>🎓 Funkčné obdobie: 2026–2029</li>
+                <li>Nominácie: 7.–21. 4. 2026</li>
+                <li>Hlasovanie: 12.–15. 5. 2026</li>
+                <li>Funkčné obdobie: 2026–2029</li>
               </ul>
             </div>
             <div className="space-y-3">
@@ -44,6 +44,27 @@ export default function Footer() {
                     </a>
                   </li>
                 ))}
+              </ul>
+            </div>
+            <div className="space-y-3">
+              <h4 className="text-xs font-semibold text-blue-400/70 uppercase tracking-[0.15em]">Kontakt</h4>
+              <ul className="space-y-2">
+                <li>
+                  <a href="mailto:tomas.mucha.st@vsb.cz" className="text-blue-200/40 hover:text-blue-300 transition-colors break-all">
+                    tomas.mucha.st@vsb.cz
+                  </a>
+                </li>
+                <li>
+                  <a href="mailto:martin.bucek.st@vsb.cz" className="text-blue-200/40 hover:text-blue-300 transition-colors break-all">
+                    martin.bucek.st@vsb.cz
+                  </a>
+                </li>
+                <li className="pt-1">
+                  <span className="text-[10px] text-blue-400/35 uppercase tracking-wider block mb-0.5">spoločný kontakt</span>
+                  <a href="mailto:kandidatkatommat@gmail.com" className="text-blue-200/40 hover:text-blue-300 transition-colors break-all">
+                    kandidatkatommat@gmail.com
+                  </a>
+                </li>
               </ul>
             </div>
           </div>

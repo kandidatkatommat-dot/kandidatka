@@ -330,17 +330,6 @@ export default function TestimonialsSection() {
           </div>
         </AnimatedSection>
 
-        {/* CTA strip */}
-        <AnimatedSection delay={0.2} className="mt-10 text-center">
-          <div className="glass glow-ring-orange rounded-2xl p-6 max-w-lg mx-auto inline-block">
-            <p className="text-sm text-blue-200/70 mb-3">
-              Aj ty chceš vyjadriť podporu alebo podeliť sa s názorom?
-            </p>
-            <a href="#podnety" className="text-[#818cf8] hover:text-[#a5b4fc] font-semibold text-sm transition-colors">
-              Pošli nám podnet →
-            </a>
-          </div>
-        </AnimatedSection>
       </div>
     </section>
   )
