@@ -173,7 +173,7 @@ export default function HeroSection() {
 
       <motion.div
         style={{ y, opacity }}
-        className="relative z-10 text-center px-4 sm:px-6 max-w-5xl mx-auto w-full"
+        className="relative z-10 text-center px-4 sm:px-6 max-w-5xl mx-auto w-full pt-20 pb-8"
       >
         <motion.div variants={container} initial="hidden" animate="visible">
           {/* Badge */}
@@ -187,7 +187,7 @@ export default function HeroSection() {
           {/* Headline */}
           <motion.div variants={item} className="mb-6">
             <h1
-              className="text-[clamp(3.5rem,12vw,9rem)] font-black leading-[0.88] tracking-[-0.03em]"
+              className="text-[clamp(2.8rem,min(12vw,10svh),9rem)] font-black leading-[0.88] tracking-[-0.03em]"
               style={{ fontFamily: 'var(--font-cal, inherit)' }}
             >
               <span className="gradient-text block">Volíme</span>
