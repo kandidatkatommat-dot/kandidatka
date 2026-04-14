@@ -20,7 +20,7 @@ function TestimonialCard({ quote, name, year, dept }: (typeof testimonials)[0]) 
       <div className="flex items-center gap-3 mt-auto">
         <div
           className="w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold text-white flex-shrink-0"
-          style={{ background: 'linear-gradient(135deg, #3b82f6, #f97316)' }}
+          style={{ background: 'linear-gradient(135deg, #3b82f6, #e8634a)' }}
         >
           {name[0]}
         </div>
@@ -46,7 +46,7 @@ export default function SocialProofSection() {
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 mb-12">
         <AnimatedSection className="text-center">
-          <span className="inline-block text-xs font-semibold text-orange-400 uppercase tracking-[0.2em] mb-3">
+          <span className="inline-block text-xs font-semibold text-[#f07560] uppercase tracking-[0.2em] mb-3">
             Čo hovoria študenti
           </span>
           <h2 className="text-3xl sm:text-4xl font-black text-white">Študenti za nami stoja</h2>

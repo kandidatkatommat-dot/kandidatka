@@ -17,7 +17,7 @@ const testimonials = [
     name: 'Barbora K.',
     info: '2. ročník, Kybernetika',
     initial: 'BK',
-    color: 'from-orange-500 to-orange-700',
+    color: 'from-[#e8634a] to-[#a8306a]',
   },
   {
     quote: 'Transparentné správy zo senátu? To by bola revolúcia. Doteraz nikto ani netušil, čo sa tam vlastne rozhoduje.',
@@ -45,7 +45,7 @@ const testimonials = [
     name: 'Radka S.',
     info: '3. ročník, Počítačové siete',
     initial: 'RS',
-    color: 'from-orange-400 to-pink-600',
+    color: 'from-[#e8634a] to-[#db2777]',
   },
 ]
 
@@ -110,7 +110,7 @@ export default function TestimonialsSection() {
             <p className="text-sm text-blue-200/70 mb-3">
               Aj ty chceš vyjadriť podporu alebo podeliť sa s názorom?
             </p>
-            <a href="#podnety" className="text-orange-400 hover:text-orange-300 font-semibold text-sm transition-colors">
+            <a href="#podnety" className="text-[#f07560] hover:text-[#f09070] font-semibold text-sm transition-colors">
               Pošli nám podnet →
             </a>
           </div>

@@ -9,7 +9,7 @@ const categoryColors: Record<SuggestionCategory, string> = {
   Výuka: 'bg-blue-500/15 text-blue-300 border-blue-500/25',
   Digitalizace: 'bg-purple-500/15 text-purple-300 border-purple-500/25',
   Kampus: 'bg-green-500/15 text-green-300 border-green-500/25',
-  Zkoušky: 'bg-orange-500/15 text-orange-300 border-orange-500/25',
+  Zkoušky: 'bg-[#e8634a]/15 text-[#f09070] border-[#e8634a]/25',
   Jiné: 'bg-slate-500/15 text-slate-300 border-slate-500/25',
 }
 
@@ -57,8 +57,8 @@ export default function SuggestionCard({ suggestion }: { suggestion: Suggestion 
           disabled={hasVoted || loading}
           className={`ml-auto flex items-center gap-1.5 text-xs font-semibold transition-all duration-200 ${
             hasVoted
-              ? 'text-orange-400 cursor-default'
-              : 'text-blue-400/50 hover:text-orange-400 hover:scale-110'
+              ? 'text-[#f07560] cursor-default'
+              : 'text-blue-400/50 hover:text-[#f07560] hover:scale-110'
           }`}
         >
           <motion.span animate={hasVoted ? { scale: [1, 1.4, 1] } : {}} transition={{ duration: 0.3 }}>

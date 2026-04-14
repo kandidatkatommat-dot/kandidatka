@@ -61,7 +61,7 @@ export default function VoteSection() {
         <AnimatedSection className="text-center">
           <div className="relative inline-block">
             {/* Glow behind button */}
-            <div className="absolute inset-0 blur-3xl bg-orange-500/20 scale-150 pointer-events-none" />
+            <div className="absolute inset-0 blur-3xl bg-[#e8634a]/15 scale-150 pointer-events-none" />
             <div className="relative glass glow-ring-orange rounded-3xl p-8 sm:p-12 flex flex-col items-center gap-5">
               <span className="text-5xl">🗳️</span>
               <h3 className="text-2xl sm:text-3xl font-black text-white text-center">
@@ -74,7 +74,7 @@ export default function VoteSection() {
               <div className="flex flex-col sm:flex-row gap-3">
                 <Button
                   size="lg"
-                  className="bg-orange-500 hover:bg-orange-400 text-white border-0 shadow-xl shadow-orange-500/30 px-8 py-6 text-base font-bold transition-all duration-200 hover:scale-[1.03]"
+                  className="bg-gradient-to-br from-[#e8634a] to-[#c84870] hover:from-[#f07055] hover:to-[#d45580] text-white border-0 shadow-xl shadow-[#c84870]/30 px-8 py-6 text-base font-bold transition-all duration-200 hover:scale-[1.03]"
                 >
                   Mucha & Buček — zavolíme!
                 </Button>

@@ -33,7 +33,7 @@ export default async function AdminDashboard() {
   const [stats, recent] = await Promise.all([getStats(), getRecentPending()])
 
   const statCards = [
-    { label: 'Podnety na schválenie', value: stats.pending, color: 'text-orange-400', href: '/admin/podnety' },
+    { label: 'Podnety na schválenie', value: stats.pending, color: 'text-[#f07560]', href: '/admin/podnety' },
     { label: 'Schválené podnety', value: stats.approved, color: 'text-green-400', href: '/admin/podnety' },
     { label: 'Podporovatelia', value: stats.supporters, color: 'text-blue-400', href: null },
     { label: 'Newsletter subscribers', value: stats.subscribers, color: 'text-teal-400', href: null },
@@ -66,7 +66,7 @@ export default async function AdminDashboard() {
         <div>
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-base font-bold text-white">Podnety čakajúce na schválenie</h2>
-            <Link href="/admin/podnety" className="text-xs text-orange-400 hover:text-orange-300 transition-colors">
+            <Link href="/admin/podnety" className="text-xs text-[#f07560] hover:text-[#f09070] transition-colors">
               Všetky podnety →
             </Link>
           </div>

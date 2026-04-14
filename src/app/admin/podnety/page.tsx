@@ -29,8 +29,8 @@ export default async function AdminPodnetyPage() {
 
       {pending.length > 0 && (
         <section>
-          <h2 className="text-sm font-bold text-orange-400 uppercase tracking-widest mb-4 flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-orange-400 inline-block" />
+          <h2 className="text-sm font-bold text-[#f07560] uppercase tracking-widest mb-4 flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-[#e8634a] inline-block" />
             Čakajú na schválenie ({pending.length})
           </h2>
           <PodnetyTable suggestions={pending} />

@@ -56,7 +56,7 @@ export default function Footer() {
           <span className="text-sm text-blue-200/60 whitespace-nowrap">📬 Dostávaj aktualizácie:</span>
           <form className="flex gap-2 w-full sm:w-auto" onSubmit={(e) => e.preventDefault()}>
             <input type="email" placeholder="tvoj@email.com" className="flex-1 sm:w-56 px-3 py-1.5 text-sm rounded-lg bg-white/5 border border-blue-500/20 text-white placeholder:text-blue-300/30 focus:outline-none focus:border-blue-500/50" />
-            <button type="submit" className="px-4 py-1.5 text-sm bg-orange-500 hover:bg-orange-400 text-white rounded-lg transition-colors font-medium">Prihlásiť</button>
+            <button type="submit" className="px-4 py-1.5 text-sm bg-gradient-to-br from-[#e8634a] to-[#c84870] hover:from-[#f07055] hover:to-[#d45580] text-white rounded-lg transition-all font-medium">Prihlásiť</button>
           </form>
         </div>
 

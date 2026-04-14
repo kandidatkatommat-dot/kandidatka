@@ -61,11 +61,11 @@ export default function SocialSection() {
     <section id="socialne-siete" className="relative py-28 sm:py-36" style={{ background: '#04101f' }}>
       <div className="section-divider mb-0" />
       <div className="aurora-orb w-[40vw] h-[40vw] top-[-5vw] left-[-10vw] opacity-50"
-        style={{ background: 'radial-gradient(circle, rgba(249,115,22,0.07) 0%, transparent 70%)' }} aria-hidden />
+        style={{ background: 'radial-gradient(circle, rgba(232,99,74,0.07) 0%, transparent 70%)' }} aria-hidden />
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 relative z-10 pt-28">
         <AnimatedSection className="text-center mb-14">
-          <span className="inline-block text-xs font-semibold text-orange-400 uppercase tracking-[0.2em] mb-4">
+          <span className="inline-block text-xs font-semibold text-[#f07560] uppercase tracking-[0.2em] mb-4">
             Zostaň v obraze
           </span>
           <h2 className="text-4xl sm:text-5xl font-black text-white mb-4">
@@ -79,7 +79,7 @@ export default function SocialSection() {
         {/* Newsletter signup */}
         <AnimatedSection delay={0.05}>
           <div id="newsletter" className="glass rounded-3xl p-8 mb-12 text-center">
-            <p className="text-xs font-semibold text-orange-400 uppercase tracking-[0.2em] mb-3">Newsletter</p>
+            <p className="text-xs font-semibold text-[#f07560] uppercase tracking-[0.2em] mb-3">Newsletter</p>
             <h3 className="text-2xl font-black text-white mb-2">Zostaň informovaný</h3>
             <p className="text-sm text-blue-200/50 mb-6">Dostávaj správy o dianí v senáte priamo do emailu.</p>
             {subStatus === 'success' ? (
@@ -98,7 +98,7 @@ export default function SocialSection() {
                   <button
                     type="submit"
                     disabled={subStatus === 'loading'}
-                    className="px-6 py-3 bg-orange-500 hover:bg-orange-400 text-white font-bold rounded-xl transition-colors text-sm disabled:opacity-60 whitespace-nowrap"
+                    className="px-6 py-3 bg-gradient-to-br from-[#e8634a] to-[#c84870] hover:from-[#f07055] hover:to-[#d45580] text-white font-bold rounded-xl transition-all text-sm disabled:opacity-60 whitespace-nowrap"
                   >
                     {subStatus === 'loading' ? '...' : 'Prihlásiť sa'}
                   </button>

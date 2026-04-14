@@ -7,7 +7,7 @@ import AnimatedSection from '@/components/shared/AnimatedSection'
 /* ── Segment data — FEI priorities, paleta stránky ─── */
 const segments = [
   { label: 'Digitalizácia',       sub: '28% podnetov',  value: 28, color: '#3b82f6', dark: '#1d4ed8' },
-  { label: 'Výuka & hodnotenie',  sub: '24% podnetov',  value: 24, color: '#f97316', dark: '#c2410c' },
+  { label: 'Výuka & hodnotenie',  sub: '24% podnetov',  value: 24, color: '#e8634a', dark: '#a8306a' },
   { label: 'Skúšobný poriadok',   sub: '22% podnetov',  value: 22, color: '#06b6d4', dark: '#0e7490' },
   { label: 'Kampus & priestory',  sub: '16% podnetov',  value: 16, color: '#8b5cf6', dark: '#6d28d9' },
   { label: 'Komunikácia',         sub: '10% podnetov',  value: 10, color: '#10b981', dark: '#047857' },
@@ -274,7 +274,7 @@ export default function InsightsSection() {
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {[
               { n: 847, s: '+', label: 'zozbieraných podnetov', color: 'text-blue-400' },
-              { n: 3,   s: ' roky', label: 'funkčného mandátu', color: 'text-orange-400' },
+              { n: 3,   s: ' roky', label: 'funkčného mandátu', color: 'text-[#f07560]' },
               { n: 5,   s: ' miest', label: 'pre študentov v senáte', color: 'text-teal-400' },
               { n: 100, s: '%', label: 'záväzkov je verejných', color: 'text-purple-400' },
             ].map((item, i) => (

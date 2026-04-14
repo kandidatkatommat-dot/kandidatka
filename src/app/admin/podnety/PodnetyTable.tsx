@@ -12,7 +12,7 @@ const categoryColors: Record<string, string> = {
   Výuka: 'bg-blue-500/15 text-blue-300 border-blue-500/25',
   Digitalizace: 'bg-purple-500/15 text-purple-300 border-purple-500/25',
   Kampus: 'bg-green-500/15 text-green-300 border-green-500/25',
-  Zkoušky: 'bg-orange-500/15 text-orange-300 border-orange-500/25',
+  Zkoušky: 'bg-[#e8634a]/15 text-[#f09070] border-[#e8634a]/25',
   Jiné: 'bg-slate-500/15 text-slate-300 border-slate-500/25',
 }
 
@@ -76,7 +76,7 @@ function SuggestionRow({ s, onAction }: { s: Suggestion; onAction: (id: string, 
       </div>
       <p className="text-sm text-blue-100/75 leading-relaxed">{s.suggestion}</p>
       {(s.vote_count ?? 0) > 0 && (
-        <p className="text-xs text-orange-400/60">♥ {s.vote_count} hlasov</p>
+        <p className="text-xs text-[#f07560]/60">♥ {s.vote_count} hlasov</p>
       )}
     </div>
   )
