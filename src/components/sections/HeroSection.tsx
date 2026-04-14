@@ -46,7 +46,7 @@ function CountUnit({ value, label }: { value: number; label: string }) {
 }
 
 /* ── Aurora Mesh background ─────────────────────────────────── */
-const AuroraMesh = memo(function AuroraMesh() {
+const AuroraMesh = memo(function AuroraMesh({ noFilter }: { noFilter: boolean }) {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden>
       {/* Primary orb */}
@@ -54,7 +54,7 @@ const AuroraMesh = memo(function AuroraMesh() {
         className="absolute top-[-20%] left-[10%] w-[70vw] h-[70vw] rounded-full"
         style={{
           background: 'radial-gradient(circle at 40% 40%, rgba(59,130,246,0.12) 0%, rgba(6,182,212,0.06) 40%, transparent 70%)',
-          filter: 'blur(20px)',
+          filter: noFilter ? 'none' : 'blur(20px)',
           animation: 'aurora 14s ease-in-out infinite',
         }}
       />
@@ -63,7 +63,7 @@ const AuroraMesh = memo(function AuroraMesh() {
         className="absolute bottom-[-10%] right-[-5%] w-[50vw] h-[50vw] rounded-full"
         style={{
           background: 'radial-gradient(circle, rgba(249,115,22,0.08) 0%, rgba(59,130,246,0.05) 50%, transparent 70%)',
-          filter: 'blur(30px)',
+          filter: noFilter ? 'none' : 'blur(30px)',
           animation: 'aurora 18s ease-in-out infinite reverse',
           animationDelay: '-7s',
         }}
@@ -133,12 +133,16 @@ export default function HeroSection() {
   const { d, h, m, s, mounted } = useCountdown()
   const sectionRef = useRef<HTMLElement>(null)
   const [isTouch, setIsTouch] = useState(false)
+  const [isChrome, setIsChrome] = useState(false)
+
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end start'] })
-  const y = useTransform(scrollYProgress, [0, 1], ['0%', '30%'])
-  const opacity = useTransform(scrollYProgress, [0, 0.6], [1, 0])
+  // On Chrome, keep transforms static — eliminates JS scroll callbacks every pixel
+  const y = useTransform(scrollYProgress, [0, 1], ['0%', isChrome ? '0%' : '30%'])
+  const opacity = useTransform(scrollYProgress, [0, 0.6], [1, isChrome ? 1 : 0])
 
   useEffect(() => {
     setIsTouch(window.matchMedia('(pointer: coarse)').matches)
+    setIsChrome(document.documentElement.classList.contains('no-backdrop'))
   }, [])
 
   const particles = useMemo<Particle[]>(
@@ -163,8 +167,8 @@ export default function HeroSection() {
 
   return (
     <section ref={sectionRef} className="aurora-bg relative min-h-screen flex flex-col items-center justify-center overflow-hidden">
-      <AuroraMesh />
-      {!isTouch && <FloatingParticles particles={particles} />}
+      <AuroraMesh noFilter={isChrome} />
+      {!isTouch && !isChrome && <FloatingParticles particles={particles} />}
 
       <motion.div
         style={{ y, opacity }}
