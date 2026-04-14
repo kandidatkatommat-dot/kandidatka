@@ -1,5 +1,16 @@
 import type { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
+import bcrypt from 'bcryptjs'
+
+function verifyPassword(plain: string, stored: string): boolean {
+  // If the stored value looks like a bcrypt hash, use bcrypt.compareSync
+  if (stored.startsWith('$2')) {
+    return bcrypt.compareSync(plain, stored)
+  }
+  // Plain-text fallback (warn once during migration period)
+  console.warn('[auth] Plain-text password in use — please migrate ADMIN_PASSWORD to a bcrypt hash')
+  return plain === stored
+}
 
 export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
@@ -17,7 +28,7 @@ export const authOptions: NextAuthOptions = {
           { password: process.env.ADMIN_2_PASSWORD, email: process.env.ADMIN_2_EMAIL, name: 'Martin' },
         ]
         const match = admins.find(
-          (a) => a.password && credentials?.password === a.password
+          (a) => a.password && credentials?.password && verifyPassword(credentials.password, a.password)
         )
         if (!match) return null
         return { id: match.email ?? 'admin', name: match.name, email: match.email ?? 'admin' }

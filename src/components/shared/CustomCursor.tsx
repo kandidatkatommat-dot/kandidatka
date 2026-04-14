@@ -23,13 +23,21 @@ export default function CustomCursor() {
     const grow = () => outer.classList.add('cursor-grow')
     const shrink = () => outer.classList.remove('cursor-grow')
 
+    const cleanups: (() => void)[] = []
+
     document.addEventListener('mousemove', move)
+    cleanups.push(() => document.removeEventListener('mousemove', move))
+
     document.querySelectorAll('a,button,[data-cursor]').forEach(el => {
       el.addEventListener('mouseenter', grow)
       el.addEventListener('mouseleave', shrink)
+      cleanups.push(() => {
+        el.removeEventListener('mouseenter', grow)
+        el.removeEventListener('mouseleave', shrink)
+      })
     })
 
-    return () => document.removeEventListener('mousemove', move)
+    return () => cleanups.forEach(fn => fn())
   }, [])
 
   return (

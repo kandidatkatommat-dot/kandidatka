@@ -11,6 +11,7 @@ import FaqSection from '@/components/sections/FaqSection'
 import VoteSection from '@/components/sections/VoteSection'
 import SocialSection from '@/components/sections/SocialSection'
 import InsightsSection from '@/components/sections/InsightsSection'
+import { ErrorBoundary } from '@/components/shared/ErrorBoundary'
 
 export default function Home() {
   return (
@@ -22,9 +23,15 @@ export default function Home() {
         <ProgramSection />
         <InsightsSection />
         <TestimonialsSection />
-        <SocialProofSection />
-        <PollSection />
-        <SuggestionsSection />
+        <ErrorBoundary>
+          <SocialProofSection />
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <PollSection />
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <SuggestionsSection />
+        </ErrorBoundary>
         <div id="faq">
           <FaqSection />
         </div>

@@ -1,6 +1,6 @@
 'use client'
 
-import { motion, useInView } from 'framer-motion'
+import { motion, useInView, useReducedMotion } from 'framer-motion'
 import { useRef } from 'react'
 
 interface AnimatedSectionProps {
@@ -18,6 +18,12 @@ export default function AnimatedSection({
 }: AnimatedSectionProps) {
   const ref = useRef<HTMLDivElement>(null)
   const isInView = useInView(ref, { once: true, margin: '-80px' })
+  const prefersReduced = useReducedMotion()
+
+  // Skip all animations when user prefers reduced motion
+  if (prefersReduced) {
+    return <div ref={ref} className={className}>{children}</div>
+  }
 
   const initial = {
     opacity: 0,

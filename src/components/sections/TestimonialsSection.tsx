@@ -153,7 +153,7 @@ export default function TestimonialsSection() {
               className="relative flex rounded-xl sm:rounded-2xl overflow-hidden z-10"
               style={{
                 boxShadow: '0 0 0 1px rgba(59,130,246,0.1), 0 24px 60px rgba(0,0,0,0.6)',
-                minHeight: 280,
+                minHeight: 'clamp(260px, 40vw, 360px)',
               }}
             >
 
@@ -301,16 +301,6 @@ export default function TestimonialsSection() {
                   background: 'linear-gradient(225deg, rgba(79,70,229,0.18) 50%, transparent 50%)',
                 }} />
 
-                {/* Progress bar */}
-                <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-blue-500/6">
-                  <motion.div
-                    className="h-full bg-indigo-500/50"
-                    key={`prog-${cur}`}
-                    initial={{ width: '0%' }}
-                    animate={{ width: paused ? undefined : '100%' }}
-                    transition={{ duration: INTERVAL / 1000, ease: 'linear' }}
-                  />
-                </div>
               </div>
             </div>
 

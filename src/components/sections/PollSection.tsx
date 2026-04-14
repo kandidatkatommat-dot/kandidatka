@@ -86,7 +86,24 @@ export default function PollSection() {
     setSubmitting(false)
   }
 
-  if (loading || !poll) return null
+  if (loading) {
+    return (
+      <section
+        className="relative py-20 sm:py-28"
+        style={{ background: 'linear-gradient(180deg, #060f1e 0%, #04101f 100%)' }}
+      >
+        <div className="max-w-2xl mx-auto px-4 sm:px-6 pt-20">
+          <div className="animate-pulse space-y-4">
+            <div className="h-4 w-32 rounded bg-white/5 mx-auto" />
+            <div className="h-8 w-64 rounded bg-white/5 mx-auto" />
+            <div className="h-48 rounded-3xl bg-white/5 mt-6" />
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  if (!poll) return null
 
   const options = poll.options ?? []
 
@@ -155,6 +172,8 @@ export default function PollSection() {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   className="space-y-4"
+                  aria-live="polite"
+                  aria-label="Výsledky prieskumu"
                 >
                   <p className="text-xs text-green-400/70 uppercase tracking-widest mb-5 text-center">
                     ✓ Výsledky prieskumu

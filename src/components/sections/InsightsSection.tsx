@@ -106,7 +106,7 @@ function PieChart3D() {
       <svg
         viewBox="0 0 480 290"
         width="100%"
-        style={{ maxWidth: 520, overflow: 'visible' }}
+        style={{ maxWidth: 520, overflow: 'hidden' }}
       >
         <defs>
           <filter id="pglow3d" x="-20%" y="-20%" width="140%" height="140%">

@@ -1,5 +1,6 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import AnimatedSection from '@/components/shared/AnimatedSection'
 
@@ -18,7 +19,7 @@ const cards = [
 function Card({ quote, name, year, dept, color }: (typeof cards)[0]) {
   return (
     <div
-      className="flex-shrink-0 w-[290px] sm:w-[320px] glass glass-hover rounded-2xl p-5 mx-2.5 flex flex-col gap-3"
+      className="flex-shrink-0 w-[min(290px,calc(100vw-2rem))] sm:w-[320px] glass glass-hover rounded-2xl p-5 mx-2.5 flex flex-col gap-3"
       style={{ borderColor: `${color}18` }}
     >
       <p className="text-[13px] text-blue-100/65 leading-relaxed italic">&ldquo;{quote}&rdquo;</p>
@@ -43,6 +44,13 @@ function Card({ quote, name, year, dept, color }: (typeof cards)[0]) {
 
 export default function SocialProofSection() {
   const doubled = [...cards, ...cards]
+  const [paused, setPaused] = useState(false)
+
+  useEffect(() => {
+    const onVisibility = () => setPaused(document.hidden)
+    document.addEventListener('visibilitychange', onVisibility)
+    return () => document.removeEventListener('visibilitychange', onVisibility)
+  }, [])
 
   return (
     <section
@@ -69,9 +77,9 @@ export default function SocialProofSection() {
 
         <motion.div
           className="flex"
-          animate={{ x: ['0%', '-50%'] }}
+          animate={paused ? {} : { x: ['0%', '-50%'] }}
           transition={{ duration: 40, ease: 'linear', repeat: Infinity }}
-          style={{ width: 'max-content' }}
+          style={{ width: 'max-content', willChange: 'transform' }}
         >
           {doubled.map((c, i) => <Card key={i} {...c} />)}
         </motion.div>

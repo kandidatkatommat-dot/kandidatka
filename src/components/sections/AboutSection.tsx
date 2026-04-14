@@ -23,9 +23,9 @@ const candidates: Candidate[] = [
     name: 'Martin Buček',
     role: 'Kandidát do AS FEI',
     department: 'FEI VŠB-TUO',
-    bio: 'Dobrá komunikácia medzi vedením a študentmi je základ kvalitného štúdia. Chcem byť tým spojovacím článkom, ktorý prináša konkrétne výsledky.',
+    bio: 'Studuji na FEI a věřím, že dobrá komunikace mezi vedením a studenty je základ kvalitního studia. Chci být tím spojovacím článkem, který přináší konkrétní výsledky.',
     whyRunning:
-      'Senát schvaľuje rozpočet, pravidlá, volí dekana. To je presne miesto, kde môžeme systematicky meniť veci k lepšiemu — nie len sľubovať.',
+      'Senát schvaluje rozpočet, pravidla, volí děkana. To je přesně místo, kde můžeme systematicky měnit věci k lepšímu — ne jen slibovat.',
     photoUrl: '/photos/martin-bucek.jpg',
   },
 ]
@@ -98,7 +98,7 @@ function CandidateCard({ c, direction, accentIdx }: { c: Candidate; direction: '
                 <span className="text-[#5865F2]/60">
                   <DiscordIcon size={12} />
                 </span>
-                <span className="text-xs font-mono text-[#5865F2]/60">{discordNick}</span>
+                <span className="text-xs font-mono text-[#5865F2]/60 truncate">{discordNick}</span>
               </div>
             )}
             {c.linkedIn && (

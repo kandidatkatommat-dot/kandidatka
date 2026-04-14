@@ -104,7 +104,7 @@ export default function ProgramSection() {
 
         {/* 3D Promise Cube */}
         <AnimatedSection className="mb-14">
-          <div className="glass rounded-3xl p-6 sm:p-10">
+          <div className="glass rounded-3xl p-6 sm:p-10 overflow-hidden">
             <p className="text-xs font-semibold text-blue-400/50 uppercase tracking-[0.2em] text-center mb-8">
               4 piliere nášho programu — interaktívna kocka
             </p>
@@ -180,7 +180,7 @@ export default function ProgramSection() {
           >
             <div className="absolute inset-0 bg-black/60 backdrop-blur-md" />
             <motion.div
-              className="relative max-w-md w-full glass rounded-3xl p-8 border border-blue-500/20"
+              className="relative max-w-md w-full glass rounded-3xl p-5 sm:p-8 border border-blue-500/20"
               initial={{ scale: 0.95, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.95, opacity: 0, y: 20 }}

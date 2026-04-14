@@ -4,7 +4,7 @@
 
 @font-face {
   font-family: 'Cal Sans';
-  src: url('https://cdn.jsdelivr.net/npm/cal-sans@1.0.1/fonts/CalSans-SemiBold.woff2') format('woff2');
+  src: url('/fonts/CalSans-SemiBold.woff2') format('woff2');
   font-weight: 600;
   font-style: normal;
   font-display: swap;
@@ -163,7 +163,17 @@
 
 /* ─── BASE ───────────────────────────────── */
 @layer base {
-  * { @apply border-border outline-ring/50; }
+  * { @apply border-border; outline: none; }
+  /* Visible keyboard focus ring — only when navigating by keyboard, not mouse */
+  *:focus-visible {
+    outline: 2px solid rgba(129, 140, 248, 0.8);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  /* Prevent aurora orbs and decorative absolutes from causing horizontal scroll */
+  section {
+    overflow-x: hidden;
+  }
   body { @apply bg-background text-foreground; }
   body::after {
     content: '';
@@ -404,3 +414,29 @@
 /* ─── SCROLLBAR NONE ───────────────────────── */
 .scrollbar-none { scrollbar-width: none; }
 .scrollbar-none::-webkit-scrollbar { display: none; }
+
+/* ─── GPU HINTS ─────────────────────────────── */
+.aurora-orb {
+  will-change: transform;
+}
+.aurora-bg::before,
+.aurora-bg::after {
+  will-change: transform;
+}
+
+/* ─── REDUCED MOTION ────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .aurora-orb,
+  .aurora-bg::before,
+  .aurora-bg::after {
+    animation: none !important;
+  }
+}
