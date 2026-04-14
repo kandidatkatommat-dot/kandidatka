@@ -1,11 +1,15 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, memo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import AnimatedSection from '@/components/shared/AnimatedSection'
 import type { Poll, PollOption } from '@/types/index'
 
-function PollBar({ option, total, isWinner }: { option: PollOption; total: number; isWinner: boolean }) {
+/* Module-level animation variants */
+const votingVariants = { initial: { opacity: 0 }, animate: { opacity: 1 }, exit: { opacity: 0 } }
+const resultsVariants = { initial: { opacity: 0, y: 10 }, animate: { opacity: 1, y: 0 } }
+
+const PollBar = memo(function PollBar({ option, total, isWinner }: { option: PollOption; total: number; isWinner: boolean }) {
   const pct = total > 0 ? Math.round((option.vote_count / total) * 100) : 0
   return (
     <div className="flex items-center gap-3">
@@ -30,7 +34,7 @@ function PollBar({ option, total, isWinner }: { option: PollOption; total: numbe
       </div>
     </div>
   )
-}
+})
 
 export default function PollSection() {
   const [poll, setPoll] = useState<Poll | null>(null)
@@ -136,9 +140,7 @@ export default function PollSection() {
               {!voted ? (
                 <motion.div
                   key="voting"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
+                  {...votingVariants}
                   className="space-y-3"
                 >
                   {options.map((option) => (
@@ -172,8 +174,7 @@ export default function PollSection() {
               ) : (
                 <motion.div
                   key="results"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
+                  {...resultsVariants}
                   className="space-y-4"
                   aria-live="polite"
                   aria-label="Výsledky prieskumu"

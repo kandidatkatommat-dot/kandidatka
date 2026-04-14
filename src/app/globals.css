@@ -484,6 +484,14 @@ html.no-backdrop .cursor-outer {
   mix-blend-mode: normal;
   border-color: rgba(59, 130, 246, 0.6);
 }
+/* Decorative filter blurs (glow orbs behind buttons/icons) */
+html.no-backdrop .blur-2xl,
+html.no-backdrop .blur-3xl { filter: none; }
+/* Any backdrop-blur Tailwind class not already covered by .glass rules */
+html.no-backdrop [class*="backdrop-blur-"] {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
 
 /* ─── REDUCED MOTION ────────────────────────── */
 @media (prefers-reduced-motion: reduce) {

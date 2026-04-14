@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, memo } from 'react'
 import { motion, useInView, animate } from 'framer-motion'
 import AnimatedSection from '@/components/shared/AnimatedSection'
 
@@ -15,8 +15,18 @@ const segments = [
 
 const total = segments.reduce((s, d) => s + d.value, 0)
 
+/* ── Module-level animation constants — not recreated on every render ── */
+const legendItemVariants = {
+  hidden: { opacity: 0, y: 8 },
+  visible: (i: number) => ({ opacity: 1, y: 0, transition: { delay: 0.5 + i * 0.1, duration: 0.4 } }),
+}
+const statCardVariants = {
+  hidden: { opacity: 0, scale: 0.88 },
+  visible: (i: number) => ({ opacity: 1, scale: 1, transition: { duration: 0.45, delay: i * 0.1 } }),
+}
+
 /* ── Animated counter ───────────────────────────────── */
-function Counter({ to, suffix = '' }: { to: number; suffix?: string }) {
+const Counter = memo(function Counter({ to, suffix = '' }: { to: number; suffix?: string }) {
   const ref = useRef<HTMLSpanElement>(null)
   const inView = useInView(ref, { once: true })
   useEffect(() => {
@@ -29,7 +39,7 @@ function Counter({ to, suffix = '' }: { to: number; suffix?: string }) {
     return () => ctrl.stop()
   }, [inView, to, suffix])
   return <span ref={ref}>0{suffix}</span>
-}
+})
 
 /* ── 3D Pie Chart — technika z referencie ───────────── */
 const CX = 240, CY = 150, RX = 108, RY = 40, DEPTH = 30
@@ -258,10 +268,11 @@ export default function InsightsSection() {
             <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 mt-8">
               {segments.map((s, i) => (
                 <motion.div key={i} className="flex items-center gap-2"
-                  initial={{ opacity: 0, y: 8 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.5 + i * 0.1, duration: 0.4 }}>
+                  custom={i}
+                  variants={legendItemVariants}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}>
                   <span className="w-2.5 h-2.5 rounded-sm flex-shrink-0" style={{ background: s.color }} />
                   <div>
                     <p className="text-[10px] font-semibold text-white/80 leading-tight">{s.label}</p>
@@ -283,10 +294,11 @@ export default function InsightsSection() {
               { n: 100, s: '%', label: 'záväzkov je verejných', color: 'text-purple-400' },
             ].map((item, i) => (
               <motion.div key={i} className="glass rounded-2xl p-5 text-center"
-                initial={{ opacity: 0, scale: 0.88 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.45, delay: i * 0.1 }}>
+                custom={i}
+                variants={statCardVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}>
                 <div className={`text-2xl sm:text-3xl font-black tabular-nums ${item.color}`}>
                   <Counter to={item.n} suffix={item.s} />
                 </div>
