@@ -4,6 +4,7 @@ import { useSWRConfig } from 'swr'
 import AnimatedSection from '@/components/shared/AnimatedSection'
 import SuggestionForm from '@/components/suggestions/SuggestionForm'
 import SuggestionWall from '@/components/suggestions/SuggestionWall'
+import { Mail, Lightbulb } from '@/components/shared/Icons'
 
 export default function SuggestionsSection() {
   const { mutate } = useSWRConfig()
@@ -35,9 +36,16 @@ export default function SuggestionsSection() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
           {/* Form */}
           <AnimatedSection direction="left">
-            <div className="glass glow-ring-blue rounded-3xl p-7 sm:p-8">
-              <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-                ✉️ <span>Pošli podnet</span>
+            <div
+              className="glass rounded-3xl p-7 sm:p-8 h-full"
+              style={{ borderTop: '2px solid rgba(79,70,229,0.5)' }}
+            >
+              <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0"
+                  style={{ background: 'rgba(79,70,229,0.15)', border: '1px solid rgba(79,70,229,0.3)' }}>
+                  <Mail size={15} className="text-[#818cf8]" />
+                </div>
+                Pošli podnet
               </h3>
               <SuggestionForm onSuccess={handleSuccess} />
             </div>
@@ -45,9 +53,16 @@ export default function SuggestionsSection() {
 
           {/* Wall */}
           <AnimatedSection direction="right" delay={0.15}>
-            <div className="glass rounded-3xl p-7 sm:p-8">
-              <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-                💡 <span>Podnety od študentov</span>
+            <div
+              className="glass rounded-3xl p-7 sm:p-8 h-full"
+              style={{ borderTop: '2px solid rgba(6,182,212,0.4)' }}
+            >
+              <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0"
+                  style={{ background: 'rgba(6,182,212,0.12)', border: '1px solid rgba(6,182,212,0.25)' }}>
+                  <Lightbulb size={15} className="text-teal-400" />
+                </div>
+                Podnety od študentov
               </h3>
               <SuggestionWall />
             </div>

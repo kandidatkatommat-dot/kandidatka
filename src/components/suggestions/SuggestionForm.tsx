@@ -224,9 +224,9 @@ export default function SuggestionForm({ onSuccess }: { onSuccess?: () => void }
           <Button
             type="submit"
             disabled={loading || !category || suggestion.trim().length < 10}
-            className="w-full bg-blue-600 hover:bg-blue-500 text-white border-0 shadow-lg shadow-blue-500/20 py-5 font-semibold transition-all duration-200 disabled:opacity-40"
+            className="w-full bg-gradient-to-br from-[#4f46e5] to-[#6d28d9] hover:from-[#6366f1] hover:to-[#7c3aed] text-white border-0 shadow-lg shadow-[#4f46e5]/25 py-5 font-semibold transition-all duration-200 disabled:opacity-40 hover:scale-[1.02]"
           >
-            {loading ? 'Odosielam...' : 'Odoslať podnet ✉️'}
+            {loading ? 'Odosielam...' : 'Odoslať podnet'}
           </Button>
 
           <p className="text-xs text-blue-300/30 text-center leading-relaxed">
