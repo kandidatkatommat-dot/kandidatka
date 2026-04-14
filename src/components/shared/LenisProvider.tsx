@@ -14,9 +14,11 @@ export default function LenisProvider({ children }: { children: React.ReactNode 
   useEffect(() => {
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     const isTouch = window.matchMedia('(pointer: coarse)').matches
+    // Chrome: JS-driven scroll fights the compositor thread → native scroll is smoother
+    const isChrome = document.documentElement.classList.contains('no-backdrop')
 
-    // On touch devices native momentum scroll is better — skip Lenis entirely
-    if (isTouch) return
+    // On touch or Chrome, native scroll is faster — skip Lenis entirely
+    if (isTouch || isChrome) return
 
     const lenis = new Lenis({
       lerp: prefersReduced ? 1 : 0.08,

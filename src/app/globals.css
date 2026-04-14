@@ -450,10 +450,14 @@
   }
 }
 
-/* ─── CHROME: disable backdrop-filter ──────────────────────────
-   Chrome on macOS has ~4× worse backdrop-filter perf than Safari
-   (no Metal compositor shortcut). Detected via inline script in
-   layout.tsx which adds 'no-backdrop' to <html> before first paint. */
+/* ─── CHROME: aggressive GPU offload ───────────────────────────
+   Chrome on macOS lacks Apple's Metal compositor shortcut that
+   Safari uses. Multiple expensive operations are disabled:
+   1. backdrop-filter — replaced with solid background
+   2. aurora filter: blur() — replaced with simple radial gradient
+   3. body::after noise — position:fixed + filter forces full repaint
+   4. cursor mix-blend-mode — stacking context blocks compositing
+   5. Lenis smooth scroll — disabled in LenisProvider.tsx          */
 html.no-backdrop .glass {
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
@@ -463,6 +467,22 @@ html.no-backdrop .glass-sm {
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
   background: rgba(4, 12, 28, 0.99);
+}
+html.no-backdrop .aurora-bg::before,
+html.no-backdrop .aurora-bg::after {
+  filter: none;
+  opacity: 0.6;
+}
+html.no-backdrop .aurora-orb {
+  filter: none;
+  opacity: 0.5;
+}
+html.no-backdrop body::after {
+  display: none;
+}
+html.no-backdrop .cursor-outer {
+  mix-blend-mode: normal;
+  border-color: rgba(59, 130, 246, 0.6);
 }
 
 /* ─── REDUCED MOTION ────────────────────────── */
