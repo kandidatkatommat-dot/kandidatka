@@ -112,7 +112,7 @@ export default function PromiseCube3D() {
     const measure = () => {
       if (!containerRef.current) return
       const w = containerRef.current.offsetWidth
-      setFaceSize(Math.min(320, Math.max(200, w - 8)))
+      setFaceSize(Math.min(304, Math.max(200, w - 32)))
     }
     measure()
     const ro = new ResizeObserver(measure)
@@ -153,7 +153,7 @@ export default function PromiseCube3D() {
   return (
     <div
       ref={containerRef}
-      className="flex flex-col items-center gap-4 w-full"
+      className="flex flex-col items-center gap-5 w-full"
       role="region"
       tabIndex={0}
       onKeyDown={e => {
@@ -182,7 +182,7 @@ export default function PromiseCube3D() {
       {/* 3D Cube — unified for all screen sizes */}
       <div
         style={{
-          height: faceSize + 40,
+          height: faceSize + 64,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
