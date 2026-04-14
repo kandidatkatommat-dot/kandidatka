@@ -31,8 +31,8 @@ const socials = [
   {
     icon: Mail,
     label: 'E-mail',
-    handle: 'mucha.bucek@fei.vsb.cz',
-    href: 'mailto:mucha.bucek@fei.vsb.cz',
+    handle: ['tomas.mucha.st@vsb.cz', 'martin.bucek.st@vsb.cz'],
+    href: 'mailto:tomas.mucha.st@vsb.cz',
     gradient: 'from-blue-500/12 via-blue-400/8 to-cyan-500/12',
     border: 'border-blue-500/20 hover:border-blue-400/40',
     iconColor: 'text-blue-400',
@@ -134,7 +134,15 @@ export default function SocialSection() {
                   </div>
                   <div>
                     <div className="text-white font-bold text-base">{s.label}</div>
-                    <div className="text-blue-300/55 text-xs mt-0.5 font-medium">{s.handle}</div>
+                    {Array.isArray(s.handle) ? (
+                      <div className="flex flex-col gap-0.5 mt-0.5">
+                        {s.handle.map((h) => (
+                          <div key={h} className="text-blue-300/55 text-xs font-medium break-all">{h}</div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="text-blue-300/55 text-xs mt-0.5 font-medium">{s.handle}</div>
+                    )}
                   </div>
                   <p className="text-blue-100/45 text-xs leading-relaxed">{s.description}</p>
                 </motion.a>
