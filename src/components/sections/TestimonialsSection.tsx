@@ -2,46 +2,36 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { motion, AnimatePresence, type Variants } from 'framer-motion'
-import { Quote } from '@/components/shared/Icons'
 import AnimatedSection from '@/components/shared/AnimatedSection'
 
+/* ── Testimonials — Czech, Slovak, English, no flags ── */
 const testimonials = [
-  // ── Czech (majority) ──────────────────────────────────
   {
-    quote: 'Konečně kandidáti, kteří říkají konkrétní věci. Žádné plané sliby — je vidět, že rozumí tomu, co senát reálně může ovlivnit.',
+    quote: 'Konečně kandidáti, kteří říkají konkrétní věci. Žádné plané sliby — vidět, že opravdu rozumí tomu, co senát může ovlivnit.',
     name: 'Jakub V.',
     info: '3. ročník, Informatika',
     initial: 'JV',
-    lang: 'cs',
-    flag: '🇨🇿',
     color: 'from-blue-600 to-blue-800',
   },
   {
-    quote: 'Líbí se mi nápad s otevřeným kanálem podnětů. Poprvé mám pocit, že mám kde říct, co mi na FEI opravdu chybí.',
+    quote: 'Líbí se mi nápad s otevřeným kanálem podnětů. Poprvé mám pocit, že mám kde říct, co mi na FEI chybí.',
     name: 'Barbora K.',
     info: '2. ročník, Kybernetika',
     initial: 'BK',
-    lang: 'cs',
-    flag: '🇨🇿',
-    color: 'from-[#4f46e5] to-[#6d28d9]',
+    color: 'from-indigo-500 to-violet-700',
   },
   {
     quote: 'Transparentní zprávy ze senátu? To by byla revoluce. Dosud nikdo ani netušil, co se tam vlastně rozhoduje.',
     name: 'Michal T.',
     info: '4. ročník, Elektrotechnika',
     initial: 'MT',
-    lang: 'cs',
-    flag: '🇨🇿',
     color: 'from-teal-500 to-teal-700',
   },
-  // ── Slovak ────────────────────────────────────────────
   {
-    quote: 'Ako prváčka som rada, že niekto rieši skúšobný poriadok. Systém opravných termínov je mätúci a doteraz to nikto neriešil.',
+    quote: 'Ako prváčka som rada, že niekto rieši skúšobný poriadok. Systém opravných termínov je mätúci a nikto to doteraz neriešil.',
     name: 'Tereza N.',
     info: '1. ročník, Informatika',
     initial: 'TN',
-    lang: 'sk',
-    flag: '🇸🇰',
     color: 'from-purple-500 to-purple-700',
   },
   {
@@ -49,18 +39,13 @@ const testimonials = [
     name: 'Ondřej P.',
     info: '2. ročník Ing., Telekomunikácie',
     initial: 'OP',
-    lang: 'sk',
-    flag: '🇸🇰',
     color: 'from-blue-500 to-indigo-700',
   },
-  // ── English (Erasmus / exchange) ──────────────────────
   {
-    quote: "Finally, candidates who actually address real issues. Better digital tools and transparent decision-making — that's exactly what every student here needs.",
+    quote: "Finally, candidates who address real issues. Better digital tools and transparent decision-making — that's exactly what every student here needs.",
     name: 'Aryan S.',
     info: '2nd year, Exchange Student',
     initial: 'AS',
-    lang: 'en',
-    flag: '🇮🇳',
     color: 'from-emerald-500 to-teal-700',
   },
   {
@@ -68,36 +53,30 @@ const testimonials = [
     name: 'Min-Ji L.',
     info: '3rd year, Erasmus',
     initial: 'ML',
-    lang: 'en',
-    flag: '🇰🇷',
-    color: 'from-[#4f46e5] to-[#7c3aed]',
+    color: 'from-indigo-500 to-violet-600',
   },
 ]
 
-const langLabel: Record<string, string> = { cs: 'Česky', sk: 'Slovensky', en: 'English' }
-const INTERVAL = 5200
+const INTERVAL = 5400
+const RINGS = 14
 
-/* ── page-turn variants (perspective set on wrapper) ── */
 const pageVariants: Variants = {
   enter: (d: number) => ({
-    x: d > 0 ? 60 : -60,
+    x: d > 0 ? 50 : -50,
     opacity: 0,
-    rotateY: d > 0 ? 18 : -18,
-    scale: 0.97,
+    rotateY: d > 0 ? 12 : -12,
   }),
   center: {
     x: 0,
     opacity: 1,
     rotateY: 0,
-    scale: 1,
-    transition: { duration: 0.42, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] },
+    transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] as [number,number,number,number] },
   },
   exit: (d: number) => ({
-    x: d > 0 ? -60 : 60,
+    x: d > 0 ? -50 : 50,
     opacity: 0,
-    rotateY: d > 0 ? -18 : 18,
-    scale: 0.97,
-    transition: { duration: 0.25, ease: 'easeIn' },
+    rotateY: d > 0 ? -12 : 12,
+    transition: { duration: 0.22, ease: 'easeIn' },
   }),
 }
 
@@ -112,14 +91,12 @@ export default function TestimonialsSection() {
     setCur((c) => (c + d + testimonials.length) % testimonials.length)
   }, [])
 
-  /* auto-advance */
   useEffect(() => {
     if (paused) return
     timerRef.current = setInterval(() => go(1), INTERVAL)
     return () => { if (timerRef.current) clearInterval(timerRef.current) }
   }, [go, paused])
 
-  /* drag-to-swipe */
   const handleDragEnd = (_: unknown, info: { offset: { x: number } }) => {
     if (info.offset.x < -40) go(1)
     else if (info.offset.x > 40) go(-1)
@@ -130,8 +107,8 @@ export default function TestimonialsSection() {
   return (
     <section className="relative py-28 sm:py-36" style={{ background: '#04101f' }}>
       <div className="section-divider mb-0" />
-      <div className="aurora-orb w-[40vw] h-[40vw] bottom-[-10vw] right-[-10vw] opacity-50"
-        style={{ background: 'radial-gradient(circle, rgba(168,85,247,0.07) 0%, transparent 70%)' }} aria-hidden />
+      <div className="aurora-orb w-[40vw] h-[40vw] bottom-[-10vw] right-[-10vw] opacity-40"
+        style={{ background: 'radial-gradient(circle, rgba(79,70,229,0.08) 0%, transparent 70%)' }} aria-hidden />
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 relative z-10 pt-28">
 
@@ -142,78 +119,130 @@ export default function TestimonialsSection() {
           <h2 className="text-4xl sm:text-5xl font-black text-white mb-4">
             Hlas akademickej obce
           </h2>
-          <p className="text-blue-200/55 max-w-xl mx-auto">
-            Reálne reakcie od spolužiakov na FEI — česky, slovensky aj po anglicky.
+          <p className="text-blue-200/50 max-w-xl mx-auto">
+            Reálne reakcie od spolužiakov na FEI.
           </p>
         </AnimatedSection>
 
-        {/* ── BOOK ─────────────────────────────────────────── */}
+        {/* ── NOTEBOOK ──────────────────────────────────────── */}
         <AnimatedSection>
           <div
             className="relative mx-auto select-none"
-            style={{ maxWidth: 700 }}
+            style={{ maxWidth: 680 }}
             onMouseEnter={() => setPaused(true)}
             onMouseLeave={() => setPaused(false)}
           >
-            {/* Book drop-shadow */}
-            <div className="absolute inset-0 translate-y-4 blur-2xl opacity-50 rounded-2xl pointer-events-none"
-              style={{ background: 'rgba(2,8,16,0.8)' }} aria-hidden />
+            {/* Page-stack depth */}
+            <div className="absolute bottom-0 left-[28px] right-0 pointer-events-none z-0" aria-hidden>
+              {[6, 4, 2].map((h, i) => (
+                <div key={i} style={{
+                  position: 'absolute',
+                  bottom: -(i + 1) * 3,
+                  left: i * 2,
+                  right: -i,
+                  height: h,
+                  background: `rgba(13,31,58,${0.9 - i * 0.2})`,
+                  borderRadius: '0 0 6px 6px',
+                  boxShadow: '0 2px 4px rgba(0,0,0,0.4)',
+                }} />
+              ))}
+            </div>
 
-            {/* Book body */}
+            {/* Notebook body */}
             <div
-              className="relative grid overflow-hidden rounded-xl sm:rounded-2xl"
+              className="relative flex rounded-xl sm:rounded-2xl overflow-hidden z-10"
               style={{
-                gridTemplateColumns: '1fr 2fr',
-                boxShadow: '0 0 0 1px rgba(59,130,246,0.12), 4px 0 0 #020810 inset, 0 24px 64px rgba(0,0,0,0.55)',
-                background: 'linear-gradient(160deg, #0a1e38 0%, #071525 100%)',
+                boxShadow: '0 0 0 1px rgba(59,130,246,0.1), 0 24px 60px rgba(0,0,0,0.6)',
+                minHeight: 280,
               }}
             >
-              {/* ── LEFT PAGE — decorative ─────────── */}
-              <div className="relative hidden sm:flex flex-col justify-between py-8 px-6 overflow-hidden border-r border-blue-500/8">
-                {/* Ruled lines */}
-                <div className="absolute inset-0 flex flex-col justify-evenly px-4 pointer-events-none">
-                  {Array.from({ length: 14 }).map((_, i) => (
-                    <div key={i} className="h-px bg-blue-400/[0.06]" />
-                  ))}
-                </div>
 
-                {/* Big quote watermark */}
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                  <Quote className="w-28 h-28 text-blue-500/[0.045]" />
-                </div>
-
-                {/* Language dots legend */}
-                <div className="relative flex flex-col gap-2 mt-auto z-10">
-                  {[
-                    { flag: '🇨🇿', label: 'Česky',     active: t.lang === 'cs' },
-                    { flag: '🇸🇰', label: 'Slovensky', active: t.lang === 'sk' },
-                    { flag: '🌍', label: 'English',    active: t.lang === 'en' },
-                  ].map((l) => (
-                    <div key={l.label} className={`flex items-center gap-1.5 transition-opacity duration-300 ${l.active ? 'opacity-80' : 'opacity-20'}`}>
-                      <span className="text-[11px]">{l.flag}</span>
-                      <span className="text-[9px] font-semibold uppercase tracking-wider text-blue-300/70">{l.label}</span>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Page number */}
-                <div className="absolute bottom-4 left-0 right-0 text-center pointer-events-none">
-                  <span className="text-[9px] font-mono text-blue-400/20">
-                    {String(cur + 1).padStart(2, '0')} / {String(testimonials.length).padStart(2, '0')}
-                  </span>
-                </div>
-
-                {/* Spine */}
-                <div className="absolute right-0 top-0 bottom-0 w-[3px]"
-                  style={{ background: 'linear-gradient(180deg, #020810 0%, #0a1628 50%, #020810 100%)' }}
-                  aria-hidden />
+              {/* ── SPIRAL BINDING ───────────────────── */}
+              <div
+                className="flex-shrink-0 flex flex-col items-center justify-evenly py-4 z-20 relative"
+                style={{
+                  width: 28,
+                  background: 'linear-gradient(180deg, #020c1c 0%, #040e20 100%)',
+                  borderRight: '1px solid rgba(59,130,246,0.08)',
+                }}
+                aria-hidden
+              >
+                {Array.from({ length: RINGS }).map((_, i) => (
+                  <div key={i} style={{
+                    width: 16,
+                    height: 11,
+                    borderRadius: '50%',
+                    border: '1.5px solid rgba(148,163,184,0.22)',
+                    background: '#020810',
+                    boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.7), 0 0 0 0.5px rgba(255,255,255,0.03)',
+                  }} />
+                ))}
               </div>
 
-              {/* ── RIGHT PAGE — content ───────────── */}
+              {/* ── COVER PAGE — hidden on mobile ────── */}
               <div
-                className="relative overflow-hidden"
-                style={{ perspective: '900px', minHeight: 280 }}
+                className="hidden sm:flex flex-col justify-between flex-shrink-0 relative overflow-hidden"
+                style={{
+                  width: 138,
+                  background: 'linear-gradient(160deg, #060d1e 0%, #0a1628 100%)',
+                  borderRight: '1px solid rgba(59,130,246,0.1)',
+                  padding: '24px 16px',
+                }}
               >
+                {/* Dot texture */}
+                <div className="absolute inset-0 opacity-40 pointer-events-none" aria-hidden style={{
+                  backgroundImage: 'radial-gradient(circle, rgba(59,130,246,0.12) 1px, transparent 1px)',
+                  backgroundSize: '14px 14px',
+                }} />
+
+                {/* Label sticker */}
+                <div className="relative z-10">
+                  <div className="w-full rounded-lg border border-blue-500/15 p-3"
+                    style={{ background: 'rgba(59,130,246,0.04)' }}>
+                    <p className="text-[9px] font-semibold text-blue-400/45 uppercase tracking-[0.18em] mb-1.5">
+                      Akademická obec
+                    </p>
+                    <p className="text-base font-black text-white/75 leading-tight">
+                      FEI<br />VŠB–TUO
+                    </p>
+                    <div className="mt-2 h-px bg-blue-500/12" />
+                    <p className="text-[10px] text-blue-300/30 mt-1.5 font-medium leading-snug">
+                      Podnety &amp;<br />reakcie 2026
+                    </p>
+                  </div>
+                </div>
+
+                {/* Chapter tag */}
+                <div className="relative z-10">
+                  <p className="text-[9px] font-mono text-blue-400/18 uppercase tracking-widest mb-1">Kap. 01</p>
+                  <p className="text-[10px] text-blue-300/28 font-semibold leading-snug">
+                    Hlas<br />akademickej<br />obce
+                  </p>
+                </div>
+
+                {/* Page num */}
+                <span className="absolute bottom-3 left-0 right-0 text-center text-[9px] font-mono text-blue-400/15 z-10">
+                  {String(cur + 1).padStart(2, '0')}
+                </span>
+              </div>
+
+              {/* ── LINED CONTENT PAGE ───────────────── */}
+              <div className="flex-1 relative overflow-hidden" style={{ perspective: '900px' }}>
+
+                {/* Page background */}
+                <div className="absolute inset-0"
+                  style={{ background: 'linear-gradient(160deg, #0d1f3a 0%, #091629 100%)' }} />
+
+                {/* Ruled lines */}
+                <div className="absolute inset-0 pointer-events-none" aria-hidden style={{
+                  background: 'repeating-linear-gradient(transparent, transparent 29px, rgba(59,130,246,0.06) 29px, rgba(59,130,246,0.06) 30px)',
+                  backgroundPositionY: '22px',
+                }} />
+
+                {/* Red margin */}
+                <div className="absolute left-10 top-0 bottom-0 w-px pointer-events-none"
+                  style={{ background: 'rgba(239,68,68,0.09)' }} aria-hidden />
+
                 <AnimatePresence mode="wait" custom={dir}>
                   <motion.div
                     key={cur}
@@ -222,76 +251,61 @@ export default function TestimonialsSection() {
                     initial="enter"
                     animate="center"
                     exit="exit"
-                    className="absolute inset-0 flex flex-col gap-4 p-6 sm:p-8"
+                    className="absolute inset-0 flex flex-col justify-between p-5 pl-14 pb-6"
                     drag="x"
                     dragConstraints={{ left: 0, right: 0 }}
-                    dragElastic={0.12}
+                    dragElastic={0.1}
                     onDragEnd={handleDragEnd}
                     style={{ cursor: 'grab' }}
                     whileDrag={{ cursor: 'grabbing' }}
                   >
-                    {/* Top bar: quote icon + lang badge */}
-                    <div className="flex items-center justify-between">
-                      <Quote className="w-6 h-6 text-teal-500/25 flex-shrink-0" />
-                      <span className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-widest text-blue-300/35">
-                        <span>{t.flag}</span>
-                        <span>{langLabel[t.lang]}</span>
-                      </span>
+                    {/* Opening quote */}
+                    <div className="text-5xl text-indigo-500/10 font-serif leading-none -mb-2 select-none" aria-hidden>
+                      &ldquo;
                     </div>
 
-                    {/* Quote */}
-                    <p className="flex-1 flex items-center text-sm sm:text-[15px] text-blue-100/80 leading-relaxed italic">
-                      &ldquo;{t.quote}&rdquo;
+                    {/* Quote — line-height matches ruled lines */}
+                    <p className="flex-1 flex items-center text-sm sm:text-[14.5px] text-blue-100/80 leading-[30px] italic">
+                      {t.quote}
                     </p>
 
                     {/* Author + nav */}
-                    <div className="flex items-center justify-between gap-4 pt-4 border-t border-blue-500/10">
+                    <div className="flex items-center justify-between gap-3 pt-2 border-t border-blue-500/8">
                       <div className="flex items-center gap-2.5 min-w-0">
-                        <div className={`w-9 h-9 rounded-full bg-gradient-to-br ${t.color} flex items-center justify-center flex-shrink-0`}>
+                        <div className={`w-8 h-8 rounded-full bg-gradient-to-br ${t.color} flex items-center justify-center flex-shrink-0`}>
                           <span className="text-[10px] font-bold text-white">{t.initial}</span>
                         </div>
                         <div className="min-w-0">
                           <p className="text-sm font-semibold text-white truncate">{t.name}</p>
-                          <p className="text-[11px] text-blue-400/50 truncate">{t.info}</p>
+                          <p className="text-[11px] text-blue-400/45 truncate">{t.info}</p>
                         </div>
                       </div>
 
-                      {/* Page-turn arrows */}
                       <div className="flex items-center gap-1 flex-shrink-0">
-                        <button
-                          onClick={() => go(-1)}
-                          aria-label="Predchádzajúca"
-                          className="w-8 h-8 rounded-full glass flex items-center justify-center text-lg text-blue-400/50 hover:text-teal-400 transition-colors"
-                        >
+                        <button onClick={() => go(-1)} aria-label="Predchádzajúca"
+                          className="w-8 h-8 rounded-full glass flex items-center justify-center text-lg text-blue-400/50 hover:text-teal-400 transition-colors">
                           ‹
                         </button>
-                        <button
-                          onClick={() => go(1)}
-                          aria-label="Ďalšia"
-                          className="w-8 h-8 rounded-full glass flex items-center justify-center text-lg text-blue-400/50 hover:text-teal-400 transition-colors"
-                        >
+                        <button onClick={() => go(1)} aria-label="Ďalšia"
+                          className="w-8 h-8 rounded-full glass flex items-center justify-center text-lg text-blue-400/50 hover:text-teal-400 transition-colors">
                           ›
                         </button>
                       </div>
                     </div>
-
-                    {/* Corner fold hint */}
-                    <div
-                      className="absolute bottom-0 right-0 w-8 h-8 pointer-events-none opacity-30"
-                      style={{
-                        background: 'linear-gradient(225deg, rgba(59,130,246,0.18) 50%, transparent 50%)',
-                        borderTopLeftRadius: 6,
-                      }}
-                      aria-hidden
-                    />
                   </motion.div>
                 </AnimatePresence>
 
-                {/* Progress bar at bottom of right page */}
-                <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-blue-500/8">
+                {/* Corner fold */}
+                <div className="absolute bottom-0 right-0 pointer-events-none" aria-hidden style={{
+                  width: 22, height: 22,
+                  background: 'linear-gradient(225deg, rgba(79,70,229,0.18) 50%, transparent 50%)',
+                }} />
+
+                {/* Progress bar */}
+                <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-blue-500/6">
                   <motion.div
-                    className="h-full bg-teal-500/50 rounded-full"
-                    key={cur}
+                    className="h-full bg-indigo-500/50"
+                    key={`prog-${cur}`}
                     initial={{ width: '0%' }}
                     animate={{ width: paused ? undefined : '100%' }}
                     transition={{ duration: INTERVAL / 1000, ease: 'linear' }}
@@ -300,7 +314,7 @@ export default function TestimonialsSection() {
               </div>
             </div>
 
-            {/* Page dots */}
+            {/* Dots */}
             <div className="flex justify-center gap-1.5 mt-5">
               {testimonials.map((_, i) => (
                 <button
@@ -308,9 +322,7 @@ export default function TestimonialsSection() {
                   onClick={() => { setDir(i > cur ? 1 : -1); setCur(i) }}
                   aria-label={`Strana ${i + 1}`}
                   className={`rounded-full transition-all duration-300 ${
-                    i === cur
-                      ? 'w-5 h-1.5 bg-teal-400'
-                      : 'w-1.5 h-1.5 bg-blue-500/25 hover:bg-blue-500/50'
+                    i === cur ? 'w-5 h-1.5 bg-teal-400' : 'w-1.5 h-1.5 bg-blue-500/25 hover:bg-blue-500/50'
                   }`}
                 />
               ))}
