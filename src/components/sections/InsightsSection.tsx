@@ -217,89 +217,8 @@ function PieChart3D() {
   )
 }
 
-/* ── Film Frame ─────────────────────────────────────── */
-const filmFrames = [
-  { title: 'Transparentnosť',    score: 94, desc: 'Mesačné správy zo senátu', color: '#3b82f6' },
-  { title: 'Skúšky férovejšie',  score: 91, desc: 'Revízia skúšobného poriadku', color: '#f97316' },
-  { title: 'Hlas v rozpočte',    score: 88, desc: 'Priame zastupovanie potrieb', color: '#06b6d4' },
-  { title: 'Digitálne nástroje', score: 85, desc: 'Modernizácia systémov FEI', color: '#8b5cf6' },
-  { title: 'Verejné Q&A',        score: 96, desc: 'Každý semester bez výnimky', color: '#10b981' },
-]
-
-function Perf({ y }: { y: number }) {
-  return (
-    <>
-      {[10, 28, 46, 64, 82, 100].map((x) => (
-        <rect key={x} x={x} y={y} width="9" height="6" rx="1.5" fill="#020810" />
-      ))}
-    </>
-  )
-}
-
-function FilmFrame({ frame, index, inView }: { frame: typeof filmFrames[0]; index: number; inView: boolean }) {
-  const [shown, setShown] = useState(false)
-
-  useEffect(() => {
-    if (!inView) return
-    const t = setTimeout(() => setShown(true), index * 180)
-    return () => clearTimeout(t)
-  }, [inView, index])
-
-  const circumference = 2 * Math.PI * 28
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 36, rotateX: -20 }}
-      animate={shown ? { opacity: 1, y: 0, rotateX: 0 } : {}}
-      transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-      className="relative flex-shrink-0 w-[130px]"
-      style={{ perspective: 500 }}
-    >
-      <svg width="130" height="190" className="absolute inset-0" viewBox="0 0 130 190">
-        <rect width="130" height="190" rx="3" fill="#0a1628" />
-        <rect x="6" y="0" width="118" height="190" fill="#060f1e" />
-        <Perf y={7} />
-        <Perf y={177} />
-      </svg>
-
-      <div className="relative z-10 mx-[6px] mt-[21px] mb-[21px] h-[148px] rounded-sm overflow-hidden flex flex-col"
-        style={{ background: `linear-gradient(160deg, ${frame.color}18 0%, #020810 100%)` }}>
-        <div className="flex-1 flex flex-col items-center justify-center gap-2 px-2 pt-2">
-          <svg width="72" height="72" viewBox="0 0 72 72">
-            <circle cx="36" cy="36" r="28" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="5" />
-            <motion.circle
-              cx="36" cy="36" r="28"
-              fill="none" stroke={frame.color} strokeWidth="5"
-              strokeLinecap="round"
-              strokeDasharray={circumference}
-              initial={{ strokeDashoffset: circumference }}
-              animate={shown ? { strokeDashoffset: circumference * (1 - frame.score / 100) } : {}}
-              transition={{ duration: 1.1, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
-              transform="rotate(-90 36 36)"
-              style={{ filter: `drop-shadow(0 0 4px ${frame.color}90)` }}
-            />
-            <text x="36" y="32" textAnchor="middle" fill="white" fontSize="16" fontWeight="800" fontFamily="inherit">{frame.score}</text>
-            <text x="36" y="44" textAnchor="middle" fill={frame.color} fontSize="6.5" fontWeight="600" letterSpacing="0.8" fontFamily="inherit">/ 100</text>
-          </svg>
-          <div className="text-center px-1">
-            <p className="text-[10.5px] font-bold text-white leading-tight">{frame.title}</p>
-            <p className="text-[8.5px] text-blue-300/40 mt-0.5 leading-tight">{frame.desc}</p>
-          </div>
-        </div>
-        <motion.div className="h-[2px]" style={{ background: frame.color }}
-          initial={{ scaleX: 0 }}
-          animate={shown ? { scaleX: 1 } : {}}
-          transition={{ duration: 0.45, delay: 0.7 }}
-        />
-      </div>
-    </motion.div>
-  )
-}
-
 /* ── Main Section ───────────────────────────────────── */
 export default function InsightsSection() {
-  const filmRef = useRef<HTMLDivElement>(null)
-  const filmInView = useInView(filmRef, { once: true, margin: '-80px' })
 
   return (
     <section className="relative py-28 sm:py-36 overflow-hidden"
@@ -351,7 +270,7 @@ export default function InsightsSection() {
         </AnimatedSection>
 
         {/* Stats strip */}
-        <AnimatedSection className="mb-20">
+        <AnimatedSection className="mb-6">
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {[
               { n: 847, s: '+', label: 'zozbieraných podnetov', color: 'text-blue-400' },
@@ -375,35 +294,6 @@ export default function InsightsSection() {
           </div>
         </AnimatedSection>
 
-        {/* Film strip */}
-        <div ref={filmRef}>
-          <AnimatedSection className="text-center mb-10">
-            <span className="inline-block text-xs font-semibold text-orange-400 uppercase tracking-[0.2em] mb-3">
-              Hodnotenie záväzkov
-            </span>
-            <h3 className="text-2xl sm:text-3xl font-black text-white">
-              Každý sľub — skóre pripravenosti
-            </h3>
-          </AnimatedSection>
-
-          <div className="relative">
-            <div className="absolute left-0 top-0 bottom-0 w-12 z-10 pointer-events-none"
-              style={{ background: 'linear-gradient(to right, #020810, transparent)' }} />
-            <div className="absolute right-0 top-0 bottom-0 w-12 z-10 pointer-events-none"
-              style={{ background: 'linear-gradient(to left, #020810, transparent)' }} />
-            <div className="flex items-center justify-center gap-2 sm:gap-3 overflow-x-auto pb-2 scrollbar-none px-4">
-              {filmFrames.map((frame, i) => (
-                <FilmFrame key={i} frame={frame} index={i} inView={filmInView} />
-              ))}
-            </div>
-          </div>
-
-          <AnimatedSection delay={0.4} className="text-center mt-6">
-            <p className="text-xs text-blue-400/25">
-              Skóre vychádza z konkrétnosti sľubu, zákonných právomocí senátu a podnetov od študentov
-            </p>
-          </AnimatedSection>
-        </div>
       </div>
     </section>
   )
