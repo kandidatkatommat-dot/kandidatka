@@ -60,12 +60,6 @@ export default function Footer() {
                     martin.bucek.st@vsb.cz
                   </a>
                 </li>
-                <li className="pt-1">
-                  <span className="text-[10px] text-blue-400/35 uppercase tracking-wider block mb-0.5">spoločný kontakt</span>
-                  <a href="mailto:kandidatkatommat@gmail.com" className="text-blue-200/40 hover:text-blue-300 transition-colors break-all">
-                    kandidatkatommat@gmail.com
-                  </a>
-                </li>
               </ul>
             </div>
           </div>
