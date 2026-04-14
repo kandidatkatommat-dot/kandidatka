@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, memo } from 'react'
 import { motion } from 'framer-motion'
 import AnimatedSection from '@/components/shared/AnimatedSection'
 
@@ -16,7 +16,10 @@ const cards = [
   { quote: 'Verejné Q&A stretnutia so senátormi sú skvelý nápad. Na iných školách to funguje skvele.', name: 'Ondřej P.', year: '2. ročník Ing.', dept: 'Telekomunikácie', color: '#3b82f6' },
 ]
 
-function Card({ quote, name, year, dept, color }: (typeof cards)[0]) {
+/* doubled is module-level — cards never change, no need to recompute */
+const doubled = [...cards, ...cards]
+
+const Card = memo(function Card({ quote, name, year, dept, color }: (typeof cards)[0]) {
   return (
     <div
       className="flex-shrink-0 w-[min(290px,calc(100vw-2rem))] sm:w-[320px] glass glass-hover rounded-2xl p-5 mx-2.5 flex flex-col gap-3"
@@ -40,10 +43,9 @@ function Card({ quote, name, year, dept, color }: (typeof cards)[0]) {
       </div>
     </div>
   )
-}
+})
 
 export default function SocialProofSection() {
-  const doubled = [...cards, ...cards]
   const [paused, setPaused] = useState(false)
 
   useEffect(() => {

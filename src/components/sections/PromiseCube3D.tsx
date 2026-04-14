@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef, useLayoutEffect } from 'react'
+import { useState, useEffect, useRef, useLayoutEffect, useMemo, memo } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 import {
   ClipboardLines, VoteCheck, Broadcast, ShieldCheck,
@@ -56,7 +56,7 @@ const faces = [
 type Cell = typeof faces[0]['cells'][0]
 
 /* ── Face content — scales with cube size ─────────────── */
-function CubeFace({ face, size }: { face: typeof faces[0]; size: number }) {
+const CubeFace = memo(function CubeFace({ face, size }: { face: typeof faces[0]; size: number }) {
   const small = size < 260
   return (
     <div
@@ -97,7 +97,7 @@ function CubeFace({ face, size }: { face: typeof faces[0]; size: number }) {
       ))}
     </div>
   )
-}
+})
 
 /* ── Main export ────────────────────────────────────────── */
 export default function PromiseCube3D() {
@@ -142,13 +142,14 @@ export default function PromiseCube3D() {
   const currentFaceIdx   = ((step % faces.length) + faces.length) % faces.length
   const rotateY          = step * -90
 
-  /* Dynamic face transforms based on measured size */
-  const faceTransforms = [
+  /* Dynamic face transforms based on measured size — memoized so string objects
+     are stable between renders (only recalculate when faceSize changes)        */
+  const faceTransforms = useMemo(() => [
     `rotateY(0deg)   translateZ(${half}px)`,
     `rotateY(90deg)  translateZ(${half}px)`,
     `rotateY(180deg) translateZ(${half}px)`,
     `rotateY(-90deg) translateZ(${half}px)`,
-  ]
+  ], [half])
 
   return (
     <div

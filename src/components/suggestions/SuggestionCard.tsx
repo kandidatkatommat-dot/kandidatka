@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, memo } from 'react'
 import { motion } from 'framer-motion'
 import { Badge } from '@/components/ui/badge'
 import type { Suggestion, SuggestionCategory } from '@/types'
@@ -17,7 +17,11 @@ function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString('cs-CZ', { day: 'numeric', month: 'short' })
 }
 
-export default function SuggestionCard({ suggestion }: { suggestion: Suggestion }) {
+/* Hoisted — stable references, not recreated on every render */
+const VOTED_ANIM = { scale: [1, 1.4, 1] as number[] }
+const NO_ANIM = {}
+
+export default memo(function SuggestionCard({ suggestion }: { suggestion: Suggestion }) {
   const [votes, setVotes] = useState(suggestion.vote_count ?? 0)
   const [hasVoted, setHasVoted] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -62,7 +66,7 @@ export default function SuggestionCard({ suggestion }: { suggestion: Suggestion 
               : 'text-blue-400/50 hover:text-[#818cf8] hover:scale-110'
           }`}
         >
-          <motion.span animate={hasVoted ? { scale: [1, 1.4, 1] } : {}} transition={{ duration: 0.3 }}>
+          <motion.span animate={hasVoted ? VOTED_ANIM : NO_ANIM} transition={{ duration: 0.3 }}>
             <svg width="13" height="13" viewBox="0 0 24 24" fill={hasVoted ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
             </svg>
@@ -72,4 +76,4 @@ export default function SuggestionCard({ suggestion }: { suggestion: Suggestion 
       </div>
     </div>
   )
-}
+})

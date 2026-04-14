@@ -84,7 +84,11 @@ export default function TestimonialsSection() {
   const [cur, setCur] = useState(0)
   const [dir, setDir] = useState(1)
   const [paused, setPaused] = useState(false)
+  const pausedRef = useRef(false)
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
+
+  // Keep pausedRef in sync without adding paused to the interval effect deps
+  useEffect(() => { pausedRef.current = paused }, [paused])
 
   const go = useCallback((d: 1 | -1) => {
     setDir(d)
@@ -92,10 +96,10 @@ export default function TestimonialsSection() {
   }, [])
 
   useEffect(() => {
-    if (paused) return
-    timerRef.current = setInterval(() => go(1), INTERVAL)
+    // Interval runs once, reads pausedRef on each tick — no restart on hover
+    timerRef.current = setInterval(() => { if (!pausedRef.current) go(1) }, INTERVAL)
     return () => { if (timerRef.current) clearInterval(timerRef.current) }
-  }, [go, paused])
+  }, [go])
 
   const handleDragEnd = (_: unknown, info: { offset: { x: number } }) => {
     if (info.offset.x < -40) go(1)
@@ -256,7 +260,7 @@ export default function TestimonialsSection() {
                     dragConstraints={{ left: 0, right: 0 }}
                     dragElastic={0.1}
                     onDragEnd={handleDragEnd}
-                    style={{ cursor: 'grab' }}
+                    style={{ cursor: 'grab', willChange: 'transform' }}
                     whileDrag={{ cursor: 'grabbing' }}
                   >
                     {/* Opening quote */}

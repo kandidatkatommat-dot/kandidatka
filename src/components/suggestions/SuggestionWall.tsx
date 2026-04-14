@@ -12,7 +12,7 @@ export default function SuggestionWall() {
   const { data, error, isLoading } = useSWR<{ data: Suggestion[]; count: number }>(
     '/api/suggestions',
     fetcher,
-    { refreshInterval: 30000 }
+    { refreshInterval: 30000, refreshWhenHidden: false }
   )
 
   if (error) {
@@ -54,8 +54,8 @@ export default function SuggestionWall() {
 
   return (
     <div>
-      <div className="flex items-center gap-2 mb-6" aria-live="polite" aria-atomic="true">
-        <span className="text-sm text-blue-300/60 font-medium">
+      <div className="flex items-center gap-2 mb-6">
+        <span className="text-sm text-blue-300/60 font-medium" aria-live="polite" aria-atomic="true">
           {suggestions.length} {suggestions.length === 1 ? 'podnet' : suggestions.length < 5 ? 'podnety' : 'podnetov'} od študentov
         </span>
         <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" aria-hidden />
