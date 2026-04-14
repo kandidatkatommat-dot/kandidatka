@@ -12,12 +12,15 @@ export const authOptions: NextAuthOptions = {
         password: { label: 'Heslo', type: 'password' },
       },
       async authorize(credentials) {
-        const adminPassword = process.env.ADMIN_PASSWORD
-        if (!adminPassword) return null
-        if (credentials?.password === adminPassword) {
-          return { id: 'admin', name: 'Admin', email: process.env.ADMIN_EMAIL ?? 'admin' }
-        }
-        return null
+        const admins = [
+          { password: process.env.ADMIN_PASSWORD, email: process.env.ADMIN_EMAIL, name: 'Tomáš' },
+          { password: process.env.ADMIN_2_PASSWORD, email: process.env.ADMIN_2_EMAIL, name: 'Martin' },
+        ]
+        const match = admins.find(
+          (a) => a.password && credentials?.password === a.password
+        )
+        if (!match) return null
+        return { id: match.email ?? 'admin', name: match.name, email: match.email ?? 'admin' }
       },
     }),
   ],
