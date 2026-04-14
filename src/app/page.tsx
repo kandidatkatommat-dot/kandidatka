@@ -1,8 +1,14 @@
+import { Suspense } from 'react'
 import dynamic from 'next/dynamic'
 import Navbar from '@/components/shared/Navbar'
 import HeroSection from '@/components/sections/HeroSection'
 import AboutSection from '@/components/sections/AboutSection'
 import { ErrorBoundary } from '@/components/shared/ErrorBoundary'
+
+/* Minimal skeleton shown while a lazy section JS chunk loads */
+function SectionSkeleton() {
+  return <div className="h-64 rounded-3xl bg-white/[0.025] animate-pulse mx-4 my-2" />
+}
 
 /* ── Lazy-load all below-fold sections ────────────────────────────
    JS chunks load only when the browser needs them — dramatically
@@ -25,25 +31,45 @@ export default function Home() {
       <main>
         <HeroSection />
         <AboutSection />
-        <ProgramSection />
-        <InsightsSection />
-        <TestimonialsSection />
+        <Suspense fallback={<SectionSkeleton />}>
+          <ProgramSection />
+        </Suspense>
+        <Suspense fallback={<SectionSkeleton />}>
+          <InsightsSection />
+        </Suspense>
+        <Suspense fallback={<SectionSkeleton />}>
+          <TestimonialsSection />
+        </Suspense>
         <ErrorBoundary>
-          <SocialProofSection />
+          <Suspense fallback={<SectionSkeleton />}>
+            <SocialProofSection />
+          </Suspense>
         </ErrorBoundary>
         <ErrorBoundary>
-          <PollSection />
+          <Suspense fallback={<SectionSkeleton />}>
+            <PollSection />
+          </Suspense>
         </ErrorBoundary>
         <ErrorBoundary>
-          <SuggestionsSection />
+          <Suspense fallback={<SectionSkeleton />}>
+            <SuggestionsSection />
+          </Suspense>
         </ErrorBoundary>
         <div id="faq">
-          <FaqSection />
+          <Suspense fallback={<SectionSkeleton />}>
+            <FaqSection />
+          </Suspense>
         </div>
-        <VoteSection />
-        <SocialSection />
+        <Suspense fallback={<SectionSkeleton />}>
+          <VoteSection />
+        </Suspense>
+        <Suspense fallback={<SectionSkeleton />}>
+          <SocialSection />
+        </Suspense>
       </main>
-      <Footer />
+      <Suspense fallback={null}>
+        <Footer />
+      </Suspense>
     </>
   )
 }
