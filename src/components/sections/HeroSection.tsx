@@ -54,7 +54,7 @@ const AuroraMesh = memo(function AuroraMesh() {
         className="absolute top-[-20%] left-[10%] w-[70vw] h-[70vw] rounded-full"
         style={{
           background: 'radial-gradient(circle at 40% 40%, rgba(59,130,246,0.12) 0%, rgba(6,182,212,0.06) 40%, transparent 70%)',
-          filter: 'blur(40px)',
+          filter: 'blur(20px)',
           animation: 'aurora 14s ease-in-out infinite',
         }}
       />
@@ -63,7 +63,7 @@ const AuroraMesh = memo(function AuroraMesh() {
         className="absolute bottom-[-10%] right-[-5%] w-[50vw] h-[50vw] rounded-full"
         style={{
           background: 'radial-gradient(circle, rgba(249,115,22,0.08) 0%, rgba(59,130,246,0.05) 50%, transparent 70%)',
-          filter: 'blur(60px)',
+          filter: 'blur(30px)',
           animation: 'aurora 18s ease-in-out infinite reverse',
           animationDelay: '-7s',
         }}
@@ -138,7 +138,7 @@ export default function HeroSection() {
 
   const particles = useMemo<Particle[]>(
     () =>
-      Array.from({ length: 32 }, (_, i) => ({
+      Array.from({ length: 16 }, (_, i) => ({
         id: i,
         x: (i * 37 + 11) % 100,
         y: (i * 53 + 7) % 90,

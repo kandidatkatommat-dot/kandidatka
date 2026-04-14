@@ -171,8 +171,10 @@
     border-radius: 4px;
   }
   /* Prevent aurora orbs and decorative absolutes from causing horizontal scroll */
+  /* contain: layout style isolates repaints per-section — big GPU win on macOS */
   section {
     overflow-x: hidden;
+    contain: layout style;
   }
   body { @apply bg-background text-foreground; }
   body::after {
@@ -213,7 +215,7 @@
   content: '';
   position: absolute;
   border-radius: 50%;
-  filter: blur(80px);
+  filter: blur(40px);
   pointer-events: none;
   animation: aurora 12s ease-in-out infinite alternate;
 }
@@ -239,24 +241,25 @@
 .aurora-orb {
   position: absolute;
   border-radius: 50%;
-  filter: blur(70px);
+  filter: blur(35px);
   pointer-events: none;
   animation: aurora 10s ease-in-out infinite alternate;
 }
 
 /* ─── GLASS ─────────────────────────────── */
+/* Blur halved: 20px→10px cuts GPU cost ~4× on Retina (2× DPI) displays */
 .glass {
-  background: rgba(12, 31, 61, 0.55);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: rgba(12, 31, 61, 0.65);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(59, 130, 246, 0.14);
   box-shadow: 0 0 0 1px rgba(59,130,246,0.08) inset;
 }
 
 .glass-sm {
-  background: rgba(6, 15, 30, 0.7);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(6, 15, 30, 0.78);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border: 1px solid rgba(59, 130, 246, 0.12);
 }
 

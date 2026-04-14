@@ -86,7 +86,7 @@ export default function MuchaFly() {
       {/* Wing flutter animation */}
       <motion.div
         animate={{ scaleX: [1, 1.15, 0.85, 1] }}
-        transition={{ duration: 0.18, repeat: Infinity, ease: 'easeInOut' }}
+        transition={{ duration: 0.4, repeat: Infinity, ease: 'easeInOut' }}
       >
         <FlySvg />
       </motion.div>

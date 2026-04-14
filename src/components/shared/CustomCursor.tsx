@@ -15,9 +15,15 @@ export default function CustomCursor() {
     outer.style.opacity = '1'
     inner.style.opacity = '1'
 
+    let rafId = 0
+    let mx = 0, my = 0
     const move = (e: MouseEvent) => {
-      outer.style.transform = `translate(${e.clientX - 16}px, ${e.clientY - 16}px)`
-      inner.style.transform = `translate(${e.clientX - 3}px, ${e.clientY - 3}px)`
+      mx = e.clientX; my = e.clientY
+      cancelAnimationFrame(rafId)
+      rafId = requestAnimationFrame(() => {
+        outer.style.transform = `translate(${mx - 16}px, ${my - 16}px)`
+        inner.style.transform = `translate(${mx - 3}px, ${my - 3}px)`
+      })
     }
 
     const grow = () => outer.classList.add('cursor-grow')
@@ -37,7 +43,7 @@ export default function CustomCursor() {
       })
     })
 
-    return () => cleanups.forEach(fn => fn())
+    return () => { cancelAnimationFrame(rafId); cleanups.forEach(fn => fn()) }
   }, [])
 
   return (
