@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Mail, ExternalLink, Camera, MessageCircle } from 'lucide-react'
+import { Mail, ExternalLink, Camera, MessageCircle } from '@/components/shared/Icons'
 import AnimatedSection from '@/components/shared/AnimatedSection'
 
 const socials = [

@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion'
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
-import { ExternalLink } from 'lucide-react'
+import { ExternalLink, FlyIcon } from '@/components/shared/Icons'
 import AnimatedSection from '@/components/shared/AnimatedSection'
 import type { Candidate } from '@/types'
 
@@ -64,7 +64,14 @@ function CandidateCard({ c, direction, accentIdx }: { c: Candidate; direction: '
             </Avatar>
           </div>
           <div>
-            <h3 className="text-xl font-bold text-white">{c.name}</h3>
+            <h3 className="text-xl font-bold text-white flex items-center gap-2">
+              {c.name}
+              {c.id === 'MUC0075' && (
+                <span title="Mucha 🪰" className="text-blue-400/40 hover:text-blue-300/70 transition-colors cursor-default">
+                  <FlyIcon size={14} className="inline" />
+                </span>
+              )}
+            </h3>
             <div className="flex items-center gap-2 mt-1.5">
               <Badge variant="outline" className="text-xs border-blue-500/25 text-blue-300 bg-blue-500/8 font-mono">
                 {c.id}

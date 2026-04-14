@@ -10,6 +10,7 @@ import SuggestionsSection from '@/components/sections/SuggestionsSection'
 import FaqSection from '@/components/sections/FaqSection'
 import VoteSection from '@/components/sections/VoteSection'
 import SocialSection from '@/components/sections/SocialSection'
+import InsightsSection from '@/components/sections/InsightsSection'
 
 export default function Home() {
   return (
@@ -19,6 +20,7 @@ export default function Home() {
         <HeroSection />
         <AboutSection />
         <ProgramSection />
+        <InsightsSection />
         <TestimonialsSection />
         <SocialProofSection />
         <PollSection />

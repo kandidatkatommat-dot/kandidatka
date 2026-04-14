@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Quote } from 'lucide-react'
+import { Quote } from '@/components/shared/Icons'
 import AnimatedSection from '@/components/shared/AnimatedSection'
 
 const testimonials = [

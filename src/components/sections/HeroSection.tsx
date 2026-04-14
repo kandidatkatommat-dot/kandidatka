@@ -4,7 +4,7 @@ import { useEffect, useState, useMemo, useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { ChevronDown } from 'lucide-react'
+import { ChevronDown } from '@/components/shared/Icons'
 
 /* ── Countdown ─────────────────────────────────────────────── */
 const VOTE_DATE = new Date('2026-05-12T08:00:00')
