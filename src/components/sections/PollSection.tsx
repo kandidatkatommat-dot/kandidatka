@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, memo } from 'react'
+import useSWR from 'swr'
 import { motion, AnimatePresence } from 'framer-motion'
 import AnimatedSection from '@/components/shared/AnimatedSection'
 import type { Poll, PollOption } from '@/types/index'
@@ -8,6 +9,10 @@ import type { Poll, PollOption } from '@/types/index'
 /* Module-level animation variants */
 const votingVariants = { initial: { opacity: 0 }, animate: { opacity: 1 }, exit: { opacity: 0 } }
 const resultsVariants = { initial: { opacity: 0, y: 10 }, animate: { opacity: 1, y: 0 } }
+
+/* Hoisted bar backgrounds — stable references, not recreated per PollBar render */
+const BAR_WINNER_BG = 'linear-gradient(90deg, #4f46e5, #6d28d9)'
+const BAR_DEFAULT_BG = 'linear-gradient(90deg, #3b82f6, #60a5fa)'
 
 const PollBar = memo(function PollBar({ option, total, isWinner }: { option: PollOption; total: number; isWinner: boolean }) {
   const pct = total > 0 ? Math.round((option.vote_count / total) * 100) : 0
@@ -21,11 +26,7 @@ const PollBar = memo(function PollBar({ option, total, isWinner }: { option: Pol
         <div className="h-2 bg-white/5 rounded-full overflow-hidden">
           <motion.div
             className="h-full rounded-full"
-            style={{
-              background: isWinner
-                ? 'linear-gradient(90deg, #4f46e5, #6d28d9)'
-                : 'linear-gradient(90deg, #3b82f6, #60a5fa)',
-            }}
+            style={{ background: isWinner ? BAR_WINNER_BG : BAR_DEFAULT_BG }}
             initial={{ width: 0 }}
             animate={{ width: `${pct}%` }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] as [number, number, number, number], delay: 0.1 }}
@@ -36,35 +37,32 @@ const PollBar = memo(function PollBar({ option, total, isWinner }: { option: Pol
   )
 })
 
+const fetcher = (url: string) => fetch(url).then(r => r.json())
+
 export default function PollSection() {
+  const { data, isLoading } = useSWR('/api/polls/active', fetcher, {
+    revalidateOnFocus: false,
+    dedupingInterval: 60_000,
+  })
   const [poll, setPoll] = useState<Poll | null>(null)
   const [voted, setVoted] = useState(false)
   const [selectedId, setSelectedId] = useState<string | null>(null)
-  const [loading, setLoading] = useState(true)
   const [submitting, setSubmitting] = useState(false)
   const [localCounts, setLocalCounts] = useState<Record<string, number>>({})
 
   useEffect(() => {
-    fetch('/api/polls/active')
-      .then((r) => r.json())
-      .then((d) => {
-        if (d.poll) {
-          setPoll(d.poll)
-          const counts: Record<string, number> = {}
-          d.poll.options?.forEach((o: PollOption) => {
-            counts[o.id] = o.vote_count
-          })
-          setLocalCounts(counts)
-        }
-      })
-      .finally(() => setLoading(false))
+    if (!data?.poll) return
+    setPoll(data.poll)
+    const counts: Record<string, number> = {}
+    data.poll.options?.forEach((o: PollOption) => { counts[o.id] = o.vote_count })
+    setLocalCounts(counts)
+  }, [data])
 
-    // Check if already voted (localStorage)
-    if (typeof window !== 'undefined') {
-      const v = localStorage.getItem('poll_voted')
-      if (v) setVoted(true)
-    }
+  useEffect(() => {
+    if (localStorage.getItem('poll_voted')) setVoted(true)
   }, [])
+
+  const loading = isLoading
 
   const total = Object.values(localCounts).reduce((a, b) => a + b, 0)
   const maxCount = Math.max(...Object.values(localCounts), 1)

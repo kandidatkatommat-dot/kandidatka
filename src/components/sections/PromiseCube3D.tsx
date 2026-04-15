@@ -114,10 +114,18 @@ export default function PromiseCube3D() {
       const w = containerRef.current.offsetWidth
       setFaceSize(Math.min(290, Math.max(200, w - 32)))
     }
-    measure()
-    const ro = new ResizeObserver(measure)
+    let debounceId: ReturnType<typeof setTimeout> | null = null
+    const debouncedMeasure = () => {
+      if (debounceId) clearTimeout(debounceId)
+      debounceId = setTimeout(measure, 120)
+    }
+    measure() // immediate on mount
+    const ro = new ResizeObserver(debouncedMeasure)
     if (containerRef.current) ro.observe(containerRef.current)
-    return () => ro.disconnect()
+    return () => {
+      if (debounceId) clearTimeout(debounceId)
+      ro.disconnect()
+    }
   }, [])
 
   /* Auto-rotation — pauses when tab hidden */

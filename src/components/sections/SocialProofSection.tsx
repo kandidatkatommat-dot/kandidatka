@@ -19,6 +19,11 @@ const cards = [
 /* doubled is module-level — cards never change, no need to recompute */
 const doubled = [...cards, ...cards]
 
+/* Hoisted animate targets — stable references prevent Framer Motion from
+   restarting the animation on re-render when paused state changes */
+const CAROUSEL_PLAY = { x: ['0%', '-50%'] }
+const CAROUSEL_STOP = {}
+
 const Card = memo(function Card({ quote, name, year, dept, color }: (typeof cards)[0]) {
   return (
     <div
@@ -79,7 +84,7 @@ export default function SocialProofSection() {
 
         <motion.div
           className="flex"
-          animate={paused ? {} : { x: ['0%', '-50%'] }}
+          animate={paused ? CAROUSEL_STOP : CAROUSEL_PLAY}
           transition={{ duration: 40, ease: 'linear', repeat: Infinity }}
           style={{ width: 'max-content', willChange: 'transform' }}
         >
