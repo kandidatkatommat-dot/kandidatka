@@ -262,7 +262,8 @@
 }
 
 .glass-hover {
-  transition: border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+  /* background removed — it triggers paint on every hover; border+shadow are compositor-safe */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .glass-hover:hover {

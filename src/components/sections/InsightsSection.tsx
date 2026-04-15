@@ -85,21 +85,22 @@ function PieChart3D() {
     if (!svgEl) return
 
     const timers: ReturnType<typeof setTimeout>[] = []
+    let mounted = true
 
     // Staggered segment reveal
     svgEl.querySelectorAll<HTMLElement>('.pie-seg').forEach((el, i) => {
-      timers.push(setTimeout(() => el.classList.add('pie-visible'), i * 110))
+      timers.push(setTimeout(() => { if (mounted) el.classList.add('pie-visible') }, i * 110))
     })
     // Callout lines draw-in
     svgEl.querySelectorAll<HTMLElement>('.callout-line').forEach((el, i) => {
-      timers.push(setTimeout(() => el.classList.add('c-visible'), 320 + i * 90))
+      timers.push(setTimeout(() => { if (mounted) el.classList.add('c-visible') }, 320 + i * 90))
     })
     // Labels fade in
     svgEl.querySelectorAll<HTMLElement>('.callout-label').forEach((el, i) => {
-      timers.push(setTimeout(() => el.classList.add('c-visible'), 460 + i * 70))
+      timers.push(setTimeout(() => { if (mounted) el.classList.add('c-visible') }, 460 + i * 70))
     })
 
-    return () => timers.forEach(clearTimeout)
+    return () => { mounted = false; timers.forEach(clearTimeout) }
   }, [inView])
 
   // Side walls — iba pre spodnú (viditeľnú) časť

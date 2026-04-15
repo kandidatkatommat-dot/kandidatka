@@ -45,7 +45,10 @@ export default function PollSection() {
     dedupingInterval: 60_000,
   })
   const [poll, setPoll] = useState<Poll | null>(null)
-  const [voted, setVoted] = useState(false)
+  const [voted, setVoted] = useState(() => {
+    try { return typeof localStorage !== 'undefined' && !!localStorage.getItem('poll_voted') }
+    catch { return false }
+  })
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
   const [localCounts, setLocalCounts] = useState<Record<string, number>>({})
@@ -58,9 +61,6 @@ export default function PollSection() {
     setLocalCounts(counts)
   }, [data])
 
-  useEffect(() => {
-    if (localStorage.getItem('poll_voted')) setVoted(true)
-  }, [])
 
   const loading = isLoading
 

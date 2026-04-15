@@ -26,24 +26,25 @@ export default function CustomCursor() {
       })
     }
 
-    const grow = () => outer.classList.add('cursor-grow')
-    const shrink = () => outer.classList.remove('cursor-grow')
-
-    const cleanups: (() => void)[] = []
+    // Event delegation — one listener pair instead of one per element.
+    // Also catches dynamically added buttons (e.g. lazy-loaded sections).
+    const delegate = (e: MouseEvent) => {
+      const t = e.target as HTMLElement
+      if (t.closest('a,button,[data-cursor]')) {
+        outer.classList[e.type === 'mouseover' ? 'add' : 'remove']('cursor-grow')
+      }
+    }
 
     document.addEventListener('mousemove', move)
-    cleanups.push(() => document.removeEventListener('mousemove', move))
+    document.addEventListener('mouseover', delegate)
+    document.addEventListener('mouseout', delegate)
 
-    document.querySelectorAll('a,button,[data-cursor]').forEach(el => {
-      el.addEventListener('mouseenter', grow)
-      el.addEventListener('mouseleave', shrink)
-      cleanups.push(() => {
-        el.removeEventListener('mouseenter', grow)
-        el.removeEventListener('mouseleave', shrink)
-      })
-    })
-
-    return () => { cancelAnimationFrame(rafId); cleanups.forEach(fn => fn()) }
+    return () => {
+      cancelAnimationFrame(rafId)
+      document.removeEventListener('mousemove', move)
+      document.removeEventListener('mouseover', delegate)
+      document.removeEventListener('mouseout', delegate)
+    }
   }, [])
 
   return (

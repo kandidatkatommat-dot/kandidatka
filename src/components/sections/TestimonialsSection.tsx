@@ -96,9 +96,18 @@ export default function TestimonialsSection() {
   }, [])
 
   useEffect(() => {
-    // Interval runs once, reads pausedRef on each tick — no restart on hover
-    timerRef.current = setInterval(() => { if (!pausedRef.current) go(1) }, INTERVAL)
-    return () => { if (timerRef.current) clearInterval(timerRef.current) }
+    const start = () => {
+      if (timerRef.current) return
+      timerRef.current = setInterval(() => { if (!pausedRef.current) go(1) }, INTERVAL)
+    }
+    const stop = () => {
+      if (timerRef.current) { clearInterval(timerRef.current); timerRef.current = null }
+    }
+    // Pause interval entirely when tab hidden — saves CPU/battery
+    const onVis = () => document.hidden ? stop() : start()
+    start()
+    document.addEventListener('visibilitychange', onVis)
+    return () => { stop(); document.removeEventListener('visibilitychange', onVis) }
   }, [go])
 
   const handleDragEnd = (_: unknown, info: { offset: { x: number } }) => {

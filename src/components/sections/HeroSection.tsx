@@ -15,8 +15,14 @@ function useCountdown() {
   useEffect(() => {
     setMounted(true)
     setDiff(VOTE_DATE.getTime() - Date.now())
-    const id = setInterval(() => setDiff(VOTE_DATE.getTime() - Date.now()), 1000)
-    return () => clearInterval(id)
+    let id: ReturnType<typeof setInterval> | null = null
+    const tick = () => setDiff(VOTE_DATE.getTime() - Date.now())
+    const start = () => { if (!id) id = setInterval(tick, 1000) }
+    const stop  = () => { if (id) { clearInterval(id); id = null } }
+    const onVis = () => document.hidden ? stop() : start()
+    start()
+    document.addEventListener('visibilitychange', onVis)
+    return () => { stop(); document.removeEventListener('visibilitychange', onVis) }
   }, [])
   if (!mounted) return { d: 0, h: 0, m: 0, s: 0, mounted: false }
   const total = Math.max(0, diff)

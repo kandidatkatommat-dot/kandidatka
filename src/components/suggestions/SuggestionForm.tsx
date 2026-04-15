@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useRef } from 'react'
+import { toast } from 'sonner'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -56,14 +57,12 @@ export default function SuggestionForm({ onSuccess }: { onSuccess?: () => void }
       const json = await res.json()
 
       if (!res.ok) {
-        const { toast } = await import('sonner')
         toast.error(json.error ?? 'Nastala chyba. Skúste to znova.')
       } else {
         setSuccess(true)
         onSuccess?.()
       }
     } catch {
-      const { toast } = await import('sonner')
       toast.error('Nastala sieťová chyba. Skúste to znova.')
     } finally {
       setLoading(false)
