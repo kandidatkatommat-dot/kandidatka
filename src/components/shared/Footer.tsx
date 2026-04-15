@@ -22,7 +22,7 @@ export default function Footer() {
               <h4 className="text-xs font-semibold text-blue-400/70 uppercase tracking-[0.15em]">Termíny</h4>
               <ul className="space-y-2 text-blue-200/45">
                 <li>Nominácie: 7.–21. 4. 2026</li>
-                <li>Hlasovanie: 12.–15. 5. 2026</li>
+                <li>Hlasovanie: 12.–15. mája 2026</li>
                 <li>Funkčné obdobie: 2026–2029</li>
               </ul>
             </div>
@@ -83,7 +83,10 @@ export default function Footer() {
 
         <div className="flex flex-col sm:flex-row justify-between items-center gap-2 text-xs text-blue-200/25">
           <span>© 2026 Tomáš Mucha & Martin Buček · FEI VŠB-TUO, Ostrava</span>
-          <span>Akademický senát FEI · voľby 2026–2029</span>
+          <div className="flex items-center gap-4">
+            <a href="/privacy" className="text-blue-200/25 hover:text-blue-300 transition-colors">Ochrana súkromia</a>
+            <span>Akademický senát FEI · voľby 2026–2029</span>
+          </div>
         </div>
       </div>
     </footer>

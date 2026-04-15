@@ -19,14 +19,14 @@ const socials = [
   },
   {
     icon: MessageCircle,
-    label: 'WhatsApp / Signal',
+    label: 'Správa / E-mail',
     handle: 'Napíš priamo',
     href: 'mailto:mucha.bucek@fei.vsb.cz',
     gradient: 'from-green-500/10 via-teal-500/8 to-cyan-500/10',
     border: 'border-green-500/20 hover:border-green-400/40',
     iconColor: 'text-green-400',
     glow: 'hover:shadow-green-500/10',
-    description: 'Rýchly kontakt — na každú správu osobne odpovieme',
+    description: 'Napíš nám — na každú správu odpovieme osobne',
   },
   {
     icon: Mail,
@@ -87,7 +87,15 @@ export default function SocialSection() {
             <h3 className="text-2xl font-black text-white mb-2">Zostaň informovaný</h3>
             <p className="text-sm text-blue-200/50 mb-6">Dostávaj správy o dianí v senáte priamo do emailu.</p>
             {subStatus === 'success' ? (
-              <p className="text-green-400 font-semibold">✓ Prihlásený! Ďakujeme.</p>
+              <div className="flex flex-col items-center gap-3">
+                <p className="text-green-400 font-semibold">✓ Prihlásený! Ďakujeme.</p>
+                <button
+                  onClick={() => { setSubStatus('idle'); setEmail('') }}
+                  className="text-xs text-blue-400/50 hover:text-blue-300 transition-colors"
+                >
+                  Prihlásiť znova
+                </button>
+              </div>
             ) : (
               <>
                 <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-3 max-w-sm mx-auto">
@@ -104,7 +112,7 @@ export default function SocialSection() {
                     disabled={subStatus === 'loading'}
                     className="px-6 py-3 min-h-[44px] bg-gradient-to-br from-[#4f46e5] to-[#6d28d9] hover:from-[#6366f1] hover:to-[#7c3aed] text-white font-bold rounded-xl transition-all text-sm disabled:opacity-60 whitespace-nowrap"
                   >
-                    {subStatus === 'loading' ? '...' : 'Prihlásiť sa'}
+                    {subStatus === 'loading' ? 'Prihlasovanie...' : 'Prihlásiť sa'}
                   </button>
                 </form>
                 {subStatus === 'error' && (

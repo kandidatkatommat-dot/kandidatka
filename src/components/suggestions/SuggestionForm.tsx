@@ -213,7 +213,12 @@ export default function SuggestionForm({ onSuccess }: { onSuccess?: () => void }
               rows={5}
               className="bg-blue-500/5 border-blue-500/20 text-white placeholder:text-blue-300/30 focus-visible:ring-blue-500/50 resize-none"
             />
-            <div className="flex justify-end">
+            <div className="flex justify-between items-center">
+              {suggestion.trim().length > 0 && suggestion.trim().length < 10 ? (
+                <p className="text-xs text-blue-400/50">Minimálne 10 znakov ({10 - suggestion.trim().length} zostáva)</p>
+              ) : (
+                <span />
+              )}
               <span className={`text-xs ${remaining < 50 ? 'text-[#818cf8]' : 'text-blue-400/40'}`}>
                 {remaining} znakov zostáva
               </span>
