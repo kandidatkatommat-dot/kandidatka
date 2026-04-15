@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useTranslations } from 'next-intl'
 import { Menu, X } from '@/components/shared/Icons'
-import { Button } from '@/components/ui/button'
 import LanguageSwitcher from '@/components/shared/LanguageSwitcher'
 
 export default function Navbar() {
@@ -92,20 +91,11 @@ export default function Navbar() {
           })}
         </div>
 
-        {/* Language switcher + CTA + Hamburger */}
+        {/* Language switcher + Hamburger */}
         <div className="flex items-center gap-3">
           <div className="hidden md:flex items-center">
             <LanguageSwitcher />
           </div>
-          <a href="#podnety" className="hidden md:block">
-            <Button
-              size="sm"
-              data-cursor
-              className="bg-gradient-to-br from-[#4f46e5] to-[#6d28d9] hover:from-[#6366f1] hover:to-[#7c3aed] text-white border-0 shadow-lg shadow-[#4f46e5]/20 transition-all duration-200"
-            >
-              {t('cta')}
-            </Button>
-          </a>
           <button
             className="md:hidden p-3 min-w-[44px] min-h-[44px] flex items-center justify-center text-blue-200 hover:text-white"
             onClick={() => setMenuOpen((v) => !v)}
@@ -147,11 +137,6 @@ export default function Navbar() {
               <div className="flex items-center justify-center mt-3 mb-1">
                 <LanguageSwitcher />
               </div>
-              <a href="#podnety" onClick={() => setMenuOpen(false)}>
-                <Button className="w-full mt-1 bg-gradient-to-br from-[#4f46e5] to-[#6d28d9] hover:from-[#6366f1] hover:to-[#7c3aed] text-white border-0">
-                  {t('cta')}
-                </Button>
-              </a>
             </div>
           </motion.div>
         )}

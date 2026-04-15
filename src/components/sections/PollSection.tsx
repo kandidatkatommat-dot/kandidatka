@@ -3,15 +3,14 @@
 import { useState, useEffect, memo } from 'react'
 import useSWR from 'swr'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useTranslations } from 'next-intl'
 import AnimatedSection from '@/components/shared/AnimatedSection'
 import type { Poll, PollOption } from '@/types/index'
 
-/* Module-level animation variants */
 const votingVariants = { initial: { opacity: 0 }, animate: { opacity: 1 }, exit: { opacity: 0 } }
 const resultsVariants = { initial: { opacity: 0, y: 10 }, animate: { opacity: 1, y: 0 } }
 
-/* Hoisted bar backgrounds — stable references, not recreated per PollBar render */
-const BAR_WINNER_BG = 'linear-gradient(90deg, #4f46e5, #6d28d9)'
+const BAR_WINNER_BG  = 'linear-gradient(90deg, #4f46e5, #6d28d9)'
 const BAR_DEFAULT_BG = 'linear-gradient(90deg, #3b82f6, #60a5fa)'
 
 const PollBar = memo(function PollBar({ option, total, isWinner }: { option: PollOption; total: number; isWinner: boolean }) {
@@ -40,6 +39,7 @@ const PollBar = memo(function PollBar({ option, total, isWinner }: { option: Pol
 const fetcher = (url: string) => fetch(url).then(r => r.json())
 
 export default function PollSection() {
+  const t = useTranslations('poll')
   const { data, isLoading } = useSWR('/api/polls/active', fetcher, {
     revalidateOnFocus: false,
     dedupingInterval: 60_000,
@@ -61,10 +61,7 @@ export default function PollSection() {
     setLocalCounts(counts)
   }, [data])
 
-
-  const loading = isLoading
-
-  const total = Object.values(localCounts).reduce((a, b) => a + b, 0)
+  const total    = Object.values(localCounts).reduce((a, b) => a + b, 0)
   const maxCount = Math.max(...Object.values(localCounts), 1)
 
   async function handleVote() {
@@ -85,18 +82,15 @@ export default function PollSection() {
         localStorage.setItem('poll_voted', '1')
       }
     } catch {
-      // network error — silently ignore, user can retry
+      // network error — silently ignore
     } finally {
       setSubmitting(false)
     }
   }
 
-  if (loading) {
+  if (isLoading) {
     return (
-      <section
-        className="relative py-20 sm:py-28"
-        style={{ background: 'linear-gradient(180deg, #060f1e 0%, #04101f 100%)' }}
-      >
+      <section className="relative py-20 sm:py-28" style={{ background: 'linear-gradient(180deg, #060f1e 0%, #04101f 100%)' }}>
         <div className="max-w-2xl mx-auto px-4 sm:px-6 pt-20">
           <div className="animate-pulse space-y-4">
             <div className="h-4 w-32 rounded bg-white/5 mx-auto" />
@@ -109,18 +103,14 @@ export default function PollSection() {
   }
 
   if (!poll) {
-    // Data loaded but no active poll — show a subtle placeholder instead of nothing
     return (
-      <section
-        className="relative py-20 sm:py-28"
-        style={{ background: 'linear-gradient(180deg, #060f1e 0%, #04101f 100%)' }}
-      >
+      <section className="relative py-20 sm:py-28" style={{ background: 'linear-gradient(180deg, #060f1e 0%, #04101f 100%)' }}>
         <div className="section-divider mb-0" />
         <div className="max-w-2xl mx-auto px-4 sm:px-6 pt-20 text-center">
           <span className="inline-block text-xs font-semibold text-blue-400/40 uppercase tracking-[0.2em]">
-            Živý prieskum
+            {t('label')}
           </span>
-          <p className="text-blue-200/30 text-sm mt-3">Prieskum momentálne nie je aktívny.</p>
+          <p className="text-blue-200/30 text-sm mt-3">{t('inactive')}</p>
         </div>
       </section>
     )
@@ -129,34 +119,28 @@ export default function PollSection() {
   const options = poll.options ?? []
 
   return (
-    <section
-      className="relative py-20 sm:py-28"
-      style={{ background: 'linear-gradient(180deg, #060f1e 0%, #04101f 100%)' }}
-    >
+    <section className="relative py-20 sm:py-28" style={{ background: 'linear-gradient(180deg, #060f1e 0%, #04101f 100%)' }}>
       <div className="section-divider mb-0" />
       <div className="max-w-2xl mx-auto px-4 sm:px-6 pt-20">
         <AnimatedSection className="text-center mb-10">
           <span className="inline-block text-xs font-semibold text-blue-400 uppercase tracking-[0.2em] mb-3">
-            Živý prieskum
+            {t('label')}
           </span>
-          <h2
-            className="text-3xl sm:text-4xl font-black text-white mb-3"
-            style={{ fontFamily: 'var(--font-cal, inherit)' }}
-          >
+          <h2 className="text-3xl sm:text-4xl font-black text-white mb-3" style={{ fontFamily: 'var(--font-cal, inherit)' }}>
             {poll.question}
           </h2>
-          {total > 0 && <p className="text-sm text-blue-400/50">{total} odpovedí od študentov FEI</p>}
+          {total > 0 && (
+            <p className="text-sm text-blue-400/50">
+              {t('responses', { count: total })}
+            </p>
+          )}
         </AnimatedSection>
 
         <AnimatedSection>
           <div className="glass rounded-3xl p-6 sm:p-8">
             <AnimatePresence mode="wait">
               {!voted ? (
-                <motion.div
-                  key="voting"
-                  {...votingVariants}
-                  className="space-y-3"
-                >
+                <motion.div key="voting" {...votingVariants} className="space-y-3">
                   {options.map((option) => (
                     <button
                       key={option.id}
@@ -168,11 +152,9 @@ export default function PollSection() {
                       }`}
                     >
                       <div className="flex items-center gap-3">
-                        <div
-                          className={`w-4 h-4 rounded-full border-2 flex-shrink-0 transition-colors ${
-                            selectedId === option.id ? 'border-[#4f46e5] bg-[#4f46e5]' : 'border-blue-500/30'
-                          }`}
-                        />
+                        <div className={`w-4 h-4 rounded-full border-2 flex-shrink-0 transition-colors ${
+                          selectedId === option.id ? 'border-[#4f46e5] bg-[#4f46e5]' : 'border-blue-500/30'
+                        }`} />
                         <span className="text-sm font-medium">{option.option_text}</span>
                       </div>
                     </button>
@@ -182,19 +164,13 @@ export default function PollSection() {
                     disabled={!selectedId || submitting}
                     className="w-full mt-2 py-3.5 rounded-2xl bg-gradient-to-br from-[#4f46e5] to-[#6d28d9] hover:from-[#6366f1] hover:to-[#7c3aed] disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold text-sm transition-all duration-200 hover:scale-[1.02]"
                   >
-                    {submitting ? 'Odosielam...' : 'Hlasovať →'}
+                    {submitting ? t('submitting') : t('submit')}
                   </button>
                 </motion.div>
               ) : (
-                <motion.div
-                  key="results"
-                  {...resultsVariants}
-                  className="space-y-4"
-                  aria-live="polite"
-                  aria-label="Výsledky prieskumu"
-                >
+                <motion.div key="results" {...resultsVariants} className="space-y-4" aria-live="polite" aria-label={t('results_title')}>
                   <p className="text-xs text-green-400/70 uppercase tracking-widest mb-5 text-center">
-                    ✓ Výsledky prieskumu
+                    {t('results_title')}
                   </p>
                   {options.map((option) => (
                     <PollBar
@@ -205,7 +181,7 @@ export default function PollSection() {
                     />
                   ))}
                   <p className="text-xs text-blue-400/40 text-center mt-4">
-                    Tieto výsledky sú súčasťou nášho programu
+                    {t('results_note')}
                   </p>
                 </motion.div>
               )}

@@ -79,6 +79,45 @@
     "p6_tag": "Dialogue",
     "p6_detail": "Every semester we'll organise an open meeting with students — where you can ask anything about senate activity. First one within 3 months of election."
   },
+  "cube": {
+    "aria_label": "Promises — {face}. Navigate with arrows or swipe.",
+    "dot_label": "Side {n}",
+    "faces": [
+      { "label": "Transparency", "cells": [
+        {"title":"Monthly reports","sub":"Senate decision summary every month"},
+        {"title":"Public voting","sub":"Every vote we cast will be logged"},
+        {"title":"Open channel","sub":"Student suggestions throughout the term"},
+        {"title":"No secret deals","sub":"All decisions available 24/7"}
+      ]},
+      { "label": "Academic rights", "cells": [
+        {"title":"Fairer exam regulations","sub":"Revision of retake policies"},
+        {"title":"Voice in the budget","sub":"Student priorities in finance"},
+        {"title":"Transparent grading","sub":"Clear criteria, not arbitrariness"},
+        {"title":"Formal proposals","sub":"Initiatives submitted to the senate"}
+      ]},
+      { "label": "Digitalisation", "cells": [
+        {"title":"Better digital tools","sub":"Modernising portals and e-learning"},
+        {"title":"System upgrades","sub":"EDISON and other platforms"},
+        {"title":"Mobile solutions","sub":"Functionality on all devices"},
+        {"title":"Your suggestions","sub":"We implement what you actually need"}
+      ]},
+      { "label": "Dialogue", "cells": [
+        {"title":"Public Q&A every semester","sub":"Open meetings with senators"},
+        {"title":"Direct contact","sub":"tomas.mucha.st@vsb.cz"},
+        {"title":"FEI community","sub":"Discord, consultations, feedback"},
+        {"title":"Results published","sub":"What we achieved — on this website"}
+      ]}
+    ]
+  },
+  "poll": {
+    "label": "Live poll",
+    "responses": "{count} responses from FEI students",
+    "submit": "Vote →",
+    "submitting": "Submitting...",
+    "results_title": "✓ Poll results",
+    "results_note": "These results are part of our programme",
+    "inactive": "No poll is currently active."
+  },
   "insights": {
     "label": "Data & Priorities",
     "heading": "What does FEI really need?",
@@ -90,8 +129,10 @@
     "seg4": "Campus & spaces",
     "seg5": "Communication",
     "stat_suggestions_label": "suggestions collected",
-    "stat_years_label": "year mandate",
-    "stat_seats_label": "student seats in senate",
+    "stat_years_suffix": " yrs",
+    "stat_years_label": "mandate length",
+    "stat_seats_suffix": " seats",
+    "stat_seats_label": "for students in senate",
     "stat_public_label": "commitments are public"
   },
   "testimonials": {

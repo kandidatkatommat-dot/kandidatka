@@ -155,10 +155,10 @@ export default function InsightsSection() {
   })()
 
   const stats = [
-    { n: suggestionCount, s: '',       label: t('stat_suggestions_label'), color: 'text-blue-400' },
-    { n: 3,               s: ' roky',  label: t('stat_years_label'),       color: 'text-[#818cf8]' },
-    { n: 5,               s: ' miest', label: t('stat_seats_label'),       color: 'text-teal-400' },
-    { n: 100,             s: '%',      label: t('stat_public_label'),      color: 'text-purple-400' },
+    { n: suggestionCount, s: '',                      label: t('stat_suggestions_label'), color: 'text-blue-400' },
+    { n: 3,               s: t('stat_years_suffix'),  label: t('stat_years_label'),       color: 'text-[#818cf8]' },
+    { n: 5,               s: t('stat_seats_suffix'),  label: t('stat_seats_label'),       color: 'text-teal-400' },
+    { n: 100,             s: '%',                     label: t('stat_public_label'),      color: 'text-purple-400' },
   ]
 
   return (

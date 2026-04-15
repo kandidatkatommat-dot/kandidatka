@@ -79,6 +79,45 @@
     "p6_tag": "Dialóg",
     "p6_detail": "Každý semester zorganizujeme otvorené stretnutie so študentmi — kde sa môžete pýtať čokoľvek o dianí v senáte. Prvé do 3 mesiacov od zvolenia."
   },
+  "cube": {
+    "aria_label": "Sľuby — {face}. Naviguj šípkami alebo swajpom.",
+    "dot_label": "Strana {n}",
+    "faces": [
+      { "label": "Transparentnosť", "cells": [
+        {"title":"Mesačné správy","sub":"Súhrn rozhodnutí senátu každý mesiac"},
+        {"title":"Verejné hlasovanie","sub":"Každé naše hlasovanie bude logované"},
+        {"title":"Otvorený kanál","sub":"Podnety od študentov celý mandát"},
+        {"title":"Žiadne tajné dohody","sub":"Všetky rozhodnutia dostupné 24/7"}
+      ]},
+      { "label": "Akademické práva", "cells": [
+        {"title":"Férovejší skúšobný poriadok","sub":"Revízia opravných termínov"},
+        {"title":"Hlas pri rozpočte","sub":"Priority študentov vo financiách"},
+        {"title":"Transparentné hodnotenie","sub":"Jasné kritériá, nie ľubovôľa"},
+        {"title":"Formálne návrhy","sub":"Iniciatívy predložené senátu"}
+      ]},
+      { "label": "Digitalizácia", "cells": [
+        {"title":"Lepšie digitálne nástroje","sub":"Modernizácia portálov a e-learningu"},
+        {"title":"Upgrade systémov","sub":"EDISON a ďalšie platformy"},
+        {"title":"Mobilné riešenia","sub":"Funkčnosť na všetkých zariadeniach"},
+        {"title":"Návrhy od vás","sub":"Implementujeme čo reálne potrebujete"}
+      ]},
+      { "label": "Dialóg", "cells": [
+        {"title":"Verejné Q&A každý semester","sub":"Otvorené stretnutia so senátormi"},
+        {"title":"Priamy kontakt","sub":"tomas.mucha.st@vsb.cz"},
+        {"title":"Komunita FEI","sub":"Discord, konzultácie, feedback"},
+        {"title":"Výsledky zverejnené","sub":"Čo sa podarilo — na tomto webe"}
+      ]}
+    ]
+  },
+  "poll": {
+    "label": "Živý prieskum",
+    "responses": "{count} odpovedí od študentov FEI",
+    "submit": "Hlasovať →",
+    "submitting": "Odosielam...",
+    "results_title": "✓ Výsledky prieskumu",
+    "results_note": "Tieto výsledky sú súčasťou nášho programu",
+    "inactive": "Prieskum momentálne nie je aktívny."
+  },
   "insights": {
     "label": "Dáta & Priority",
     "heading": "Čo FEI naozaj potrebuje?",
@@ -90,7 +129,9 @@
     "seg4": "Kampus & priestory",
     "seg5": "Komunikácia",
     "stat_suggestions_label": "zozbieraných podnetov",
+    "stat_years_suffix": " roky",
     "stat_years_label": "funkčného mandátu",
+    "stat_seats_suffix": " miest",
     "stat_seats_label": "pre študentov v senáte",
     "stat_public_label": "záväzkov je verejných"
   },
