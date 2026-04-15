@@ -132,7 +132,7 @@ export default function TestimonialsSection() {
   const t = testimonials[cur]
 
   return (
-    <section className="relative py-28 sm:py-36" style={{ background: '#04101f' }}>
+    <section className="relative py-28 sm:py-36 overflow-hidden" style={{ background: '#04101f' }}>
       <div className="section-divider mb-0" />
       <div className="aurora-orb w-[40vw] h-[40vw] bottom-[-10vw] right-[-10vw] opacity-40"
         style={{ background: 'radial-gradient(circle, rgba(79,70,229,0.08) 0%, transparent 70%)' }} aria-hidden />
@@ -154,8 +154,8 @@ export default function TestimonialsSection() {
         {/* ── NOTEBOOK ──────────────────────────────────────── */}
         <AnimatedSection>
           <div
-            className="relative mx-auto select-none"
-            style={{ maxWidth: 680 }}
+            className="relative mx-auto select-none overflow-hidden"
+            style={{ maxWidth: 680, paddingBottom: 12 }}
             onMouseEnter={() => setPaused(true)}
             onMouseLeave={() => setPaused(false)}
           >
