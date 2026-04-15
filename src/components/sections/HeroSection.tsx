@@ -7,16 +7,19 @@ import { Button } from '@/components/ui/button'
 import { ChevronDown, Mail } from '@/components/shared/Icons'
 
 /* ── Countdown ─────────────────────────────────────────────── */
-const VOTE_DATE = new Date('2026-05-12T08:00:00')
+const VOTE_START = new Date('2026-05-12T08:00:00')
+const VOTE_END   = new Date('2026-05-15T20:00:00')
+
+type CountdownPhase = 'countdown' | 'voting' | 'ended'
 
 function useCountdown() {
   const [mounted, setMounted] = useState(false)
-  const [diff, setDiff] = useState(0)
+  const [now, setNow] = useState(0)
   useEffect(() => {
     setMounted(true)
-    setDiff(VOTE_DATE.getTime() - Date.now())
+    setNow(Date.now())
     let id: ReturnType<typeof setInterval> | null = null
-    const tick = () => setDiff(VOTE_DATE.getTime() - Date.now())
+    const tick = () => setNow(Date.now())
     const start = () => { if (!id) id = setInterval(tick, 1000) }
     const stop  = () => { if (id) { clearInterval(id); id = null } }
     const onVis = () => document.hidden ? stop() : start()
@@ -24,14 +27,16 @@ function useCountdown() {
     document.addEventListener('visibilitychange', onVis)
     return () => { stop(); document.removeEventListener('visibilitychange', onVis) }
   }, [])
-  if (!mounted) return { d: 0, h: 0, m: 0, s: 0, mounted: false }
-  const total = Math.max(0, diff)
+  if (!mounted) return { d: 0, h: 0, m: 0, s: 0, mounted: false, phase: 'countdown' as CountdownPhase }
+  const phase: CountdownPhase = now >= VOTE_END.getTime() ? 'ended' : now >= VOTE_START.getTime() ? 'voting' : 'countdown'
+  const total = Math.max(0, VOTE_START.getTime() - now)
   return {
     d: Math.floor(total / 86400000),
     h: Math.floor((total % 86400000) / 3600000),
     m: Math.floor((total % 3600000) / 60000),
     s: Math.floor((total % 60000) / 1000),
     mounted: true,
+    phase,
   }
 }
 
@@ -136,7 +141,7 @@ const item = {
 
 /* ── Component ─────────────────────────────────────────────── */
 export default function HeroSection() {
-  const { d, h, m, s, mounted } = useCountdown()
+  const { d, h, m, s, mounted, phase } = useCountdown()
   const sectionRef = useRef<HTMLElement>(null)
   const [isTouch, setIsTouch] = useState(false)
   const [isChrome, setIsChrome] = useState(false)
@@ -237,18 +242,33 @@ export default function HeroSection() {
           {/* Countdown */}
           {mounted && (
             <motion.div variants={item} className="flex flex-col items-center gap-4">
-              <p className="text-[11px] text-blue-400/40 uppercase tracking-[0.25em] font-medium">
-                Do začiatku hlasovania zostáva
-              </p>
-              <div className="flex items-start gap-2 sm:gap-4">
-                <CountUnit value={d} label="dní" />
-                <span className="text-blue-400/25 text-2xl font-thin mt-5">:</span>
-                <CountUnit value={h} label="hodín" />
-                <span className="text-blue-400/25 text-2xl font-thin mt-5">:</span>
-                <CountUnit value={m} label="minút" />
-                <span className="text-blue-400/25 text-2xl font-thin mt-5">:</span>
-                <CountUnit value={s} label="sekúnd" />
-              </div>
+              {phase === 'countdown' && (
+                <>
+                  <p className="text-[11px] text-blue-400/40 uppercase tracking-[0.25em] font-medium">
+                    Do začiatku hlasovania zostáva
+                  </p>
+                  <div className="flex items-start gap-2 sm:gap-4">
+                    <CountUnit value={d} label="dní" />
+                    <span className="text-blue-400/25 text-2xl font-thin mt-5">:</span>
+                    <CountUnit value={h} label="hodín" />
+                    <span className="text-blue-400/25 text-2xl font-thin mt-5">:</span>
+                    <CountUnit value={m} label="minút" />
+                    <span className="text-blue-400/25 text-2xl font-thin mt-5">:</span>
+                    <CountUnit value={s} label="sekúnd" />
+                  </div>
+                </>
+              )}
+              {phase === 'voting' && (
+                <div className="flex items-center gap-3 px-6 py-3 rounded-2xl glass border border-green-500/20">
+                  <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse flex-shrink-0" />
+                  <span className="text-sm font-semibold text-green-300">Hlasovanie prebieha — 12.–15. mája 2026</span>
+                </div>
+              )}
+              {phase === 'ended' && (
+                <div className="flex items-center gap-3 px-6 py-3 rounded-2xl glass border border-blue-500/20">
+                  <span className="text-sm font-semibold text-blue-300/70">Ďakujeme za účasť vo voľbách 2026</span>
+                </div>
+              )}
             </motion.div>
           )}
         </motion.div>

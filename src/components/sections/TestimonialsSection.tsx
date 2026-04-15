@@ -95,6 +95,11 @@ export default function TestimonialsSection() {
     setCur((c) => (c + d + testimonials.length) % testimonials.length)
   }, [])
 
+  const jumpTo = useCallback((i: number) => {
+    setDir(i > cur ? 1 : -1)
+    setCur(i)
+  }, [cur])
+
   useEffect(() => {
     const start = () => {
       if (timerRef.current) return
@@ -317,6 +322,24 @@ export default function TestimonialsSection() {
               </div>
             </div>
 
+          </div>
+
+          {/* Progress dots */}
+          <div className="flex justify-center items-center gap-2 mt-5" role="tablist" aria-label="Navigácia citátov">
+            {testimonials.map((_, i) => (
+              <button
+                key={i}
+                role="tab"
+                aria-selected={i === cur}
+                aria-label={`Citát ${i + 1} z ${testimonials.length}`}
+                onClick={() => jumpTo(i)}
+                className={`rounded-full transition-all duration-300 ${
+                  i === cur
+                    ? 'w-5 h-2 bg-blue-400'
+                    : 'w-2 h-2 bg-blue-400/25 hover:bg-blue-400/50'
+                }`}
+              />
+            ))}
           </div>
         </AnimatedSection>
 

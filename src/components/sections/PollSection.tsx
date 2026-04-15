@@ -108,7 +108,23 @@ export default function PollSection() {
     )
   }
 
-  if (!poll) return null
+  if (!poll) {
+    // Data loaded but no active poll — show a subtle placeholder instead of nothing
+    return (
+      <section
+        className="relative py-20 sm:py-28"
+        style={{ background: 'linear-gradient(180deg, #060f1e 0%, #04101f 100%)' }}
+      >
+        <div className="section-divider mb-0" />
+        <div className="max-w-2xl mx-auto px-4 sm:px-6 pt-20 text-center">
+          <span className="inline-block text-xs font-semibold text-blue-400/40 uppercase tracking-[0.2em]">
+            Živý prieskum
+          </span>
+          <p className="text-blue-200/30 text-sm mt-3">Prieskum momentálne nie je aktívny.</p>
+        </div>
+      </section>
+    )
+  }
 
   const options = poll.options ?? []
 

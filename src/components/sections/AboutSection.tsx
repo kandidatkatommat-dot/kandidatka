@@ -54,9 +54,9 @@ function CandidateCard({ c, direction, accentIdx }: { c: Candidate; direction: '
   return (
     <AnimatedSection direction={direction}>
       <motion.div
-        className="glass glass-hover rounded-3xl p-6 sm:p-8 h-full flex flex-col gap-6 group transition-transform duration-300 hover:-translate-y-1"
+        className="glass glass-hover rounded-3xl p-6 sm:p-8 h-full flex flex-col gap-6 group"
         style={{ borderTop: `2px solid ${accent.border}` }}
-        whileHover={{ scale: 1.015 }}
+        whileHover={{ scale: 1.015, y: -4 }}
         transition={{ type: 'spring', stiffness: 280, damping: 22 }}
       >
         {/* Avatar row */}

@@ -25,6 +25,7 @@ export default function SuggestionForm({ onSuccess }: { onSuccess?: () => void }
   const [suggestion, setSuggestion] = useState('')
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
+  const [categoryTouched, setCategoryTouched] = useState(false)
   const honeypotRef = useRef<HTMLInputElement>(null)
 
   const remaining = MAX_LEN - suggestion.length
@@ -34,6 +35,7 @@ export default function SuggestionForm({ onSuccess }: { onSuccess?: () => void }
     setCategory('')
     setSuggestion('')
     setSuccess(false)
+    setCategoryTouched(false)
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -183,8 +185,12 @@ export default function SuggestionForm({ onSuccess }: { onSuccess?: () => void }
             <label className="text-xs font-medium text-blue-300/70 uppercase tracking-widest">
               Kategória *
             </label>
-            <Select value={category} onValueChange={(v) => setCategory(v as SuggestionCategory)}>
-              <SelectTrigger className="bg-blue-500/5 border-blue-500/20 text-white focus:ring-blue-500/50">
+            <Select value={category} onValueChange={(v) => { setCategory(v as SuggestionCategory); setCategoryTouched(true) }}>
+              <SelectTrigger className={`bg-blue-500/5 text-white focus:ring-blue-500/50 transition-colors ${
+                categoryTouched && !category
+                  ? 'border-amber-500/50 ring-1 ring-amber-500/30'
+                  : 'border-blue-500/20'
+              }`}>
                 <SelectValue placeholder="Vyber kategóriu..." />
               </SelectTrigger>
               <SelectContent className="bg-[#0a1628] border-blue-500/20">
@@ -228,6 +234,7 @@ export default function SuggestionForm({ onSuccess }: { onSuccess?: () => void }
           <Button
             type="submit"
             disabled={loading || !category || suggestion.trim().length < 10}
+            onClick={() => { if (!category) setCategoryTouched(true) }}
             className="w-full bg-gradient-to-br from-[#4f46e5] to-[#6d28d9] hover:from-[#6366f1] hover:to-[#7c3aed] text-white border-0 shadow-lg shadow-[#4f46e5]/25 py-5 font-semibold transition-all duration-200 disabled:opacity-40 hover:scale-[1.02]"
           >
             {loading ? 'Odosielam...' : 'Odoslať podnet'}

@@ -1,14 +1,33 @@
 'use client'
 
+import { useState } from 'react'
 import useSWR from 'swr'
 import { Skeleton } from '@/components/ui/skeleton'
 import SuggestionCard from './SuggestionCard'
 import { Lightbulb } from '@/components/shared/Icons'
-import type { Suggestion } from '@/types'
+import type { Suggestion, SuggestionCategory } from '@/types'
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json())
 
+const CATEGORIES: SuggestionCategory[] = ['Výuka', 'Digitalizácia', 'Kampus', 'Skúšky', 'Iné']
+
+const categoryColors: Record<SuggestionCategory, { active: string; inactive: string }> = {
+  Výuka:        { active: 'bg-blue-500/20 text-blue-300 border-blue-500/40',     inactive: 'text-blue-400/50 border-blue-500/15 hover:border-blue-500/30 hover:text-blue-300' },
+  Digitalizácia:{ active: 'bg-purple-500/20 text-purple-300 border-purple-500/40', inactive: 'text-purple-400/50 border-purple-500/15 hover:border-purple-500/30 hover:text-purple-300' },
+  Kampus:       { active: 'bg-green-500/20 text-green-300 border-green-500/40',   inactive: 'text-green-400/50 border-green-500/15 hover:border-green-500/30 hover:text-green-300' },
+  Skúšky:       { active: 'bg-[#4f46e5]/20 text-[#a5b4fc] border-[#4f46e5]/40',  inactive: 'text-[#818cf8]/50 border-[#4f46e5]/15 hover:border-[#4f46e5]/30 hover:text-[#a5b4fc]' },
+  Iné:          { active: 'bg-slate-500/20 text-slate-300 border-slate-500/40',   inactive: 'text-slate-400/50 border-slate-500/15 hover:border-slate-500/30 hover:text-slate-300' },
+}
+
+function pluralize(n: number) {
+  if (n === 1) return 'podnet'
+  if (n < 5) return 'podnety'
+  return 'podnetov'
+}
+
 export default function SuggestionWall() {
+  const [activeFilter, setActiveFilter] = useState<SuggestionCategory | null>(null)
+
   const { data, error, isLoading } = useSWR<{ data: Suggestion[]; count: number }>(
     '/api/suggestions',
     fetcher,
@@ -37,9 +56,9 @@ export default function SuggestionWall() {
     )
   }
 
-  const suggestions = data?.data ?? []
+  const all = data?.data ?? []
 
-  if (suggestions.length === 0) {
+  if (all.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-16 text-center gap-4">
         <div className="w-12 h-12 rounded-2xl bg-blue-500/10 flex items-center justify-center">
@@ -52,19 +71,64 @@ export default function SuggestionWall() {
     )
   }
 
+  const filtered = activeFilter ? all.filter((s) => s.category === activeFilter) : all
+
+  // Only show category tabs that have at least one suggestion
+  const presentCategories = CATEGORIES.filter((c) => all.some((s) => s.category === c))
+
   return (
     <div>
-      <div className="flex items-center gap-2 mb-6">
+      {/* Header row */}
+      <div className="flex items-center justify-between gap-2 mb-4 flex-wrap">
         <span className="text-sm text-blue-300/60 font-medium" aria-live="polite" aria-atomic="true">
-          {suggestions.length} {suggestions.length === 1 ? 'podnet' : suggestions.length < 5 ? 'podnety' : 'podnetov'} od študentov
+          {filtered.length} {pluralize(filtered.length)}{activeFilter ? ` · ${activeFilter}` : ' od študentov'}
         </span>
-        <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" aria-hidden />
+        <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse flex-shrink-0" aria-hidden />
       </div>
-      <div className="columns-1 sm:columns-2 gap-4">
-        {suggestions.map((s) => (
-          <SuggestionCard key={s.id} suggestion={s} />
-        ))}
-      </div>
+
+      {/* Filter tabs */}
+      {presentCategories.length > 1 && (
+        <div className="flex flex-wrap gap-1.5 mb-5" role="group" aria-label="Filter podnetov">
+          <button
+            onClick={() => setActiveFilter(null)}
+            className={`px-3 py-1 text-xs font-medium rounded-full border transition-all duration-200 ${
+              activeFilter === null
+                ? 'bg-blue-500/15 text-blue-300 border-blue-500/35'
+                : 'text-blue-400/50 border-blue-500/15 hover:border-blue-500/30 hover:text-blue-300'
+            }`}
+          >
+            Všetky
+          </button>
+          {presentCategories.map((c) => {
+            const colors = categoryColors[c]
+            const isActive = activeFilter === c
+            return (
+              <button
+                key={c}
+                onClick={() => setActiveFilter(isActive ? null : c)}
+                className={`px-3 py-1 text-xs font-medium rounded-full border transition-all duration-200 ${
+                  isActive ? colors.active : colors.inactive
+                }`}
+              >
+                {c}
+              </button>
+            )
+          })}
+        </div>
+      )}
+
+      {/* Cards */}
+      {filtered.length === 0 ? (
+        <div className="py-10 text-center">
+          <p className="text-blue-200/40 text-sm">Žiadne podnety v kategórii „{activeFilter}".</p>
+        </div>
+      ) : (
+        <div className="columns-1 sm:columns-2 gap-4">
+          {filtered.map((s) => (
+            <SuggestionCard key={s.id} suggestion={s} />
+          ))}
+        </div>
+      )}
     </div>
   )
 }

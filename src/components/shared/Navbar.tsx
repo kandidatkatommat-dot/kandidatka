@@ -120,16 +120,23 @@ export default function Navbar() {
             transition={{ duration: 0.3 }}
           >
             <div className="px-4 pb-4 pt-4 flex flex-col gap-1">
-              {links.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  className="px-4 py-4 text-sm text-blue-100/80 hover:text-white hover:bg-blue-500/10 rounded-xl transition-colors"
-                  onClick={() => setMenuOpen(false)}
-                >
-                  {link.label}
-                </a>
-              ))}
+              {links.map((link) => {
+                const isActive = activeSection === link.href.slice(1)
+                return (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    className={`px-4 py-4 text-sm rounded-xl transition-colors ${
+                      isActive
+                        ? 'text-white bg-blue-500/12 font-medium'
+                        : 'text-blue-100/80 hover:text-white hover:bg-blue-500/10'
+                    }`}
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    {link.label}
+                  </a>
+                )
+              })}
               <a href="#podnety" onClick={() => setMenuOpen(false)}>
                 <Button className="w-full mt-2 bg-gradient-to-br from-[#4f46e5] to-[#6d28d9] hover:from-[#6366f1] hover:to-[#7c3aed] text-white border-0">
                   Pošli podnet
