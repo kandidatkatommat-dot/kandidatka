@@ -79,7 +79,7 @@ export default function VoteSection() {
                   whileHover={{ scale: 1.04 }}
                   transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                 >
-                  <a href="https://www.vsb.cz/volby-as" target="_blank" rel="noopener noreferrer">
+                  <a href="https://www.vsb.cz/cs/univerzita/organizacni-struktura/akademicky-senat/volby-as-2026/" target="_blank" rel="noopener noreferrer">
                     <Button
                       size="lg"
                       className="bg-gradient-to-br from-[#4f46e5] to-[#6d28d9] hover:from-[#6366f1] hover:to-[#7c3aed] text-white border-0 shadow-xl shadow-[#6d28d9]/30 px-8 py-6 text-base font-bold transition-all duration-200 hover:scale-[1.03] w-full sm:w-auto"

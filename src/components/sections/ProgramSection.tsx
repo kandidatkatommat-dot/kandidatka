@@ -55,7 +55,7 @@ const promises = [
     tag: 'Digitalizácia',
     accent: 'blue',
     span: '',
-    detail: 'Budeme presadzovať upgrade digitálnych nástrojov — od IS/STAG po e-learningové platformy. Konkrétne návrhy predložíme na základe podnetov od vás.',
+    detail: 'Budeme presadzovať upgrade digitálnych nástrojov — od EDISON-u po e-learningové platformy. Konkrétne návrhy predložíme na základe podnetov od vás.',
     link: '#podnety',
   },
   {

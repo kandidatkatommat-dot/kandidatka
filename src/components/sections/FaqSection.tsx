@@ -19,7 +19,7 @@ const faqs = [
   },
   {
     q: 'Prečo dvaja kandidáti spolu?',
-    a: 'Senát FEI má 5 miest pre študentov (50 % zastúpenia). Silnejší spoločný program a koordinovaný postup pri hlasovaní v senáte prináša reálne väčšie šance na presadenie zmien. Dvaja informovaní senátori dokážu efektívnejšie zbierať podnety od rôznych skupín študentov.',
+    a: 'Senát FEI má 5 miest pre študentov z celkových 13 členov. Silnejší spoločný program a koordinovaný postup pri hlasovaní v senáte prináša reálne väčšie šance na presadenie zmien. Dvaja informovaní senátori dokážu efektívnejšie zbierať podnety od rôznych skupín študentov.',
   },
   {
     q: 'Čo bude s podnetmi, ktoré pošleme cez túto stránku?',
