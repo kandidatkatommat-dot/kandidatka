@@ -76,8 +76,8 @@ export default function VoteSection() {
               </p>
               <div className="flex flex-col sm:flex-row gap-3">
                 <motion.div
-                  whileHover={{ x: [0, -7, 7, -7, 7, -4, 4, 0] }}
-                  transition={{ duration: 0.55, ease: 'easeInOut' }}
+                  whileHover={{ scale: 1.04 }}
+                  transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                 >
                   <a href="https://www.vsb.cz/volby-as" target="_blank" rel="noopener noreferrer">
                     <Button

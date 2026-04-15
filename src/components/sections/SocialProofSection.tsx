@@ -5,15 +5,15 @@ import { motion } from 'framer-motion'
 import AnimatedSection from '@/components/shared/AnimatedSection'
 
 const cards = [
-  { quote: 'Konečně někdo bere vážně digitalizaci na FEI. Čekáme na to celé studium.', name: 'Marek K.', year: '3. ročník', dept: 'Informatika', color: '#3b82f6' },
-  { quote: 'Osobně jsem jim napsal přes web a odpověděli do hodiny. Přesně ten přístup, jaký od senátorů čekám.', name: 'Jana P.', year: '2. ročník', dept: 'Elektrotechnika', color: '#06b6d4' },
-  { quote: 'Revize zkušebního řádu je něco, na co čekáme hodně dlouho. Snad to konečně prosadí.', name: 'Lukáš M.', year: 'Ing. 1. ročník', dept: 'Kybernetika', color: '#8b5cf6' },
-  { quote: 'Transparentné správy zo senátu by boli revolúcia. Doteraz nikto nevedel, čo sa tam rozhoduje.', name: 'Simona B.', year: 'Ing. 2. ročník', dept: 'Mechatronika', color: '#4f46e5' },
-  { quote: 'Verejné Q&A každý semester? To by zmenilo všetko. Nakoniec by sme vedeli, čo sa deje v senáte.', name: 'Rastislav D.', year: '2. ročník', dept: 'Informatika', color: '#10b981' },
-  { quote: 'Kampaň s konkrétnym programom. Nie len prázdne sľuby — skutočné kroky, ktoré senát môže urobiť.', name: 'Tomáš H.', year: '3. ročník', dept: 'Informatika', color: '#0ea5e9' },
-  { quote: "Finally, candidates who actually address real issues. Better digital tools and transparent decisions.", name: 'Priya M.', year: '2nd year, Erasmus', dept: 'Computer Science', color: '#06b6d4' },
-  { quote: "I didn't know how the academic senate worked before. Now I do — and I'm voting.", name: 'Lucas W.', year: '3rd year, Exchange', dept: 'Electronics', color: '#818cf8' },
-  { quote: 'Verejné Q&A stretnutia so senátormi sú skvelý nápad. Na iných školách to funguje skvele.', name: 'Ondřej P.', year: '2. ročník Ing.', dept: 'Telekomunikácie', color: '#3b82f6' },
+  { quote: 'Konečně někdo bere vážně digitalizaci na FEI. Čekáme na to celé studium.', name: 'Marek K.', year: '3. ročník', dept: 'Informatika', color: '#3b82f6', lang: 'cs' },
+  { quote: 'Osobně jsem jim napsal přes web a odpověděli do hodiny. Přesně ten přístup, jaký od senátorů čekám.', name: 'Jana P.', year: '2. ročník', dept: 'Elektrotechnika', color: '#06b6d4', lang: 'cs' },
+  { quote: 'Revize zkušebního řádu je něco, na co čekáme hodně dlouho. Snad to konečně prosadí.', name: 'Lukáš M.', year: 'Ing. 1. ročník', dept: 'Kybernetika', color: '#8b5cf6', lang: 'cs' },
+  { quote: 'Transparentné správy zo senátu by boli revolúcia. Doteraz nikto nevedel, čo sa tam rozhoduje.', name: 'Simona B.', year: 'Ing. 2. ročník', dept: 'Mechatronika', color: '#4f46e5', lang: 'sk' },
+  { quote: 'Verejné Q&A každý semester? To by zmenilo všetko. Nakoniec by sme vedeli, čo sa deje v senáte.', name: 'Rastislav D.', year: '2. ročník', dept: 'Informatika', color: '#10b981', lang: 'sk' },
+  { quote: 'Kampaň s konkrétnym programom. Nie len prázdne sľuby — skutočné kroky, ktoré senát môže urobiť.', name: 'Tomáš H.', year: '3. ročník', dept: 'Informatika', color: '#0ea5e9', lang: 'sk' },
+  { quote: "Finally, candidates who actually address real issues. Better digital tools and transparent decisions.", name: 'Priya M.', year: '2nd year, Erasmus', dept: 'Computer Science', color: '#06b6d4', lang: 'en' },
+  { quote: "I didn't know how the academic senate worked before. Now I do — and I'm voting.", name: 'Lucas W.', year: '3rd year, Exchange', dept: 'Electronics', color: '#818cf8', lang: 'en' },
+  { quote: 'Verejné Q&A stretnutia so senátormi sú skvelý nápad. Na iných školách to funguje skvele.', name: 'Ondřej P.', year: '2. ročník Ing.', dept: 'Telekomunikácie', color: '#3b82f6', lang: 'sk' },
 ]
 
 /* doubled is module-level — cards never change, no need to recompute */
@@ -24,13 +24,13 @@ const doubled = [...cards, ...cards]
 const CAROUSEL_PLAY = { x: ['0%', '-50%'] }
 const CAROUSEL_STOP = {}
 
-const Card = memo(function Card({ quote, name, year, dept, color }: (typeof cards)[0]) {
+const Card = memo(function Card({ quote, name, year, dept, color, lang }: (typeof cards)[0]) {
   return (
     <div
       className="flex-shrink-0 w-[min(290px,calc(100vw-2rem))] sm:w-[320px] glass glass-hover rounded-2xl p-5 mx-2.5 flex flex-col gap-3"
       style={{ borderColor: `${color}18` }}
     >
-      <p className="text-[13px] text-blue-100/65 leading-relaxed italic">&ldquo;{quote}&rdquo;</p>
+      <p lang={lang} className="text-[13px] text-blue-100/65 leading-relaxed italic">&ldquo;{quote}&rdquo;</p>
 
       <div className="h-px" style={{ background: `linear-gradient(90deg, ${color}30, transparent)` }} />
 

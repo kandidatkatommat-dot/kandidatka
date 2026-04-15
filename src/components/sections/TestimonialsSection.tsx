@@ -12,6 +12,7 @@ const testimonials = [
     info: '3. ročník, Informatika',
     initial: 'JV',
     color: 'from-blue-600 to-blue-800',
+    lang: 'cs',
   },
   {
     quote: 'Líbí se mi nápad s otevřeným kanálem podnětů. Poprvé mám pocit, že mám kde říct, co mi na FEI chybí.',
@@ -19,6 +20,7 @@ const testimonials = [
     info: '2. ročník, Kybernetika',
     initial: 'BK',
     color: 'from-indigo-500 to-violet-700',
+    lang: 'cs',
   },
   {
     quote: 'Transparentní zprávy ze senátu? To by byla revoluce. Dosud nikdo ani netušil, co se tam vlastně rozhoduje.',
@@ -26,6 +28,7 @@ const testimonials = [
     info: '4. ročník, Elektrotechnika',
     initial: 'MT',
     color: 'from-teal-500 to-teal-700',
+    lang: 'cs',
   },
   {
     quote: 'Ako prváčka som rada, že niekto rieši skúšobný poriadok. Systém opravných termínov je mätúci a nikto to doteraz neriešil.',
@@ -33,6 +36,7 @@ const testimonials = [
     info: '1. ročník, Informatika',
     initial: 'TN',
     color: 'from-purple-500 to-purple-700',
+    lang: 'sk',
   },
   {
     quote: 'Verejné Q&A stretnutia so senátormi sú skvelý nápad. Na iných školách to funguje — vzťah s vedením je oveľa lepší.',
@@ -40,6 +44,7 @@ const testimonials = [
     info: '2. ročník Ing., Telekomunikácie',
     initial: 'OP',
     color: 'from-blue-500 to-indigo-700',
+    lang: 'sk',
   },
   {
     quote: "Finally, candidates who address real issues. Better digital tools and transparent decision-making — that's exactly what every student here needs.",
@@ -47,6 +52,7 @@ const testimonials = [
     info: '2nd year, Exchange Student',
     initial: 'AS',
     color: 'from-emerald-500 to-teal-700',
+    lang: 'en',
   },
   {
     quote: "The open feedback channel is a brilliant idea. As an Erasmus student I never knew how to reach the senate — now there's finally a way.",
@@ -54,6 +60,7 @@ const testimonials = [
     info: '3rd year, Erasmus',
     initial: 'ML',
     color: 'from-indigo-500 to-violet-600',
+    lang: 'en',
   },
 ]
 
@@ -283,7 +290,7 @@ export default function TestimonialsSection() {
                     </div>
 
                     {/* Quote — line-height matches ruled lines */}
-                    <p className="flex-1 flex items-center text-sm sm:text-[14.5px] text-blue-100/80 leading-[26px] sm:leading-[30px] italic">
+                    <p lang={t.lang} className="flex-1 flex items-center text-sm sm:text-[14.5px] text-blue-100/80 leading-[26px] sm:leading-[30px] italic">
                       {t.quote}
                     </p>
 

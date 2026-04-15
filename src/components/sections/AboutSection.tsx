@@ -7,7 +7,7 @@ import { ExternalLink, DiscordIcon } from '@/components/shared/Icons'
 import AnimatedSection from '@/components/shared/AnimatedSection'
 import type { Candidate } from '@/types'
 
-const candidates: Candidate[] = [
+const candidates: (Candidate & { lang: string })[] = [
   {
     id: 'MUC0075',
     name: 'Tomáš Mucha',
@@ -17,6 +17,7 @@ const candidates: Candidate[] = [
     whyRunning:
       'Chcem, aby hlasy študentov dosiahli tam, kde sa rozhoduje o rozpočte, pravidlách a budúcnosti fakulty — nie len počas kampane, ale každý deň.',
     photoUrl: '/photos/tomas-mucha.jpg',
+    lang: 'sk',
   },
   {
     id: 'BUC0130',
@@ -27,6 +28,7 @@ const candidates: Candidate[] = [
     whyRunning:
       'Senát schvaluje rozpočet, pravidla, volí děkana. To je přesně místo, kde můžeme systematicky měnit věci k lepšímu — ne jen slibovat.',
     photoUrl: '/photos/martin-bucek.jpg',
+    lang: 'cs',
   },
 ]
 
@@ -47,7 +49,7 @@ const cardAccents = [
   { border: 'rgba(232,99,74,0.4)', quoteColor: 'text-[#4f46e5]/20', quoteBorder: 'border-[#4f46e5]/30', quoteText: 'text-blue-200/60' },
 ]
 
-function CandidateCard({ c, direction, accentIdx }: { c: Candidate; direction: 'left' | 'right'; accentIdx: number }) {
+function CandidateCard({ c, direction, accentIdx }: { c: Candidate & { lang: string }; direction: 'left' | 'right'; accentIdx: number }) {
   const initials = c.name.split(' ').map((n) => n[0]).join('')
   const accent = cardAccents[accentIdx]
   const discordNick = discordNicks[c.id]
@@ -104,12 +106,12 @@ function CandidateCard({ c, direction, accentIdx }: { c: Candidate; direction: '
         </div>
 
         {/* Bio */}
-        <p className="text-blue-100/65 text-sm leading-relaxed flex-1">{c.bio}</p>
+        <p lang={c.lang} className="text-blue-100/65 text-sm leading-relaxed flex-1">{c.bio}</p>
 
         {/* Quote — prominent with large decorative mark */}
         <div className="relative mt-4">
           <span className={`absolute -top-2 -left-1 text-4xl ${accent.quoteColor} font-serif leading-none select-none`}>&ldquo;</span>
-          <blockquote className={`pl-4 border-l-2 ${accent.quoteBorder} text-sm ${accent.quoteText} italic leading-relaxed`}>
+          <blockquote lang={c.lang} className={`pl-4 border-l-2 ${accent.quoteBorder} text-sm ${accent.quoteText} italic leading-relaxed`}>
             {c.whyRunning}
           </blockquote>
         </div>
