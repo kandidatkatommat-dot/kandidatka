@@ -29,7 +29,7 @@ const candidates: (Candidate & { lang: string; award?: string })[] = [
       'Senát schvaluje rozpočet, pravidla, volí děkana. To je přesně místo, kde můžeme systematicky měnit věci k lepšímu — ne jen slibovat.',
     photoUrl: '/photos/martin-bucek.jpg',
     lang: 'cs',
-    award: 'Najlepší pedagóg VŠB',
+    award: 'Najlepší pedagóg VŠB zvolený študentami',
   },
 ]
 
@@ -85,15 +85,6 @@ function CandidateCard({ c, direction, accentIdx }: { c: Candidate & { lang: str
                   </span>
                 </>
               )}
-              {c.award && (
-                <span
-                  title={c.award}
-                  className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold border border-[#4f46e5]/35 bg-[#4f46e5]/10 text-[#818cf8] leading-none"
-                >
-                  <StarBadge size={9} className="flex-shrink-0" />
-                  {c.award}
-                </span>
-              )}
             </h3>
             <div className="flex items-center gap-2 mt-1.5">
               <Badge variant="outline" className="text-xs border-blue-500/25 text-blue-300 bg-blue-500/8 font-mono">
@@ -125,6 +116,16 @@ function CandidateCard({ c, direction, accentIdx }: { c: Candidate & { lang: str
             {c.whyRunning}
           </blockquote>
         </div>
+
+        {/* Award badge — bottom of card */}
+        {c.award && (
+          <div className="pt-2 border-t border-white/5">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-semibold border border-[#4f46e5]/35 bg-[#4f46e5]/10 text-[#818cf8] leading-none">
+              <StarBadge size={10} className="flex-shrink-0" />
+              {c.award}
+            </span>
+          </div>
+        )}
       </motion.div>
     </AnimatedSection>
   )
