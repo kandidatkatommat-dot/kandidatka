@@ -3,6 +3,7 @@
 import { useState, useRef } from 'react'
 import { toast } from 'sonner'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
@@ -15,11 +16,13 @@ import {
 } from '@/components/ui/select'
 import type { SuggestionCategory } from '@/types'
 
+// Category keys stored in DB — kept in Slovak as DB values
 const categories: SuggestionCategory[] = ['Výuka', 'Digitalizácia', 'Kampus', 'Skúšky', 'Iné']
 
 const MAX_LEN = 500
 
 export default function SuggestionForm({ onSuccess }: { onSuccess?: () => void }) {
+  const t = useTranslations('suggestions')
   const [name, setName] = useState('')
   const [category, setCategory] = useState<SuggestionCategory | ''>('')
   const [suggestion, setSuggestion] = useState('')
@@ -40,9 +43,7 @@ export default function SuggestionForm({ onSuccess }: { onSuccess?: () => void }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-
     if (!category || suggestion.trim().length < 10) return
-
     setLoading(true)
     try {
       const res = await fetch('/api/suggestions/submit', {
@@ -55,17 +56,15 @@ export default function SuggestionForm({ onSuccess }: { onSuccess?: () => void }
           website: honeypotRef.current?.value ?? '',
         }),
       })
-
       const json = await res.json()
-
       if (!res.ok) {
-        toast.error(json.error ?? 'Nastala chyba. Skúste to znova.')
+        toast.error(json.error ?? t('form_error'))
       } else {
         setSuccess(true)
         onSuccess?.()
       }
     } catch {
-      toast.error('Nastala sieťová chyba. Skúste to znova.')
+      toast.error(t('form_error_network'))
     } finally {
       setLoading(false)
     }
@@ -82,7 +81,6 @@ export default function SuggestionForm({ onSuccess }: { onSuccess?: () => void }
           transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] as [number,number,number,number] }}
           className="flex flex-col items-center gap-5 py-8 text-center"
         >
-          {/* Animated checkmark circle */}
           <div className="relative">
             <div className="absolute inset-0 rounded-full blur-2xl bg-[#4f46e5]/30 scale-125 pointer-events-none" />
             <div
@@ -119,7 +117,7 @@ export default function SuggestionForm({ onSuccess }: { onSuccess?: () => void }
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.4 }}
             >
-              Ďakujeme!
+              {t('success_heading')}
             </motion.h3>
             <motion.p
               className="text-sm text-blue-200/60 max-w-xs leading-relaxed"
@@ -127,8 +125,7 @@ export default function SuggestionForm({ onSuccess }: { onSuccess?: () => void }
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.42, duration: 0.4 }}
             >
-              Tvoj podnet sme dostali — preveríme ho a zverejníme.
-              Práve pomáhaš formovať lepšiu FEI.
+              {t('success_text')}
             </motion.p>
           </div>
 
@@ -141,7 +138,7 @@ export default function SuggestionForm({ onSuccess }: { onSuccess?: () => void }
               onClick={resetForm}
               className="px-5 py-2.5 text-sm font-semibold text-[#818cf8] hover:text-[#a5b4fc] rounded-xl transition-colors border border-[#4f46e5]/30 hover:border-[#6366f1]/50 hover:bg-[#4f46e5]/8"
             >
-              Pridať ďalší podnet →
+              {t('success_again')}
             </button>
           </motion.div>
         </motion.div>
@@ -155,7 +152,6 @@ export default function SuggestionForm({ onSuccess }: { onSuccess?: () => void }
           exit={{ opacity: 0, scale: 0.96 }}
           transition={{ duration: 0.25 }}
         >
-          {/* Honeypot — hidden from real users */}
           <input
             ref={honeypotRef}
             name="website"
@@ -169,12 +165,12 @@ export default function SuggestionForm({ onSuccess }: { onSuccess?: () => void }
           {/* Name */}
           <div className="space-y-1.5">
             <label className="text-xs font-medium text-blue-300/70 uppercase tracking-widest">
-              Meno (nepovinné)
+              {t('form_name_label')}
             </label>
             <Input
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="Anonymný študent"
+              placeholder={t('form_name_placeholder')}
               maxLength={100}
               className="bg-blue-500/5 border-blue-500/20 text-white placeholder:text-blue-300/30 focus-visible:ring-blue-500/50"
             />
@@ -183,7 +179,7 @@ export default function SuggestionForm({ onSuccess }: { onSuccess?: () => void }
           {/* Category */}
           <div className="space-y-1.5">
             <label className="text-xs font-medium text-blue-300/70 uppercase tracking-widest">
-              Kategória *
+              {t('form_category_label')}
             </label>
             <Select value={category} onValueChange={(v) => { setCategory(v as SuggestionCategory); setCategoryTouched(true) }}>
               <SelectTrigger className={`bg-blue-500/5 text-white focus:ring-blue-500/50 transition-colors ${
@@ -191,15 +187,11 @@ export default function SuggestionForm({ onSuccess }: { onSuccess?: () => void }
                   ? 'border-amber-500/50 ring-1 ring-amber-500/30'
                   : 'border-blue-500/20'
               }`}>
-                <SelectValue placeholder="Vyber kategóriu..." />
+                <SelectValue placeholder={t('form_category_placeholder')} />
               </SelectTrigger>
               <SelectContent className="bg-[#0a1628] border-blue-500/20">
                 {categories.map((c) => (
-                  <SelectItem
-                    key={c}
-                    value={c}
-                    className="text-blue-100 focus:bg-blue-500/20 focus:text-white"
-                  >
+                  <SelectItem key={c} value={c} className="text-blue-100 focus:bg-blue-500/20 focus:text-white">
                     {c}
                   </SelectItem>
                 ))}
@@ -210,23 +202,25 @@ export default function SuggestionForm({ onSuccess }: { onSuccess?: () => void }
           {/* Suggestion text */}
           <div className="space-y-1.5">
             <label className="text-xs font-medium text-blue-300/70 uppercase tracking-widest">
-              Tvoj podnet *
+              {t('form_text_label')}
             </label>
             <Textarea
               value={suggestion}
               onChange={(e) => setSuggestion(e.target.value.slice(0, MAX_LEN))}
-              placeholder="Čo by si chcel/a zmeniť alebo zlepšiť na FEI?"
+              placeholder={t('form_text_placeholder')}
               rows={5}
               className="bg-blue-500/5 border-blue-500/20 text-white placeholder:text-blue-300/30 focus-visible:ring-blue-500/50 resize-none"
             />
             <div className="flex justify-between items-center">
               {suggestion.trim().length > 0 && suggestion.trim().length < 10 ? (
-                <p className="text-xs text-blue-400/50">Minimálne 10 znakov ({10 - suggestion.trim().length} zostáva)</p>
+                <p className="text-xs text-blue-400/50">
+                  {t('form_min_chars', { n: 10 - suggestion.trim().length })}
+                </p>
               ) : (
                 <span />
               )}
               <span className={`text-xs ${remaining < 50 ? 'text-[#818cf8]' : 'text-blue-400/40'}`}>
-                {remaining} znakov zostáva
+                {t('form_chars_left', { n: remaining })}
               </span>
             </div>
           </div>
@@ -237,11 +231,11 @@ export default function SuggestionForm({ onSuccess }: { onSuccess?: () => void }
             onClick={() => { if (!category) setCategoryTouched(true) }}
             className="w-full bg-gradient-to-br from-[#4f46e5] to-[#6d28d9] hover:from-[#6366f1] hover:to-[#7c3aed] text-white border-0 shadow-lg shadow-[#4f46e5]/25 py-5 font-semibold transition-all duration-200 disabled:opacity-40 hover:scale-[1.02]"
           >
-            {loading ? 'Odosielam...' : 'Odoslať podnet'}
+            {loading ? t('form_submitting') : t('form_submit')}
           </Button>
 
           <p className="text-xs text-blue-300/30 text-center leading-relaxed">
-            Podnety prechádzajú moderáciou pred zverejnením. Osobné údaje nie sú povinné.
+            {t('form_footer')}
           </p>
         </motion.form>
       )}

@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import useSWR from 'swr'
+import { useTranslations } from 'next-intl'
 import { Skeleton } from '@/components/ui/skeleton'
 import SuggestionCard from './SuggestionCard'
 import { Lightbulb } from '@/components/shared/Icons'
@@ -9,6 +10,7 @@ import type { Suggestion, SuggestionCategory } from '@/types'
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json())
 
+// Category keys are DB values — kept in Slovak
 const CATEGORIES: SuggestionCategory[] = ['Výuka', 'Digitalizácia', 'Kampus', 'Skúšky', 'Iné']
 
 const categoryColors: Record<SuggestionCategory, { active: string; inactive: string }> = {
@@ -19,13 +21,8 @@ const categoryColors: Record<SuggestionCategory, { active: string; inactive: str
   Iné:          { active: 'bg-slate-500/20 text-slate-300 border-slate-500/40',   inactive: 'text-slate-400/50 border-slate-500/15 hover:border-slate-500/30 hover:text-slate-300' },
 }
 
-function pluralize(n: number) {
-  if (n === 1) return 'podnet'
-  if (n < 5) return 'podnety'
-  return 'podnetov'
-}
-
 export default function SuggestionWall() {
+  const t = useTranslations('suggestions')
   const [activeFilter, setActiveFilter] = useState<SuggestionCategory | null>(null)
 
   const { data, error, isLoading } = useSWR<{ data: Suggestion[]; count: number }>(
@@ -37,7 +34,7 @@ export default function SuggestionWall() {
   if (error) {
     return (
       <div className="flex flex-col items-center justify-center py-12 text-center gap-3">
-        <p className="text-red-400/60 text-sm">Podnety sa nepodarilo načítať. Skús obnoviť stránku.</p>
+        <p className="text-red-400/60 text-sm">{t('wall_error')}</p>
       </div>
     )
   }
@@ -64,31 +61,34 @@ export default function SuggestionWall() {
         <div className="w-12 h-12 rounded-2xl bg-blue-500/10 flex items-center justify-center">
           <Lightbulb size={24} className="text-blue-400/50" />
         </div>
-        <p className="text-blue-200/60 text-sm">
-          Buď prvý, kto pošle podnet! Tvoj nápad môže zmeniť FEI.
-        </p>
+        <p className="text-blue-200/60 text-sm">{t('wall_empty')}</p>
       </div>
     )
   }
 
   const filtered = activeFilter ? all.filter((s) => s.category === activeFilter) : all
-
-  // Only show category tabs that have at least one suggestion
   const presentCategories = CATEGORIES.filter((c) => all.some((s) => s.category === c))
+
+  // Locale-aware pluralization using translation keys
+  function pluralize(n: number) {
+    if (n === 1) return t('wall_count_one')
+    if (n < 5) return t('wall_count_few')
+    return t('wall_count_many')
+  }
 
   return (
     <div>
       {/* Header row */}
       <div className="flex items-center justify-between gap-2 mb-4 flex-wrap">
         <span className="text-sm text-blue-300/60 font-medium" aria-live="polite" aria-atomic="true">
-          {filtered.length} {pluralize(filtered.length)}{activeFilter ? ` · ${activeFilter}` : ' od študentov'}
+          {filtered.length} {pluralize(filtered.length)}{activeFilter ? ` · ${activeFilter}` : ` ${t('wall_from_students')}`}
         </span>
         <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse flex-shrink-0" aria-hidden />
       </div>
 
       {/* Filter tabs */}
       {presentCategories.length > 1 && (
-        <div className="flex flex-wrap gap-1.5 mb-5" role="group" aria-label="Filter podnetov">
+        <div className="flex flex-wrap gap-1.5 mb-5" role="group" aria-label={t('wall_filter_aria')}>
           <button
             onClick={() => setActiveFilter(null)}
             className={`px-3 py-1 text-xs font-medium rounded-full border transition-all duration-200 ${
@@ -97,7 +97,7 @@ export default function SuggestionWall() {
                 : 'text-blue-400/50 border-blue-500/15 hover:border-blue-500/30 hover:text-blue-300'
             }`}
           >
-            Všetky
+            {t('wall_all')}
           </button>
           {presentCategories.map((c) => {
             const colors = categoryColors[c]
@@ -120,7 +120,7 @@ export default function SuggestionWall() {
       {/* Cards */}
       {filtered.length === 0 ? (
         <div className="py-10 text-center">
-          <p className="text-blue-200/40 text-sm">Žiadne podnety v kategórii „{activeFilter}".</p>
+          <p className="text-blue-200/40 text-sm">{t('wall_none_in_category', { category: activeFilter ?? '' })}</p>
         </div>
       ) : (
         <div className="columns-1 sm:columns-2 gap-4">
