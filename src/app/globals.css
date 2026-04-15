@@ -388,6 +388,18 @@
   .cursor-outer, .cursor-inner { display: none; }
 }
 
+/* ─── HERO PARTICLE & SCROLL CSS ANIMATIONS ────────────
+   Run entirely on GPU compositor thread — zero JS per frame.
+   Replaces Framer Motion repeat:Infinity on 23+ elements.  */
+@keyframes particle-float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-28px); }
+}
+@keyframes scroll-bounce {
+  0%, 100% { transform: translateX(-50%) translateY(0px); }
+  50%       { transform: translateX(-50%) translateY(8px); }
+}
+
 /* ─── PIE CHART ANIMATIONS (presne ako v referencii) ─── */
 .pie-seg {
   opacity: 0;

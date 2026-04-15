@@ -57,6 +57,7 @@ function CountUnit({ value, label }: { value: number; label: string }) {
   )
 }
 
+/* ── Aurora Mesh — CSS animations, compositor-only ─────────── */
 const AuroraMesh = memo(function AuroraMesh({ noFilter }: { noFilter: boolean }) {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden>
@@ -82,6 +83,9 @@ const AuroraMesh = memo(function AuroraMesh({ noFilter }: { noFilter: boolean })
   )
 })
 
+/* ── Floating Particles — pure CSS, zero JS per frame ─────────
+   Each particle is a plain <div> animated via CSS @keyframes.
+   The browser compositor handles this with no main-thread work. */
 interface Particle {
   id: number; x: number; y: number; size: number; dur: number; delay: number; color: string; opacity: number
 }
@@ -90,33 +94,44 @@ const FloatingParticles = memo(function FloatingParticles({ particles }: { parti
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden>
       {particles.map((p) => (
-        <motion.div
+        <div
           key={p.id}
           className="absolute rounded-full"
-          style={{ left: `${p.x}%`, top: `${p.y}%`, width: p.size, height: p.size, background: p.color, opacity: p.opacity }}
-          animate={{ y: [0, -28, 0], opacity: [p.opacity, p.opacity * 1.6, p.opacity] }}
-          transition={{ duration: p.dur, delay: p.delay, repeat: Infinity, ease: 'easeInOut' }}
+          style={{
+            left: `${p.x}%`,
+            top: `${p.y}%`,
+            width: p.size,
+            height: p.size,
+            background: p.color,
+            opacity: p.opacity,
+            animationName: 'particle-float',
+            animationDuration: `${p.dur}s`,
+            animationDelay: `-${p.delay}s`,
+            animationTimingFunction: 'ease-in-out',
+            animationIterationCount: 'infinite',
+          }}
         />
       ))}
     </div>
   )
 })
 
+/* ── Scroll indicator — CSS animation, no Framer Motion ─────── */
 function ScrollIndicator({ label }: { label: string }) {
   return (
-    <motion.a
+    <a
       href="#o-nas"
-      className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-blue-400/30 hover:text-blue-300/60 transition-colors group"
-      animate={{ y: [0, 8, 0] }}
-      transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
+      className="absolute bottom-8 left-1/2 flex flex-col items-center gap-2 text-blue-400/30 hover:text-blue-300/60 transition-colors group"
+      style={{ animation: 'scroll-bounce 2.4s ease-in-out infinite', transform: 'translateX(-50%)' }}
       aria-label={label}
     >
       <span className="text-[10px] uppercase tracking-[0.2em] font-medium">{label}</span>
       <ChevronDown size={18} />
-    </motion.a>
+    </a>
   )
 }
 
+/* ── Framer Motion variants (mount-only, run once) ─────────── */
 const container = {
   hidden: { opacity: 0 },
   visible: { opacity: 1, transition: { staggerChildren: 0.12, delayChildren: 0.2 } },
@@ -126,23 +141,30 @@ const item = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] } },
 }
 
+/* ── Component ─────────────────────────────────────────────── */
 export default function HeroSection() {
   const t = useTranslations('hero')
   const { d, h, m, s, mounted, phase } = useCountdown()
   const sectionRef = useRef<HTMLElement>(null)
-  const [isTouch, setIsTouch] = useState(false)
-  const [isChrome, setIsChrome] = useState(false)
 
-  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end start'] })
+  /* Detect Chrome/touch synchronously from the inline script flag —
+     avoids a useEffect + re-render, noParallax is correct on first paint */
+  const [isTouch] = useState(() =>
+    typeof window !== 'undefined' ? window.matchMedia('(pointer: coarse)').matches : false
+  )
+  const [isChrome] = useState(() =>
+    typeof document !== 'undefined'
+      ? document.documentElement.classList.contains('no-backdrop')
+      : false
+  )
   const noParallax = isChrome || isTouch
-  const y = useTransform(scrollYProgress, [0, 1], ['0%', noParallax ? '0%' : '30%'])
-  const opacity = useTransform(scrollYProgress, [0, 0.6], [1, noParallax ? 1 : 0])
 
-  useEffect(() => {
-    setIsTouch(window.matchMedia('(pointer: coarse)').matches)
-    setIsChrome(document.documentElement.classList.contains('no-backdrop'))
-  }, [])
+  /* useScroll is cheap (passive listener). Only the transforms matter. */
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end start'] })
+  const y       = useTransform(scrollYProgress, [0, 1],   ['0%', noParallax ? '0%' : '30%'])
+  const opacity = useTransform(scrollYProgress, [0, 0.6], [1,    noParallax ? 1    : 0])
 
+  /* Deterministic particle data — stable across renders */
   const particles = useMemo<Particle[]>(
     () =>
       Array.from({ length: 23 }, (_, i) => ({
@@ -152,7 +174,12 @@ export default function HeroSection() {
         size: (i % 4) + 1.5,
         dur: 6 + (i % 6),
         delay: (i % 10) * 0.35,
-        color: i % 5 === 0 ? '#4f46e5' : i % 5 === 1 ? '#06b6d4' : i % 5 === 2 ? '#3b82f6' : i % 5 === 3 ? '#8b5cf6' : '#60a5fa',
+        color:
+          i % 5 === 0 ? '#4f46e5'
+          : i % 5 === 1 ? '#06b6d4'
+          : i % 5 === 2 ? '#3b82f6'
+          : i % 5 === 3 ? '#8b5cf6'
+          : '#60a5fa',
         opacity: 0.15 + (i % 3) * 0.08,
       })),
     []
