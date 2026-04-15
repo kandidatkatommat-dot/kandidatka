@@ -27,6 +27,10 @@ function checkRateLimit(ipKey: string): boolean {
 }
 
 export async function POST(req: NextRequest) {
+  if (!req.headers.get('content-type')?.includes('application/json')) {
+    return NextResponse.json({ error: 'Invalid content type' }, { status: 415 })
+  }
+
   const rawIp = req.headers.get('x-forwarded-for') ?? req.headers.get('x-real-ip') ?? 'unknown'
   const secret = process.env.NEXTAUTH_SECRET ?? 'fallback'
   const ipKey = createHash('sha256').update(rawIp + secret).digest('hex').slice(0, 16)

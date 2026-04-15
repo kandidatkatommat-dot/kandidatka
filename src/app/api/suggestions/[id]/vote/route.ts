@@ -9,6 +9,10 @@ export async function POST(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  if (!req.headers.get('content-type')?.includes('application/json')) {
+    return NextResponse.json({ error: 'Invalid content type' }, { status: 415 })
+  }
+
   const { id } = await params
 
   if (!uuidSchema.safeParse(id).success) {

@@ -13,6 +13,11 @@ async function hashIp(ip: string): Promise<string> {
 }
 
 export async function POST(request: NextRequest) {
+  // Reject non-JSON content types early
+  if (!request.headers.get('content-type')?.includes('application/json')) {
+    return NextResponse.json({ error: 'Neplatný formát požiadavky.' }, { status: 415 })
+  }
+
   try {
     const body = await request.json()
     const parsed = suggestionSchema.safeParse(body)
@@ -29,7 +34,8 @@ export async function POST(request: NextRequest) {
     // Honeypot — bot filled in the hidden field
     const isHoneypot = typeof website === 'string' && website.length > 0
 
-    // IP-based rate limiting
+    // IP-based rate limiting — applied to ALL requests including bots
+    // to prevent DB flooding via honeypot bypass
     const ip =
       request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ??
       request.headers.get('x-real-ip') ??
@@ -38,20 +44,21 @@ export async function POST(request: NextRequest) {
 
     const supabase = createServerClient()
 
-    if (!isHoneypot) {
-      const tenMinutesAgo = new Date(Date.now() - 10 * 60 * 1000).toISOString()
-      const { count } = await supabase
-        .from('suggestions')
-        .select('id', { count: 'exact', head: true })
-        .eq('ip_hash', ipHash)
-        .gte('created_at', tenMinutesAgo)
+    const tenMinutesAgo = new Date(Date.now() - 10 * 60 * 1000).toISOString()
+    const { count } = await supabase
+      .from('suggestions')
+      .select('id', { count: 'exact', head: true })
+      .eq('ip_hash', ipHash)
+      .gte('created_at', tenMinutesAgo)
 
-      if (count && count >= 3) {
-        return NextResponse.json(
-          { error: 'Příliš mnoho příspěvků. Zkus to znovu za chvíli.' },
-          { status: 429 }
-        )
-      }
+    // Real users: 3 per 10 min. Bots (honeypot filled): silently allow up to 10,
+    // then block — prevents DB flooding while not alerting the bot immediately.
+    const limit = isHoneypot ? 10 : 3
+    if (count && count >= limit) {
+      return NextResponse.json(
+        { error: 'Príliš mnoho príspevkov. Skús to znova za chvíľu.' },
+        { status: 429 }
+      )
     }
 
     const { error } = await supabase.from('suggestions').insert({

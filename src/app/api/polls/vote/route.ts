@@ -9,6 +9,10 @@ const schema = z.object({
 })
 
 export async function POST(req: NextRequest) {
+  if (!req.headers.get('content-type')?.includes('application/json')) {
+    return NextResponse.json({ error: 'Invalid content type' }, { status: 415 })
+  }
+
   const body = await req.json().catch(() => null)
   const parsed = schema.safeParse(body)
   if (!parsed.success) {
