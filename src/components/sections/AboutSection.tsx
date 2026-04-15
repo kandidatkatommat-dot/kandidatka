@@ -3,11 +3,11 @@
 import { motion } from 'framer-motion'
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
-import { ExternalLink, DiscordIcon } from '@/components/shared/Icons'
+import { ExternalLink, DiscordIcon, StarBadge } from '@/components/shared/Icons'
 import AnimatedSection from '@/components/shared/AnimatedSection'
 import type { Candidate } from '@/types'
 
-const candidates: (Candidate & { lang: string })[] = [
+const candidates: (Candidate & { lang: string; award?: string })[] = [
   {
     id: 'MUC0075',
     name: 'Tomáš Mucha',
@@ -29,6 +29,7 @@ const candidates: (Candidate & { lang: string })[] = [
       'Senát schvaluje rozpočet, pravidla, volí děkana. To je přesně místo, kde můžeme systematicky měnit věci k lepšímu — ne jen slibovat.',
     photoUrl: '/photos/martin-bucek.jpg',
     lang: 'cs',
+    award: 'Najlepší pedagóg VŠB',
   },
 ]
 
@@ -49,7 +50,7 @@ const cardAccents = [
   { border: 'rgba(232,99,74,0.4)', quoteColor: 'text-[#4f46e5]/20', quoteBorder: 'border-[#4f46e5]/30', quoteText: 'text-blue-200/60' },
 ]
 
-function CandidateCard({ c, direction, accentIdx }: { c: Candidate & { lang: string }; direction: 'left' | 'right'; accentIdx: number }) {
+function CandidateCard({ c, direction, accentIdx }: { c: Candidate & { lang: string; award?: string }; direction: 'left' | 'right'; accentIdx: number }) {
   const initials = c.name.split(' ').map((n) => n[0]).join('')
   const accent = cardAccents[accentIdx]
   const discordNick = discordNicks[c.id]
@@ -83,6 +84,15 @@ function CandidateCard({ c, direction, accentIdx }: { c: Candidate & { lang: str
                     <span className="text-sm font-mono text-[#5865F2]/75">{discordNick}</span>
                   </span>
                 </>
+              )}
+              {c.award && (
+                <span
+                  title={c.award}
+                  className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold border border-amber-500/25 bg-amber-500/10 text-amber-400/90 leading-none"
+                >
+                  <StarBadge size={9} className="flex-shrink-0" />
+                  {c.award}
+                </span>
               )}
             </h3>
             <div className="flex items-center gap-2 mt-1.5">
