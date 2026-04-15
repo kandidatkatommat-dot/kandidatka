@@ -2,7 +2,10 @@
 
 import { useEffect, useRef, memo } from 'react'
 import { motion, useInView, animate } from 'framer-motion'
+import useSWR from 'swr'
 import AnimatedSection from '@/components/shared/AnimatedSection'
+
+const fetcher = (url: string) => fetch(url).then((r) => r.json())
 
 /* ── Segment data — FEI priorities, paleta stránky ─── */
 const segments = [
@@ -234,6 +237,12 @@ function PieChart3D() {
 
 /* ── Main Section ───────────────────────────────────── */
 export default function InsightsSection() {
+  const { data } = useSWR<{ count: number }>(
+    '/api/suggestions',
+    fetcher,
+    { revalidateOnFocus: false, refreshWhenHidden: false }
+  )
+  const suggestionCount = data?.count ?? 0
 
   return (
     <section className="relative py-28 sm:py-36 overflow-hidden"
@@ -289,7 +298,7 @@ export default function InsightsSection() {
         <AnimatedSection className="mb-6">
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {[
-              { n: 847, s: '+', label: 'zozbieraných podnetov', color: 'text-blue-400' },
+              { n: suggestionCount, s: '', label: 'zozbieraných podnetov', color: 'text-blue-400' },
               { n: 3,   s: ' roky', label: 'funkčného mandátu', color: 'text-[#818cf8]' },
               { n: 5,   s: ' miest', label: 'pre študentov v senáte', color: 'text-teal-400' },
               { n: 100, s: '%', label: 'záväzkov je verejných', color: 'text-purple-400' },
