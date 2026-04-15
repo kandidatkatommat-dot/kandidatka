@@ -88,7 +88,7 @@ function CandidateCard({ c, direction, accentIdx }: { c: Candidate & { lang: str
               {c.award && (
                 <span
                   title={c.award}
-                  className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold border border-amber-500/25 bg-amber-500/10 text-amber-400/90 leading-none"
+                  className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold border border-[#4f46e5]/35 bg-[#4f46e5]/10 text-[#818cf8] leading-none"
                 >
                   <StarBadge size={9} className="flex-shrink-0" />
                   {c.award}
