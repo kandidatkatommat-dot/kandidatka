@@ -1,16 +1,8 @@
 'use client'
-import { useEffect, useRef } from 'react'
+import { useEffect } from 'react'
 import Lenis from 'lenis'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-
-gsap.registerPlugin(ScrollTrigger)
 
 export default function LenisProvider({ children }: { children: React.ReactNode }) {
-  const lenisRef = useRef<Lenis | null>(null)
-  // Store the exact function reference so cleanup removes the same one it added
-  const tickerFnRef = useRef<((time: number) => void) | null>(null)
-
   useEffect(() => {
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     const isTouch = window.matchMedia('(pointer: coarse)').matches
@@ -24,21 +16,19 @@ export default function LenisProvider({ children }: { children: React.ReactNode 
       lerp: prefersReduced ? 1 : 0.08,
       smoothWheel: !prefersReduced,
     })
-    lenisRef.current = lenis
 
-    const tickerFn = (time: number) => lenis.raf(time * 1000)
-    tickerFnRef.current = tickerFn
-
-    lenis.on('scroll', ScrollTrigger.update)
-    gsap.ticker.add(tickerFn)
-    gsap.ticker.lagSmoothing(0)
+    // Native RAF loop — replaces gsap.ticker (~125KB removed from bundle)
+    // lenis.raf() expects milliseconds; RAF timestamp is already in ms
+    let rafId: number
+    const loop = (time: number) => {
+      lenis.raf(time)
+      rafId = requestAnimationFrame(loop)
+    }
+    rafId = requestAnimationFrame(loop)
 
     return () => {
+      cancelAnimationFrame(rafId)
       lenis.destroy()
-      if (tickerFnRef.current) {
-        gsap.ticker.remove(tickerFnRef.current)
-        tickerFnRef.current = null
-      }
     }
   }, [])
 
