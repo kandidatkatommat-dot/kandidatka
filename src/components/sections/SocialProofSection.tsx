@@ -2,6 +2,7 @@
 
 import { useState, useEffect, memo } from 'react'
 import { motion } from 'framer-motion'
+import { useTranslations } from 'next-intl'
 import AnimatedSection from '@/components/shared/AnimatedSection'
 
 const cards = [
@@ -51,6 +52,7 @@ const Card = memo(function Card({ quote, name, year, dept, color, lang }: (typeo
 })
 
 export default function SocialProofSection() {
+  const t = useTranslations('socialproof')
   const [paused, setPaused] = useState(false)
 
   useEffect(() => {
@@ -67,10 +69,10 @@ export default function SocialProofSection() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 mb-10">
         <AnimatedSection className="text-center">
           <span className="inline-block text-xs font-semibold text-[#818cf8] uppercase tracking-[0.2em] mb-3">
-            Reakcie z celej FEI
+            {t('label')}
           </span>
           <h2 className="text-3xl sm:text-4xl font-black text-white">
-            Študenti za nami stoja
+            {t('heading')}
           </h2>
         </AnimatedSection>
       </div>

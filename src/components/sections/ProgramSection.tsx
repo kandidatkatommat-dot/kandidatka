@@ -2,81 +2,10 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useTranslations } from 'next-intl'
 import { DocumentEye, CoinStack, ChatBubbleHeart, Scales, ScreenCode, PeopleTalk } from '@/components/shared/Icons'
 import AnimatedSection from '@/components/shared/AnimatedSection'
 import PromiseCube3D from '@/components/sections/PromiseCube3D'
-
-const promises = [
-  {
-    icon: DocumentEye,
-    title: 'Transparentné správy',
-    description: 'Každý mesiac zverejníme zrozumiteľný súhrn rozhodnutí senátu. Žiadna byrokracia — len jasné info pre každého.',
-    tag: 'Komunikácia',
-    accent: 'blue',
-    span: 'bento-tall',
-    featured: true,
-    detail: 'Každý mesiac uverejníme správu o rozhodnutiach senátu — vrátane hlasovaní a našich pozícií. Žiadne tajné dohody. Dostupné na tomto webe 24/7.',
-    link: '#podnety',
-  },
-  {
-    icon: CoinStack,
-    title: 'Hlas pri rozpočte',
-    description: 'Pri schvaľovaní rozpočtu fakulty budeme aktívne presadzovať priority študentov — lepšie vybavenie, dostupné priestory.',
-    tag: 'Financie',
-    accent: 'orange',
-    span: '',
-    detail: 'Pri každom hlasovaní o rozpočte budeme aktívne presadzovať alokáciu na projekty navrhnuté študentmi — laboratóriá, vybavenie, digitálne nástroje.',
-    link: '#podnety',
-  },
-  {
-    icon: ChatBubbleHeart,
-    title: 'Otvorený kanál podnetov',
-    description: 'Táto stránka zostane aktívna počas celého funkčného obdobia 2026–2029.',
-    tag: 'Zapojenie',
-    accent: 'teal',
-    span: '',
-    detail: 'Tento web ostane aktívny po celé funkčné obdobie 2026–2029. Budeme na ňom zverejňovať správy, podnety a výsledky našej práce v senáte.',
-    link: '#podnety',
-  },
-  {
-    icon: Scales,
-    title: 'Férovejší skúšobný poriadok',
-    description: 'Iniciujeme revíziu skúšobného poriadku s dôrazom na transparentnosť hodnotenia a férovosť opravných termínov.',
-    tag: 'Akademické pravidlá',
-    accent: 'orange',
-    span: 'bento-wide',
-    detail: 'Iniciujeme formálny návrh na revíziu skúšobného poriadku — špeciálne pravidlá opravných termínov, transparentné hodnotenie a jasné kritériá.',
-    link: '#podnety',
-  },
-  {
-    icon: ScreenCode,
-    title: 'Lepšie digitálne nástroje',
-    description: 'Podporíme modernizáciu systémov pre študentov — od portálov až po e-learningové platformy.',
-    tag: 'Digitalizácia',
-    accent: 'blue',
-    span: '',
-    detail: 'Budeme presadzovať upgrade digitálnych nástrojov — od EDISON-u po e-learningové platformy. Konkrétne návrhy predložíme na základe podnetov od vás.',
-    link: '#podnety',
-  },
-  {
-    icon: PeopleTalk,
-    title: 'Verejné Q&A každý semester',
-    description: 'Každý semester usporiadame verejné stretnutie, kde odpovieme na otázky a porozprávame sa o dianí na FEI.',
-    tag: 'Dialóg',
-    accent: 'teal',
-    span: '',
-    detail: 'Každý semester zorganizujeme otvorené stretnutie so študentmi — kde sa môžete pýtať čokoľvek o dianí v senáte. Prvé do 3 mesiacov od zvolenia.',
-    link: '#podnety',
-  },
-]
-
-type PromiseItem = typeof promises[0]
-
-/* Hoisted — not recreated inside map() on every render */
-const cardVariants = {
-  hidden: { opacity: 0, y: 16, scale: 0.97 },
-  visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.5, ease: 'easeOut' as const } },
-}
 
 const accentMap = {
   blue:   { icon: 'text-blue-400',   bg: 'bg-blue-500/12',   tag: 'bg-blue-500/10 text-blue-300 border-blue-500/20',   glow: 'hover:shadow-blue-500/10',   iconBg: 'bg-blue-500/12',   iconColor: 'text-blue-400',   accent: 'text-blue-300'   },
@@ -84,11 +13,39 @@ const accentMap = {
   teal:   { icon: 'text-teal-400',   bg: 'bg-teal-500/12',   tag: 'bg-teal-500/10 text-teal-300 border-teal-500/20',   glow: 'hover:shadow-teal-500/10',   iconBg: 'bg-teal-500/12',   iconColor: 'text-teal-400',   accent: 'text-teal-300'   },
 }
 
+const cardVariants = {
+  hidden: { opacity: 0, y: 16, scale: 0.97 },
+  visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.5, ease: 'easeOut' as const } },
+}
+
+type AccentKey = keyof typeof accentMap
+
+interface PromiseItem {
+  icon: React.ComponentType<{ className?: string; size?: number }>
+  title: string
+  description: string
+  tag: string
+  accent: AccentKey
+  span: string
+  featured?: boolean
+  detail: string
+  link: string
+}
+
 export default function ProgramSection() {
+  const t = useTranslations('program')
   const [selectedItem, setSelectedItem] = useState<PromiseItem | null>(null)
   const closeButtonRef = useRef<HTMLButtonElement>(null)
 
-  // Move focus to close button when modal opens
+  const promises: PromiseItem[] = [
+    { icon: DocumentEye, title: t('p1_title'), description: t('p1_desc'), tag: t('p1_tag'), accent: 'blue',   span: 'bento-tall', featured: true, detail: t('p1_detail'), link: '#podnety' },
+    { icon: CoinStack,   title: t('p2_title'), description: t('p2_desc'), tag: t('p2_tag'), accent: 'orange', span: '',           detail: t('p2_detail'), link: '#podnety' },
+    { icon: ChatBubbleHeart, title: t('p3_title'), description: t('p3_desc'), tag: t('p3_tag'), accent: 'teal', span: '', detail: t('p3_detail'), link: '#podnety' },
+    { icon: Scales,      title: t('p4_title'), description: t('p4_desc'), tag: t('p4_tag'), accent: 'orange', span: 'bento-wide', detail: t('p4_detail'), link: '#podnety' },
+    { icon: ScreenCode,  title: t('p5_title'), description: t('p5_desc'), tag: t('p5_tag'), accent: 'blue',   span: '',           detail: t('p5_detail'), link: '#podnety' },
+    { icon: PeopleTalk,  title: t('p6_title'), description: t('p6_desc'), tag: t('p6_tag'), accent: 'teal',   span: '',           detail: t('p6_detail'), link: '#podnety' },
+  ]
+
   useEffect(() => {
     if (selectedItem) {
       requestAnimationFrame(() => closeButtonRef.current?.focus())
@@ -105,28 +62,26 @@ export default function ProgramSection() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10 pt-28">
         <AnimatedSection className="text-center mb-16">
           <span className="inline-block text-xs font-semibold text-blue-400 uppercase tracking-[0.2em] mb-4">
-            Náš program
+            {t('label')}
           </span>
           <h2 className="text-4xl sm:text-5xl font-black text-white mb-4">
-            Čo sľubujeme?
+            {t('heading')}
           </h2>
           <p className="text-blue-200/55 max-w-2xl mx-auto text-base">
-            Len reálne záväzky v rámci právomocí akademického senátu.{' '}
-            <span className="text-[#818cf8]/80 font-medium">Žiadne prázdne sľuby.</span>
+            {t('subline')}{' '}
+            <span className="text-[#818cf8]/80 font-medium">{t('subline_accent')}</span>
           </p>
         </AnimatedSection>
 
-        {/* 3D Promise Cube */}
         <AnimatedSection className="mb-14">
           <div className="glass rounded-3xl p-6 sm:p-10 overflow-hidden">
             <p className="text-xs font-semibold text-blue-400/50 uppercase tracking-[0.2em] text-center mb-8">
-              4 piliere nášho programu — interaktívna kocka
+              {t('cube_label')}
             </p>
             <PromiseCube3D />
           </div>
         </AnimatedSection>
 
-        {/* Bento Grid */}
         <motion.div
           className="bento-grid"
           initial="hidden"
@@ -136,7 +91,7 @@ export default function ProgramSection() {
         >
           {promises.map((p) => {
             const Icon = p.icon
-            const a = accentMap[p.accent as keyof typeof accentMap]
+            const a = accentMap[p.accent]
             return (
               <motion.div
                 key={p.title}
@@ -146,7 +101,6 @@ export default function ProgramSection() {
                 transition={{ type: 'spring', stiffness: 300, damping: 22 }}
                 onClick={() => setSelectedItem(p)}
               >
-                {/* Icon + tag */}
                 <div className="flex items-start justify-between gap-3">
                   <div className={`w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 ${a.bg}`}>
                     <Icon className={`${a.icon} w-5 h-5`} />
@@ -155,14 +109,10 @@ export default function ProgramSection() {
                     {p.tag}
                   </span>
                 </div>
-
-                {/* Text */}
                 <div>
                   <h3 className="text-base font-bold text-white mb-2 leading-snug">{p.title}</h3>
                   <p className="text-sm text-blue-100/60 leading-relaxed">{p.description}</p>
                 </div>
-
-                {/* Bottom rule — subtle accent line */}
                 <div className={`mt-auto h-0.5 rounded-full w-12 opacity-40 group-hover:w-20 transition-all duration-500 ${
                   p.accent === 'blue' ? 'bg-blue-400' : p.accent === 'orange' ? 'bg-[#4f46e5]' : 'bg-teal-400'
                 }`} />
@@ -171,10 +121,9 @@ export default function ProgramSection() {
           })}
         </motion.div>
 
-        {/* Footer note */}
         <AnimatedSection delay={0.3} className="text-center mt-10">
           <p className="text-xs text-blue-400/35 font-medium">
-            Všetky sľuby sú v rámci zákonom definovaných kompetencií Akademického senátu (zákon č. 111/1998 Sb.)
+            {t('footer_note')}
           </p>
         </AnimatedSection>
       </div>
@@ -208,7 +157,7 @@ export default function ProgramSection() {
               </button>
               <div className="flex items-center gap-3 mb-4">
                 {(() => {
-                  const a = accentMap[selectedItem.accent as keyof typeof accentMap]
+                  const a = accentMap[selectedItem.accent]
                   const Icon = selectedItem.icon
                   return (
                     <>
@@ -227,7 +176,7 @@ export default function ProgramSection() {
                 onClick={() => setSelectedItem(null)}
                 className="inline-flex items-center gap-2 text-sm text-[#818cf8] hover:text-[#a5b4fc] font-semibold transition-colors"
               >
-                Súvisí s podnetmi →
+                {t('modal_suggestions_link')}
               </a>
             </motion.div>
           </motion.div>

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { motion, AnimatePresence, type Variants } from 'framer-motion'
+import { useTranslations } from 'next-intl'
 import AnimatedSection from '@/components/shared/AnimatedSection'
 
 /* ── Testimonials — Czech, Slovak, English, no flags ── */
@@ -88,6 +89,7 @@ const pageVariants: Variants = {
 }
 
 export default function TestimonialsSection() {
+  const tl = useTranslations('testimonials')
   const [cur, setCur] = useState(0)
   const [dir, setDir] = useState(1)
   const [paused, setPaused] = useState(false)
@@ -139,13 +141,13 @@ export default function TestimonialsSection() {
 
         <AnimatedSection className="text-center mb-14">
           <span className="inline-block text-xs font-semibold text-teal-400 uppercase tracking-[0.2em] mb-4">
-            Čo hovoria študenti
+            {tl('label')}
           </span>
           <h2 className="text-4xl sm:text-5xl font-black text-white mb-4">
-            Hlas akademickej obce
+            {tl('heading')}
           </h2>
           <p className="text-blue-200/50 max-w-xl mx-auto">
-            Reálne reakcie od spolužiakov na FEI.
+            {tl('subline')}
           </p>
         </AnimatedSection>
 

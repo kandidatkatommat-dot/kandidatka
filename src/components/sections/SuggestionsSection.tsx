@@ -1,12 +1,14 @@
 'use client'
 
 import { useSWRConfig } from 'swr'
+import { useTranslations } from 'next-intl'
 import AnimatedSection from '@/components/shared/AnimatedSection'
 import SuggestionForm from '@/components/suggestions/SuggestionForm'
 import SuggestionWall from '@/components/suggestions/SuggestionWall'
 import { Mail, Lightbulb } from '@/components/shared/Icons'
 
 export default function SuggestionsSection() {
+  const t = useTranslations('suggestions')
   const { mutate } = useSWRConfig()
 
   function handleSuccess() {
@@ -22,19 +24,17 @@ export default function SuggestionsSection() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10 pt-28">
         <AnimatedSection className="text-center mb-16">
           <span className="inline-block text-xs font-semibold text-blue-400 uppercase tracking-[0.2em] mb-4">
-            Podnety
+            {t('label')}
           </span>
           <h2 className="text-4xl sm:text-5xl font-black text-white mb-4">
-            Čo chceš zmeniť?
+            {t('heading')}
           </h2>
           <p className="text-blue-200/55 max-w-2xl mx-auto text-base">
-            Pošli nám nápad, sťažnosť alebo návrh. Každý podnet čítame osobne a
-            pretavíme ho do konkrétnych krokov v senáte.
+            {t('subline')}
           </p>
         </AnimatedSection>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-          {/* Form */}
           <AnimatedSection direction="left">
             <div
               className="glass rounded-3xl p-7 sm:p-8 h-full"
@@ -45,13 +45,12 @@ export default function SuggestionsSection() {
                   style={{ background: 'rgba(79,70,229,0.15)', border: '1px solid rgba(79,70,229,0.3)' }}>
                   <Mail size={15} className="text-[#818cf8]" />
                 </div>
-                Pošli podnet
+                {t('form_heading')}
               </h3>
               <SuggestionForm onSuccess={handleSuccess} />
             </div>
           </AnimatedSection>
 
-          {/* Wall */}
           <AnimatedSection direction="right" delay={0.15}>
             <div
               className="glass rounded-3xl p-7 sm:p-8 h-full"
@@ -62,7 +61,7 @@ export default function SuggestionsSection() {
                   style={{ background: 'rgba(6,182,212,0.12)', border: '1px solid rgba(6,182,212,0.25)' }}>
                   <Lightbulb size={15} className="text-teal-400" />
                 </div>
-                Podnety od študentov
+                {t('wall_heading')}
               </h3>
               <SuggestionWall />
             </div>

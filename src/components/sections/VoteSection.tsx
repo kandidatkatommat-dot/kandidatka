@@ -1,41 +1,41 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import { useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
 import AnimatedSection from '@/components/shared/AnimatedSection'
 import { BallotBox } from '@/components/shared/Icons'
 
-const steps = [
-  { step: '01', label: 'Prihlásiš sa', desc: 'Cez systém UNIS VŠB-TUO svojimi FEI prihlasovacími údajmi.' },
-  { step: '02', label: 'Vybereš kandidátov', desc: 'V zozname kandidátov FEI nájdeš Mucha & Buček.' },
-  { step: '03', label: 'Potvrdíš hlas', desc: 'Anonymné hlasovanie. Celý proces trvá 2 minúty.' },
-]
-
 export default function VoteSection() {
+  const t = useTranslations('vote')
+
+  const steps = [
+    { step: '01', label: t('step1_label'), desc: t('step1_desc') },
+    { step: '02', label: t('step2_label'), desc: t('step2_desc') },
+    { step: '03', label: t('step3_label'), desc: t('step3_desc') },
+  ]
+
   return (
     <section className="relative py-28 sm:py-36 overflow-hidden" style={{ background: '#020810' }}>
       <div className="section-divider mb-0" />
 
-      {/* Big glow */}
       <div
         className="absolute inset-0 pointer-events-none"
-        style={{
-          background: 'radial-gradient(ellipse 60% 50% at 50% 50%, rgba(59,130,246,0.08) 0%, transparent 70%)',
-        }}
+        style={{ background: 'radial-gradient(ellipse 60% 50% at 50% 50%, rgba(59,130,246,0.08) 0%, transparent 70%)' }}
         aria-hidden
       />
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 relative z-10 pt-28">
         <AnimatedSection className="text-center mb-16">
           <span className="inline-block text-xs font-semibold text-blue-400 uppercase tracking-[0.2em] mb-4">
-            Ako hlasovať
+            {t('label')}
           </span>
           <h2 className="text-4xl sm:text-5xl font-black text-white mb-4">
-            Tvoj hlas je<br />
-            <span className="gradient-text">silný nástroj</span>
+            {t('heading')}<br />
+            <span className="gradient-text">{t('heading_accent')}</span>
           </h2>
           <p className="text-blue-200/55 max-w-xl mx-auto text-base">
-            Voľby prebehajú elektronicky 12.–15. mája 2026 cez systém UNIS. Trvá to 2 minúty.
+            {t('subline')}
           </p>
         </AnimatedSection>
 
@@ -61,18 +61,16 @@ export default function VoteSection() {
         {/* Big CTA */}
         <AnimatedSection className="text-center">
           <div className="relative inline-block">
-            {/* Glow behind button */}
             <div className="absolute inset-0 blur-3xl bg-[#4f46e5]/15 scale-150 pointer-events-none" />
             <div className="relative glass glow-ring-orange rounded-3xl p-8 sm:p-12 flex flex-col items-center gap-5">
               <div className="w-16 h-16 rounded-2xl flex items-center justify-center" style={{ background: 'rgba(79,70,229,0.15)', border: '1px solid rgba(79,70,229,0.3)' }}>
                 <BallotBox size={32} className="text-[#818cf8]" />
               </div>
               <h3 className="text-2xl sm:text-3xl font-black text-white text-center">
-                Volíme 12.–15. mája 2026
+                {t('cta_date')}
               </h3>
               <p className="text-blue-200/60 text-sm text-center max-w-sm">
-                Elektronicky cez UNIS VŠB-TUO. Každý študent FEI má jeden hlas.
-                Použi ho — za ľudí, ktorí budú počúvať.
+                {t('cta_desc')}
               </p>
               <div className="flex flex-col sm:flex-row gap-3">
                 <motion.div
@@ -84,13 +82,13 @@ export default function VoteSection() {
                       size="lg"
                       className="bg-gradient-to-br from-[#4f46e5] to-[#6d28d9] hover:from-[#6366f1] hover:to-[#7c3aed] text-white border-0 shadow-xl shadow-[#6d28d9]/30 px-8 py-6 text-base font-bold transition-all duration-200 hover:scale-[1.03] w-full sm:w-auto"
                     >
-                      Mucha & Buček — zavolíme!
+                      {t('cta_button')}
                     </Button>
                   </a>
                 </motion.div>
               </div>
               <p className="text-xs text-blue-400/35">
-                MUC0075 · BUC0130 · FEI VŠB-TUO
+                {t('cta_footnote')}
               </p>
             </div>
           </div>

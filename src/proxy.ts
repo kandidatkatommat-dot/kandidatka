@@ -1,10 +1,14 @@
+import createMiddleware from 'next-intl/middleware'
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import { routing } from './i18n/routing'
+
+const intlMiddleware = createMiddleware(routing)
 
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
 
-  // Protect /admin routes (except /admin/login)
+  // Admin protection — check session token before locale routing
   if (pathname.startsWith('/admin') && pathname !== '/admin/login') {
     const sessionToken =
       request.cookies.get('next-auth.session-token')?.value ??
@@ -16,9 +20,15 @@ export function proxy(request: NextRequest) {
     }
   }
 
-  return NextResponse.next()
+  // Skip i18n routing for admin and API routes
+  if (pathname.startsWith('/admin') || pathname.startsWith('/api')) {
+    return NextResponse.next()
+  }
+
+  // i18n locale routing for all other routes
+  return intlMiddleware(request)
 }
 
 export const config = {
-  matcher: ['/admin/:path*'],
+  matcher: ['/((?!_next|_vercel|.*\\..*).*)'],
 }

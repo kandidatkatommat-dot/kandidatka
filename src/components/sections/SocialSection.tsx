@@ -2,48 +2,50 @@
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
+import { useTranslations } from 'next-intl'
 import { Mail, ExternalLink, Camera, MessageCircle } from '@/components/shared/Icons'
 import AnimatedSection from '@/components/shared/AnimatedSection'
 
-const socials = [
-  {
-    icon: Camera,
-    label: 'Instagram',
-    handle: '@volimefei2026',
-    href: 'https://instagram.com/volimefei2026',
-    gradient: 'from-pink-500/15 via-purple-500/10 to-indigo-500/15',
-    border: 'border-pink-500/20 hover:border-pink-400/40',
-    iconColor: 'text-pink-400',
-    glow: 'hover:shadow-pink-500/10',
-    description: 'Sleduj kampaň, zákulisie a aktualizácie každý deň',
-  },
-  {
-    icon: MessageCircle,
-    label: 'Správa / E-mail',
-    handle: 'Napíš priamo',
-    href: 'mailto:mucha.bucek@fei.vsb.cz',
-    gradient: 'from-green-500/10 via-teal-500/8 to-cyan-500/10',
-    border: 'border-green-500/20 hover:border-green-400/40',
-    iconColor: 'text-green-400',
-    glow: 'hover:shadow-green-500/10',
-    description: 'Napíš nám — na každú správu odpovieme osobne',
-  },
-  {
-    icon: Mail,
-    label: 'E-mail',
-    handle: ['tomas.mucha.st@vsb.cz', 'martin.bucek.st@vsb.cz'],
-    href: 'mailto:tomas.mucha.st@vsb.cz',
-    gradient: 'from-blue-500/12 via-blue-400/8 to-cyan-500/12',
-    border: 'border-blue-500/20 hover:border-blue-400/40',
-    iconColor: 'text-blue-400',
-    glow: 'hover:shadow-blue-500/10',
-    description: 'Pre dlhšie správy alebo návrhy na spoluprácu',
-  },
-]
-
 export default function SocialSection() {
+  const t = useTranslations('social')
   const [email, setEmail] = useState('')
   const [subStatus, setSubStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
+
+  const socials = [
+    {
+      icon: Camera,
+      label: 'Instagram',
+      handle: '@volimefei2026',
+      href: 'https://instagram.com/volimefei2026',
+      gradient: 'from-pink-500/15 via-purple-500/10 to-indigo-500/15',
+      border: 'border-pink-500/20 hover:border-pink-400/40',
+      iconColor: 'text-pink-400',
+      glow: 'hover:shadow-pink-500/10',
+      description: t('ig_desc'),
+    },
+    {
+      icon: MessageCircle,
+      label: 'Správa / E-mail',
+      handle: 'Napíš priamo',
+      href: 'mailto:mucha.bucek@fei.vsb.cz',
+      gradient: 'from-green-500/10 via-teal-500/8 to-cyan-500/10',
+      border: 'border-green-500/20 hover:border-green-400/40',
+      iconColor: 'text-green-400',
+      glow: 'hover:shadow-green-500/10',
+      description: t('msg_desc'),
+    },
+    {
+      icon: Mail,
+      label: 'E-mail',
+      handle: ['tomas.mucha.st@vsb.cz', 'martin.bucek.st@vsb.cz'],
+      href: 'mailto:tomas.mucha.st@vsb.cz',
+      gradient: 'from-blue-500/12 via-blue-400/8 to-cyan-500/12',
+      border: 'border-blue-500/20 hover:border-blue-400/40',
+      iconColor: 'text-blue-400',
+      glow: 'hover:shadow-blue-500/10',
+      description: t('email_desc'),
+    },
+  ]
 
   async function handleSubscribe(e: React.FormEvent) {
     e.preventDefault()
@@ -70,30 +72,30 @@ export default function SocialSection() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 relative z-10 pt-28">
         <AnimatedSection className="text-center mb-14">
           <span className="inline-block text-xs font-semibold text-[#818cf8] uppercase tracking-[0.2em] mb-4">
-            Zostaň v obraze
+            {t('label')}
           </span>
           <h2 className="text-4xl sm:text-5xl font-black text-white mb-4">
-            Sleduj kampaň
+            {t('heading')}
           </h2>
           <p className="text-blue-200/55 max-w-xl mx-auto">
-            Každý deň nové zákulisie, podnety a odpovede. Sleduj, pýtaj sa, zapoj sa.
+            {t('subline')}
           </p>
         </AnimatedSection>
 
-        {/* Newsletter signup */}
+        {/* Newsletter */}
         <AnimatedSection delay={0.05}>
           <div id="newsletter" className="glass rounded-3xl p-8 mb-12 text-center">
-            <p className="text-xs font-semibold text-[#818cf8] uppercase tracking-[0.2em] mb-3">Newsletter</p>
-            <h3 className="text-2xl font-black text-white mb-2">Zostaň informovaný</h3>
-            <p className="text-sm text-blue-200/50 mb-6">Dostávaj správy o dianí v senáte priamo do emailu.</p>
+            <p className="text-xs font-semibold text-[#818cf8] uppercase tracking-[0.2em] mb-3">{t('newsletter_label')}</p>
+            <h3 className="text-2xl font-black text-white mb-2">{t('newsletter_heading')}</h3>
+            <p className="text-sm text-blue-200/50 mb-6">{t('newsletter_subline')}</p>
             {subStatus === 'success' ? (
               <div className="flex flex-col items-center gap-3">
-                <p className="text-green-400 font-semibold">✓ Prihlásený! Ďakujeme.</p>
+                <p className="text-green-400 font-semibold">{t('newsletter_subscribed')}</p>
                 <button
                   onClick={() => { setSubStatus('idle'); setEmail('') }}
                   className="text-xs text-blue-400/50 hover:text-blue-300 transition-colors"
                 >
-                  Prihlásiť znova
+                  {t('newsletter_resubscribe')}
                 </button>
               </div>
             ) : (
@@ -103,7 +105,7 @@ export default function SocialSection() {
                     type="email"
                     value={email}
                     onChange={e => setEmail(e.target.value)}
-                    placeholder="tvoj@email.com"
+                    placeholder={t('newsletter_placeholder')}
                     required
                     className="flex-1 px-4 py-3 rounded-xl bg-white/5 border border-blue-500/20 text-white placeholder:text-blue-300/30 focus:outline-none focus:border-blue-500/50 text-base sm:text-sm min-h-[44px]"
                   />
@@ -112,11 +114,11 @@ export default function SocialSection() {
                     disabled={subStatus === 'loading'}
                     className="px-6 py-3 min-h-[44px] bg-gradient-to-br from-[#4f46e5] to-[#6d28d9] hover:from-[#6366f1] hover:to-[#7c3aed] text-white font-bold rounded-xl transition-all text-sm disabled:opacity-60 whitespace-nowrap"
                   >
-                    {subStatus === 'loading' ? 'Prihlasovanie...' : 'Prihlásiť sa'}
+                    {subStatus === 'loading' ? t('newsletter_loading') : t('newsletter_submit')}
                   </button>
                 </form>
                 {subStatus === 'error' && (
-                  <p className="text-red-400 text-xs mt-3">Niečo sa pokazilo. Skús to znova.</p>
+                  <p className="text-red-400 text-xs mt-3">{t('newsletter_error')}</p>
                 )}
               </>
             )}

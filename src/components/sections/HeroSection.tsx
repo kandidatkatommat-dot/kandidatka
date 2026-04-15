@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useMemo, useRef, memo } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
+import { useTranslations } from 'next-intl'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { ChevronDown, Mail } from '@/components/shared/Icons'
@@ -56,11 +57,9 @@ function CountUnit({ value, label }: { value: number; label: string }) {
   )
 }
 
-/* ── Aurora Mesh background ─────────────────────────────────── */
 const AuroraMesh = memo(function AuroraMesh({ noFilter }: { noFilter: boolean }) {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden>
-      {/* Primary orb */}
       <div
         className="absolute top-[-20%] left-[10%] w-[70vw] h-[70vw] rounded-full"
         style={{
@@ -69,7 +68,6 @@ const AuroraMesh = memo(function AuroraMesh({ noFilter }: { noFilter: boolean })
           animation: 'aurora 14s ease-in-out infinite',
         }}
       />
-      {/* Secondary orb */}
       <div
         className="absolute bottom-[-10%] right-[-5%] w-[50vw] h-[50vw] rounded-full"
         style={{
@@ -79,22 +77,13 @@ const AuroraMesh = memo(function AuroraMesh({ noFilter }: { noFilter: boolean })
           animationDelay: '-7s',
         }}
       />
-      {/* Dot grid */}
       <div className="absolute inset-0 dot-grid opacity-20" />
     </div>
   )
 })
 
-/* ── Floating particles (CSS only, no Three.js needed for fallback) */
 interface Particle {
-  id: number
-  x: number
-  y: number
-  size: number
-  dur: number
-  delay: number
-  color: string
-  opacity: number
+  id: number; x: number; y: number; size: number; dur: number; delay: number; color: string; opacity: number
 }
 
 const FloatingParticles = memo(function FloatingParticles({ particles }: { particles: Particle[] }) {
@@ -113,23 +102,21 @@ const FloatingParticles = memo(function FloatingParticles({ particles }: { parti
   )
 })
 
-/* ── Scroll indicator ─────────────────────────────────────── */
-function ScrollIndicator() {
+function ScrollIndicator({ label }: { label: string }) {
   return (
     <motion.a
       href="#o-nas"
       className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-blue-400/30 hover:text-blue-300/60 transition-colors group"
       animate={{ y: [0, 8, 0] }}
       transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
-      aria-label="Scroll down"
+      aria-label={label}
     >
-      <span className="text-[10px] uppercase tracking-[0.2em] font-medium">Prejdi dolu</span>
+      <span className="text-[10px] uppercase tracking-[0.2em] font-medium">{label}</span>
       <ChevronDown size={18} />
     </motion.a>
   )
 }
 
-/* ── Main variants ──────────────────────────────────────────── */
 const container = {
   hidden: { opacity: 0 },
   visible: { opacity: 1, transition: { staggerChildren: 0.12, delayChildren: 0.2 } },
@@ -139,15 +126,14 @@ const item = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] } },
 }
 
-/* ── Component ─────────────────────────────────────────────── */
 export default function HeroSection() {
+  const t = useTranslations('hero')
   const { d, h, m, s, mounted, phase } = useCountdown()
   const sectionRef = useRef<HTMLElement>(null)
   const [isTouch, setIsTouch] = useState(false)
   const [isChrome, setIsChrome] = useState(false)
 
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end start'] })
-  // On Chrome and touch devices, keep transforms static — eliminates scroll callbacks every pixel
   const noParallax = isChrome || isTouch
   const y = useTransform(scrollYProgress, [0, 1], ['0%', noParallax ? '0%' : '30%'])
   const opacity = useTransform(scrollYProgress, [0, 0.6], [1, noParallax ? 1 : 0])
@@ -166,12 +152,7 @@ export default function HeroSection() {
         size: (i % 4) + 1.5,
         dur: 6 + (i % 6),
         delay: (i % 10) * 0.35,
-        color:
-          i % 5 === 0 ? '#4f46e5'
-          : i % 5 === 1 ? '#06b6d4'
-          : i % 5 === 2 ? '#3b82f6'
-          : i % 5 === 3 ? '#8b5cf6'
-          : '#60a5fa',
+        color: i % 5 === 0 ? '#4f46e5' : i % 5 === 1 ? '#06b6d4' : i % 5 === 2 ? '#3b82f6' : i % 5 === 3 ? '#8b5cf6' : '#60a5fa',
         opacity: 0.15 + (i % 3) * 0.08,
       })),
     []
@@ -191,7 +172,7 @@ export default function HeroSection() {
           <motion.div variants={item} className="flex justify-center mb-8">
             <Badge className="px-5 py-2 text-xs font-semibold glass-sm text-blue-300 border border-blue-500/20 tracking-widest uppercase gap-2">
               <span className="inline-block w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-              Voľby AS FEI VŠB-TUO · 12.–15. mája 2026
+              {t('badge')}
             </Badge>
           </motion.div>
 
@@ -211,9 +192,9 @@ export default function HeroSection() {
             Tomáš Mucha · Martin Buček
           </motion.p>
           <motion.p variants={item} className="text-sm sm:text-base text-blue-300/45 mb-12 max-w-lg mx-auto leading-relaxed">
-            Dvaja študenti FEI s reálnym plánom pre Akademický senát.
+            {t('subline')}
             <br className="hidden sm:block" />
-            Pošli nám, čo ťa trápi — budeme to riešiť.
+            {t('subline2')}
           </motion.p>
 
           {/* CTAs */}
@@ -224,7 +205,7 @@ export default function HeroSection() {
                 data-cursor
                 className="group relative overflow-hidden bg-gradient-to-br from-[#4f46e5] to-[#6d28d9] hover:from-[#6366f1] hover:to-[#7c3aed] text-white border-0 shadow-2xl shadow-[#4f46e5]/25 px-9 py-6 text-base font-bold w-full sm:w-auto transition-all duration-300 hover:scale-[1.04] hover:shadow-[#6d28d9]/40"
               >
-                <span className="relative z-10">Náš program →</span>
+                <span className="relative z-10">{t('cta_primary')}</span>
               </Button>
             </a>
             <a href="#podnety">
@@ -234,7 +215,7 @@ export default function HeroSection() {
                 data-cursor
                 className="border-blue-500/20 bg-white/[0.03] text-blue-200 hover:bg-blue-500/8 hover:border-blue-500/40 backdrop-blur-sm px-9 py-6 text-base font-semibold w-full sm:w-auto transition-all duration-300 hover:scale-[1.02]"
               >
-                Pošli podnet <Mail size={15} className="ml-0.5" />
+                {t('cta_secondary')} <Mail size={15} className="ml-0.5" />
               </Button>
             </a>
           </motion.div>
@@ -245,28 +226,28 @@ export default function HeroSection() {
               {phase === 'countdown' && (
                 <>
                   <p className="text-[11px] text-blue-400/40 uppercase tracking-[0.25em] font-medium">
-                    Do začiatku hlasovania zostáva
+                    {t('countdown_label')}
                   </p>
                   <div className="flex items-start gap-2 sm:gap-4">
-                    <CountUnit value={d} label="dní" />
+                    <CountUnit value={d} label={t('countdown_days')} />
                     <span className="text-blue-400/25 text-2xl font-thin mt-5">:</span>
-                    <CountUnit value={h} label="hodín" />
+                    <CountUnit value={h} label={t('countdown_hours')} />
                     <span className="text-blue-400/25 text-2xl font-thin mt-5">:</span>
-                    <CountUnit value={m} label="minút" />
+                    <CountUnit value={m} label={t('countdown_minutes')} />
                     <span className="text-blue-400/25 text-2xl font-thin mt-5">:</span>
-                    <CountUnit value={s} label="sekúnd" />
+                    <CountUnit value={s} label={t('countdown_seconds')} />
                   </div>
                 </>
               )}
               {phase === 'voting' && (
                 <div className="flex items-center gap-3 px-6 py-3 rounded-2xl glass border border-green-500/20">
                   <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse flex-shrink-0" />
-                  <span className="text-sm font-semibold text-green-300">Hlasovanie prebieha — 12.–15. mája 2026</span>
+                  <span className="text-sm font-semibold text-green-300">{t('voting_live')}</span>
                 </div>
               )}
               {phase === 'ended' && (
                 <div className="flex items-center gap-3 px-6 py-3 rounded-2xl glass border border-blue-500/20">
-                  <span className="text-sm font-semibold text-blue-300/70">Ďakujeme za účasť vo voľbách 2026</span>
+                  <span className="text-sm font-semibold text-blue-300/70">{t('voting_ended')}</span>
                 </div>
               )}
             </motion.div>
@@ -274,7 +255,7 @@ export default function HeroSection() {
         </motion.div>
       </motion.div>
 
-      <ScrollIndicator />
+      <ScrollIndicator label={t('scroll_down')} />
     </section>
   )
 }

@@ -2,21 +2,24 @@
 
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useTranslations } from 'next-intl'
 import { Menu, X } from '@/components/shared/Icons'
 import { Button } from '@/components/ui/button'
-
-const links = [
-  { label: 'O nás', href: '#o-nas' },
-  { label: 'Program', href: '#program' },
-  { label: 'FAQ', href: '#faq' },
-  { label: 'Podnety', href: '#podnety' },
-  { label: 'Sociálne siete', href: '#socialne-siete' },
-]
+import LanguageSwitcher from '@/components/shared/LanguageSwitcher'
 
 export default function Navbar() {
+  const t = useTranslations('nav')
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const [activeSection, setActiveSection] = useState('')
+
+  const links = [
+    { label: t('about'), href: '#o-nas' },
+    { label: t('program'), href: '#program' },
+    { label: t('faq'), href: '#faq' },
+    { label: t('suggestions'), href: '#podnety' },
+    { label: t('social'), href: '#socialne-siete' },
+  ]
 
   useEffect(() => {
     let ticking = false
@@ -46,6 +49,7 @@ export default function Navbar() {
       observers.push(obs)
     })
     return () => observers.forEach(o => o.disconnect())
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
@@ -88,15 +92,18 @@ export default function Navbar() {
           })}
         </div>
 
-        {/* CTA + Hamburger */}
+        {/* Language switcher + CTA + Hamburger */}
         <div className="flex items-center gap-3">
+          <div className="hidden md:flex items-center">
+            <LanguageSwitcher />
+          </div>
           <a href="#podnety" className="hidden md:block">
             <Button
               size="sm"
               data-cursor
               className="bg-gradient-to-br from-[#4f46e5] to-[#6d28d9] hover:from-[#6366f1] hover:to-[#7c3aed] text-white border-0 shadow-lg shadow-[#4f46e5]/20 transition-all duration-200"
             >
-              Pošli podnet
+              {t('cta')}
             </Button>
           </a>
           <button
@@ -137,9 +144,12 @@ export default function Navbar() {
                   </a>
                 )
               })}
+              <div className="flex items-center justify-center mt-3 mb-1">
+                <LanguageSwitcher />
+              </div>
               <a href="#podnety" onClick={() => setMenuOpen(false)}>
-                <Button className="w-full mt-2 bg-gradient-to-br from-[#4f46e5] to-[#6d28d9] hover:from-[#6366f1] hover:to-[#7c3aed] text-white border-0">
-                  Pošli podnet
+                <Button className="w-full mt-1 bg-gradient-to-br from-[#4f46e5] to-[#6d28d9] hover:from-[#6366f1] hover:to-[#7c3aed] text-white border-0">
+                  {t('cta')}
                 </Button>
               </a>
             </div>
