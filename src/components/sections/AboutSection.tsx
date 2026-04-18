@@ -1,15 +1,13 @@
 'use client'
 
+import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { useTranslations } from 'next-intl'
 import { useLocale } from 'next-intl'
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { ExternalLink, DiscordIcon, StarBadge } from '@/components/shared/Icons'
 import AnimatedSection from '@/components/shared/AnimatedSection'
 import type { Candidate } from '@/types'
-
-const candidateIds = ['MUC0075', 'BUC0130'] as const
 
 const discordNicks: Record<string, string> = {
   MUC0075: 'Tom. (Starky) Muc.',
@@ -24,28 +22,35 @@ const cardAccents = [
 type CandidateData = Candidate & { lang: string; award?: string }
 
 function CandidateCard({ c, direction, accentIdx }: { c: CandidateData; direction: 'left' | 'right'; accentIdx: number }) {
-  const initials = c.name.split(' ').map((n) => n[0]).join('')
   const accent = cardAccents[accentIdx]
   const discordNick = discordNicks[c.id]
+
   return (
     <AnimatedSection direction={direction}>
       <motion.div
-        className="glass glass-hover rounded-3xl p-6 sm:p-8 h-full flex flex-col gap-6 group"
+        className="glass glass-hover rounded-3xl h-full flex flex-col group overflow-hidden"
         style={{ borderTop: `2px solid ${accent.border}` }}
         whileHover={{ scale: 1.015, y: -4 }}
         transition={{ type: 'spring', stiffness: 280, damping: 22 }}
       >
-        {/* Avatar row */}
-        <div className="flex items-center gap-3 sm:gap-5">
-          <div className="relative">
-            <div className="absolute inset-0 rounded-full blur-lg bg-blue-500/25 scale-110" />
-            <Avatar className="relative w-20 h-20 ring-2 ring-blue-500/20 ring-offset-2 ring-offset-[#020810]">
-              <AvatarImage src={c.photoUrl ?? undefined} alt={c.name} />
-              <AvatarFallback className="text-2xl font-bold bg-gradient-to-br from-blue-600 to-indigo-700 text-white">
-                {initials}
-              </AvatarFallback>
-            </Avatar>
+        {/* Photo panel */}
+        {c.photoUrl && (
+          <div className="relative w-full flex-shrink-0 overflow-hidden" style={{ height: 280 }}>
+            <Image
+              src={c.photoUrl}
+              alt={c.name}
+              fill
+              className="object-cover object-top"
+              sizes="(max-width: 768px) 100vw, 50vw"
+              priority
+            />
+            <div className="absolute bottom-0 inset-x-0 h-24 bg-gradient-to-t from-[#0a1628] to-transparent pointer-events-none" />
           </div>
+        )}
+
+        {/* Content */}
+        <div className="p-6 sm:p-8 flex flex-col gap-5 flex-1">
+          {/* Name + discord + badge */}
           <div>
             <h3 className="text-xl font-bold text-white flex items-center gap-2 flex-wrap">
               {c.name}
@@ -77,28 +82,28 @@ function CandidateCard({ c, direction, accentIdx }: { c: CandidateData; directio
               </a>
             )}
           </div>
-        </div>
 
-        {/* Bio */}
-        <p lang={c.lang} className="text-blue-100/65 text-sm leading-relaxed flex-1">{c.bio}</p>
+          {/* Bio */}
+          <p lang={c.lang} className="text-blue-100/65 text-sm leading-relaxed flex-1">{c.bio}</p>
 
-        {/* Quote */}
-        <div className="relative mt-4">
-          <span className={`absolute -top-2 -left-1 text-4xl ${accent.quoteColor} font-serif leading-none select-none`}>&ldquo;</span>
-          <blockquote lang={c.lang} className={`pl-4 border-l-2 ${accent.quoteBorder} text-sm ${accent.quoteText} italic leading-relaxed`}>
-            {c.whyRunning}
-          </blockquote>
-        </div>
-
-        {/* Award badge — bottom of card */}
-        {c.award && (
-          <div className="pt-2 border-t border-white/5">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-semibold border border-[#4f46e5]/35 bg-[#4f46e5]/10 text-[#818cf8] leading-none">
-              <StarBadge size={10} className="flex-shrink-0" />
-              {c.award}
-            </span>
+          {/* Quote */}
+          <div className="relative">
+            <span className={`absolute -top-2 -left-1 text-4xl ${accent.quoteColor} font-serif leading-none select-none`}>&ldquo;</span>
+            <blockquote lang={c.lang} className={`pl-4 border-l-2 ${accent.quoteBorder} text-sm ${accent.quoteText} italic leading-relaxed`}>
+              {c.whyRunning}
+            </blockquote>
           </div>
-        )}
+
+          {/* Award badge */}
+          {c.award && (
+            <div className="pt-2 border-t border-white/5">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-semibold border border-[#4f46e5]/35 bg-[#4f46e5]/10 text-[#818cf8] leading-none">
+                <StarBadge size={10} className="flex-shrink-0" />
+                {c.award}
+              </span>
+            </div>
+          )}
+        </div>
       </motion.div>
     </AnimatedSection>
   )
@@ -108,7 +113,6 @@ export default function AboutSection() {
   const t = useTranslations('about')
   const locale = useLocale()
 
-  // Bio lang: Mucha speaks SK (or translated), Buček speaks CS naturally
   const muchaLang = locale === 'en' ? 'en' : 'sk'
   const bucekLang = locale === 'en' ? 'en' : 'cs'
 
@@ -120,7 +124,7 @@ export default function AboutSection() {
       department: 'FEI VŠB-TUO',
       bio: t('bio_mucha'),
       whyRunning: t('why_mucha'),
-      photoUrl: '/photos/tomas-mucha.jpg',
+      photoUrl: '/photos/tomas-mucha.webp',
       lang: muchaLang,
     },
     {
@@ -130,7 +134,7 @@ export default function AboutSection() {
       department: 'FEI VŠB-TUO',
       bio: t('bio_bucek'),
       whyRunning: t('why_bucek'),
-      photoUrl: '/photos/martin-bucek.jpg',
+      photoUrl: '/photos/martin-bucek.webp',
       lang: bucekLang,
       award: t('award_bucek'),
     },
