@@ -5,17 +5,17 @@ import { motion } from 'framer-motion'
 
 const photos = [
   {
+    src: '/photos/ukazujeme.webp',
+    alt: 'Martin Buček ukazuje na Fakultu elektrotechniky a informatiky',
+    label: 'Naša fakulta',
+    sublabel: 'FEI VŠB-TUO · Budúcnosť tu',
+    pos: 'object-left',
+  },
+  {
     src: '/photos/spolu-feature.webp',
     alt: 'Tomáš Mucha a Martin Buček pred Fakultou elektrotechniky a informatiky',
     label: 'Volíme FEI 2026',
-    sublabel: 'Spolu za zmenu',
-    pos: 'object-center',
-  },
-  {
-    src: '/photos/ukazujeme.webp',
-    alt: 'Kandidáti ukazujú na Fakultu elektrotechniky a informatiky',
-    label: 'Naša fakulta',
-    sublabel: 'FEI VŠB-TUO',
+    sublabel: 'Mucha & Buček — tím pre FEI',
     pos: 'object-center',
     featured: true,
   },
