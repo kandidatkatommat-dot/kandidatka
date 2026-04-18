@@ -14,6 +14,7 @@ function SectionSkeleton() {
    JS chunks load only when the browser needs them — dramatically
    reduces initial parse/execute time on all devices.              */
 const AboutSection      = dynamic(() => import('@/components/sections/AboutSection'))
+const CandidatesGallery = dynamic(() => import('@/components/sections/CandidatesGallery'))
 const ProgramSection    = dynamic(() => import('@/components/sections/ProgramSection'))
 const InsightsSection   = dynamic(() => import('@/components/sections/InsightsSection'))
 const TestimonialsSection = dynamic(() => import('@/components/sections/TestimonialsSection'))
@@ -33,6 +34,9 @@ export default function Home() {
         <HeroSection />
         <Suspense fallback={<SectionSkeleton />}>
           <AboutSection />
+        </Suspense>
+        <Suspense fallback={null}>
+          <CandidatesGallery />
         </Suspense>
         <Suspense fallback={<SectionSkeleton />}>
           <ProgramSection />
