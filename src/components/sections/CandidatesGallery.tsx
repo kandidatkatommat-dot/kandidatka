@@ -14,8 +14,8 @@ const photos = [
   {
     src: '/photos/spolu-feature.webp',
     alt: 'Tomáš Mucha a Martin Buček pred Fakultou elektrotechniky a informatiky',
-    label: 'Volíme FEI 2026',
-    sublabel: 'Mucha & Buček — tím pre FEI',
+    label: 'Jeden tím',
+    sublabel: 'Mucha & Buček · Volíme FEI 2026',
     pos: 'object-center',
     featured: true,
   },
