@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useTranslations } from 'next-intl'
@@ -119,6 +120,30 @@ export default function ProgramSection() {
               </motion.div>
             )
           })}
+
+          {/* Handshake photo tile — col 3, row 3 (empty corner) */}
+          <motion.div
+            className="relative rounded-3xl overflow-hidden group"
+            variants={cardVariants}
+            whileHover={{ scale: 1.015 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 22 }}
+          >
+            <Image
+              src="/photos/podanie-ruky.webp"
+              alt="Tomáš Mucha a Martin Buček si podávajú ruky pred FEI"
+              fill
+              className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            />
+            <div className="absolute inset-0 pointer-events-none"
+              style={{ background: 'linear-gradient(to top, rgba(2,8,16,0.65) 0%, transparent 55%)' }} />
+            <div className="absolute inset-0 rounded-3xl border border-blue-500/0 group-hover:border-blue-500/20 transition-colors duration-300" />
+            <div className="absolute bottom-5 left-5 z-10">
+              <span className="text-[10px] font-semibold text-white/55 uppercase tracking-[0.22em]">
+                Náš záväzok
+              </span>
+            </div>
+          </motion.div>
         </motion.div>
 
         <AnimatedSection delay={0.3} className="text-center mt-10">
