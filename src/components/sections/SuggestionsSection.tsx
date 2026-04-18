@@ -60,13 +60,13 @@ export default function SuggestionsSection() {
                 style={{ background: 'linear-gradient(to top, rgba(2,8,16,0.8) 0%, rgba(2,8,16,0.1) 45%, transparent 70%)' }} />
               {/* Hover border */}
               <div className="absolute inset-0 rounded-3xl border border-blue-500/0 group-hover:border-blue-500/20 transition-colors duration-300" />
-              {/* Quote */}
+              {/* Name overlay */}
               <div className="absolute bottom-5 left-5 right-5 z-10">
-                <p className="text-white font-bold text-sm leading-snug">
-                  {t('photo_quote')}
+                <p className="text-white font-bold text-base leading-snug">
+                  Martin &amp; Tomáš
                 </p>
-                <span className="text-blue-300/55 text-[10px] font-semibold uppercase tracking-[0.22em] mt-1 block">
-                  Tomáš &amp; Martin · FEI 2026
+                <span className="text-blue-300/50 text-[10px] font-semibold uppercase tracking-[0.22em] mt-0.5 block">
+                  FEI VŠB-TUO · 2026
                 </span>
               </div>
             </motion.div>
