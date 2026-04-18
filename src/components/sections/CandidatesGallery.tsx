@@ -64,7 +64,7 @@ export default function CandidatesGallery() {
               className={`relative rounded-2xl sm:rounded-3xl overflow-hidden group ring-1 ring-white/5 ${
                 p.featured ? 'sm:-mt-8' : ''
               }`}
-              style={{ height: p.featured ? 'clamp(420px, 58vw, 680px)' : 'clamp(360px, 50vw, 600px)' }}
+              style={{ height: p.featured ? 'clamp(320px, 58vw, 680px)' : 'clamp(280px, 50vw, 600px)' }}
               initial={{ opacity: 0, y: 30, scale: 0.97 }}
               whileInView={{ opacity: 1, y: 0, scale: 1 }}
               viewport={{ once: true, margin: '-40px' }}

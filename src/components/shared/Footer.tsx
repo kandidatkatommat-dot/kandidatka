@@ -26,7 +26,7 @@ export default function Footer() {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 text-sm">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-5 sm:gap-8 text-sm">
             <div className="space-y-3">
               <h4 className="text-xs font-semibold text-blue-400/70 uppercase tracking-[0.15em]">{t('col_dates')}</h4>
               <ul className="space-y-2 text-blue-200/45">

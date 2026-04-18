@@ -219,7 +219,7 @@ export default function PromiseCube3D() {
             key={i}
             onClick={() => setStep(i)}
             aria-label={t('dot_label', { n: i + 1 })}
-            className="p-2 flex items-center justify-center"
+            className="p-2 min-w-[44px] min-h-[44px] flex items-center justify-center"
           >
             <span className={`rounded-full transition-all duration-300 block ${
               currentFaceIdx === i ? 'w-5 h-1.5 bg-[#818cf8]' : 'w-1.5 h-1.5 bg-blue-500/25 hover:bg-blue-500/50'
