@@ -208,7 +208,8 @@
     "wall_count_many": "podnětů",
     "wall_from_students": "od studentů",
     "wall_none_in_category": "Žádné podněty v kategorii '{category}'.",
-    "wall_filter_aria": "Filtr podnětů"
+    "wall_filter_aria": "Filtr podnětů",
+    "photo_quote": "Každý podnět čteme osobně."
   },
   "social": {
     "label": "Zůstaň v obraze",

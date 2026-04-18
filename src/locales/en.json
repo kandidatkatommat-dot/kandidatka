@@ -208,7 +208,8 @@
     "wall_count_many": "suggestions",
     "wall_from_students": "from students",
     "wall_none_in_category": "No suggestions in category \"{category}\".",
-    "wall_filter_aria": "Filter suggestions"
+    "wall_filter_aria": "Filter suggestions",
+    "photo_quote": "We read every suggestion personally."
   },
   "social": {
     "label": "Stay in the loop",

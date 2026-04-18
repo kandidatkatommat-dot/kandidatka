@@ -208,7 +208,8 @@
     "wall_count_many": "podnetov",
     "wall_from_students": "od študentov",
     "wall_none_in_category": "Žiadne podnety v kategórii '{category}'.",
-    "wall_filter_aria": "Filter podnetov"
+    "wall_filter_aria": "Filter podnetov",
+    "photo_quote": "Každý podnet čítame osobne."
   },
   "social": {
     "label": "Zostaň v obraze",
