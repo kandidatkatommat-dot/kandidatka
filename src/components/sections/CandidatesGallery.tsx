@@ -3,77 +3,119 @@
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 
+const photos = [
+  {
+    src: '/photos/spolu-feature.webp',
+    alt: 'Tomáš Mucha a Martin Buček pred Fakultou elektrotechniky a informatiky',
+    label: 'Volíme FEI 2026',
+    sublabel: 'Spolu za zmenu',
+    pos: 'object-center',
+  },
+  {
+    src: '/photos/ukazujeme.webp',
+    alt: 'Kandidáti ukazujú na Fakultu elektrotechniky a informatiky',
+    label: 'Naša fakulta',
+    sublabel: 'FEI VŠB-TUO',
+    pos: 'object-center',
+    featured: true,
+  },
+  {
+    src: '/photos/podanie-ruky.webp',
+    alt: 'Tomáš Mucha a Martin Buček si podávajú ruky pred FEI',
+    label: 'Záväzok',
+    sublabel: 'Mucha & Buček',
+    pos: 'object-center',
+  },
+]
+
 export default function CandidatesGallery() {
   return (
-    <section className="relative py-4 sm:py-6 overflow-hidden" style={{ background: '#020810' }}>
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+    <section
+      className="relative py-10 sm:py-16 overflow-hidden"
+      style={{ background: '#020810' }}
+    >
+      {/* Subtle ambient glow */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{ background: 'radial-gradient(ellipse 70% 50% at 50% 60%, rgba(59,130,246,0.06) 0%, transparent 70%)' }}
+        aria-hidden
+      />
 
-        {/* Editorial: large feature (2/3) + stacked portrait (1/3) */}
-        <div className="grid grid-cols-1 sm:grid-cols-[2fr_1fr] gap-3">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
 
-          {/* Feature: 2.webp — obaja s úsmevom pred FEI */}
-          <motion.div
-            className="relative rounded-2xl overflow-hidden group"
-            style={{ height: 'clamp(300px, 38vw, 500px)' }}
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.55 }}
-            whileHover={{ scale: 1.012 }}
-          >
-            <Image
-              src="/photos/spolu-feature.webp"
-              alt="Tomáš Mucha a Martin Buček pred FEI VŠB-TUO"
-              fill
-              className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
-              sizes="(max-width: 640px) 100vw, 65vw"
-            />
-            {/* Iba spodný fade, bez ťažkého overlaya */}
-            <div className="absolute bottom-0 inset-x-0 h-20 pointer-events-none"
-              style={{ background: 'linear-gradient(to top, rgba(2,8,16,0.65), transparent)' }} />
-            <div className="absolute bottom-4 left-5 z-10">
-              <span className="text-[11px] font-semibold text-white/60 uppercase tracking-[0.22em]">
-                Volíme FEI 2026
-              </span>
-            </div>
-            <div className="absolute inset-0 rounded-2xl border border-blue-500/0 group-hover:border-blue-500/20 transition-colors duration-300" />
-          </motion.div>
+        {/* Section label */}
+        <motion.div
+          className="text-center mb-8"
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+        >
+          <span className="inline-block text-[10px] font-semibold text-blue-400/40 uppercase tracking-[0.28em]">
+            Volíme FEI 2026 · Mucha &amp; Buček · FEI VŠB-TUO
+          </span>
+        </motion.div>
 
-          {/* Pravý stĺpec: ukazujeme (top) + podanie ruky (bottom) */}
-          <div className="flex flex-col gap-3">
-            {[
-              { src: '/photos/ukazujeme.webp',    alt: 'Kandidáti ukazujú na FEI',          label: 'Naša fakulta',  pos: 'object-top' },
-              { src: '/photos/podanie-ruky.webp', alt: 'Kandidáti si podávajú ruky pred FEI', label: 'Záväzok',      pos: 'object-center' },
-            ].map((p, i) => (
-              <motion.div
-                key={p.src}
-                className="relative rounded-2xl overflow-hidden group flex-1"
-                style={{ minHeight: 'clamp(145px, 18vw, 242px)' }}
-                initial={{ opacity: 0, x: 20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.55, delay: i * 0.1 }}
-                whileHover={{ scale: 1.02 }}
-              >
-                <Image
-                  src={p.src}
-                  alt={p.alt}
-                  fill
-                  className={`object-cover ${p.pos} transition-transform duration-700 group-hover:scale-105`}
-                  sizes="(max-width: 640px) 100vw, 33vw"
-                />
-                <div className="absolute bottom-0 inset-x-0 h-14 pointer-events-none"
-                  style={{ background: 'linear-gradient(to top, rgba(2,8,16,0.6), transparent)' }} />
-                <div className="absolute bottom-3 left-4 z-10">
-                  <span className="text-[10px] font-semibold text-white/55 uppercase tracking-[0.2em]">
-                    {p.label}
-                  </span>
-                </div>
-                <div className="absolute inset-0 rounded-2xl border border-blue-500/0 group-hover:border-blue-500/20 transition-colors duration-300" />
-              </motion.div>
-            ))}
-          </div>
+        {/* Triptych */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 items-end">
+          {photos.map((p, i) => (
+            <motion.div
+              key={p.src}
+              className={`relative rounded-2xl sm:rounded-3xl overflow-hidden group ring-1 ring-white/5 ${
+                p.featured ? 'sm:-mt-8' : ''
+              }`}
+              style={{ height: p.featured ? 'clamp(420px, 58vw, 680px)' : 'clamp(360px, 50vw, 600px)' }}
+              initial={{ opacity: 0, y: 30, scale: 0.97 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ duration: 0.6, delay: i * 0.12, ease: [0.16, 1, 0.3, 1] }}
+              whileHover={{ scale: 1.018, y: -4 }}
+            >
+              <Image
+                src={p.src}
+                alt={p.alt}
+                fill
+                className={`object-cover ${p.pos} transition-transform duration-700 group-hover:scale-105`}
+                sizes="(max-width: 640px) 100vw, 33vw"
+              />
+
+              {/* Gradient overlay */}
+              <div
+                className="absolute inset-0 pointer-events-none"
+                style={{
+                  background: 'linear-gradient(to top, rgba(2,8,16,0.75) 0%, rgba(2,8,16,0.1) 35%, transparent 60%)',
+                }}
+              />
+
+              {/* Hover border glow */}
+              <div className="absolute inset-0 rounded-2xl sm:rounded-3xl border border-blue-500/0 group-hover:border-blue-500/25 transition-colors duration-400" />
+
+              {/* Caption */}
+              <div className="absolute bottom-5 left-5 right-5 z-10">
+                <p className="text-white font-bold text-sm leading-tight">{p.label}</p>
+                <p className="text-blue-300/55 text-[10px] font-semibold uppercase tracking-[0.2em] mt-0.5">{p.sublabel}</p>
+              </div>
+
+              {/* Featured accent line top */}
+              {p.featured && (
+                <div className="absolute top-0 inset-x-0 h-0.5 bg-gradient-to-r from-transparent via-blue-400/50 to-transparent" />
+              )}
+            </motion.div>
+          ))}
         </div>
+
+        {/* Bottom tagline */}
+        <motion.div
+          className="text-center mt-8"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+        >
+          <p className="text-[11px] text-blue-400/30 font-medium tracking-widest uppercase">
+            MUC0075 · BUC0130 · Akademický senát FEI · 2026–2029
+          </p>
+        </motion.div>
       </div>
     </section>
   )
