@@ -23,5 +23,7 @@ export async function GET() {
     poll.options.sort((a: { order_index: number }, b: { order_index: number }) => a.order_index - b.order_index)
   }
 
-  return NextResponse.json({ poll })
+  return NextResponse.json({ poll }, {
+    headers: { 'Cache-Control': 'public, s-maxage=10, stale-while-revalidate=30' },
+  })
 }

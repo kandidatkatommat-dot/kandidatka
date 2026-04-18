@@ -51,8 +51,9 @@ export default function SuggestionsSection() {
                 src="/photos/spolu-suggestions.webp"
                 alt="Tomáš Mucha a Martin Buček — každý podnet čítame osobne"
                 fill
+                priority
                 className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
-                sizes="(max-width: 1024px) 100vw, 280px"
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 280px"
               />
               {/* Bottom vignette */}
               <div className="absolute inset-0 pointer-events-none"

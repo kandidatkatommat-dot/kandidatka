@@ -14,16 +14,20 @@ import '../globals.css'
 const geistSans = Geist({
   variable: '--font-geist-sans',
   subsets: ['latin'],
+  display: 'swap',
 })
 
 const geistMono = Geist_Mono({
   variable: '--font-geist-mono',
   subsets: ['latin'],
+  display: 'swap',
 })
 
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
 }
 
 export async function generateMetadata({
@@ -46,11 +50,13 @@ export async function generateMetadata({
       type: 'website',
       locale: locale === 'sk' ? 'sk_SK' : locale === 'cs' ? 'cs_CZ' : 'en_GB',
       siteName: 'Volíme FEI 2026',
+      images: [{ url: '/opengraph-image.png', width: 1200, height: 630, alt: 'Volíme FEI 2026' }],
     },
     twitter: {
       card: 'summary_large_image',
       title: t('title'),
       description: t('og_description'),
+      images: ['/opengraph-image.png'],
     },
     alternates: {
       canonical: siteUrl,

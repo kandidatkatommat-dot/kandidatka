@@ -1,11 +1,19 @@
 import { MetadataRoute } from 'next'
 
-const BASE = 'https://volimefei.vercel.app'
+const BASE = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://volimefei.vercel.app'
+const locales = ['sk', 'cs', 'en'] as const
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  return [
-    { url: BASE,           lastModified: new Date(), priority: 1 },
-    { url: `${BASE}/cs`,   lastModified: new Date(), priority: 0.9 },
-    { url: `${BASE}/en`,   lastModified: new Date(), priority: 0.9 },
-  ]
+  return locales.map(locale => ({
+    url: locale === 'sk' ? BASE : `${BASE}/${locale}`,
+    lastModified: new Date(),
+    priority: locale === 'sk' ? 1 : 0.9,
+    alternates: {
+      languages: {
+        sk: BASE,
+        cs: `${BASE}/cs`,
+        en: `${BASE}/en`,
+      },
+    },
+  }))
 }

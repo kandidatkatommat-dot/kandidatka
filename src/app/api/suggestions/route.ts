@@ -20,7 +20,9 @@ export async function GET() {
       return NextResponse.json({ data: [], count: 0 }, { status: 200 })
     }
 
-    return NextResponse.json({ data: data as Suggestion[], count: data?.length ?? 0 })
+    return NextResponse.json({ data: data as Suggestion[], count: data?.length ?? 0 }, {
+      headers: { 'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=120' },
+    })
   } catch (err) {
     console.error('Unexpected error:', err)
     return NextResponse.json({ data: [], count: 0 }, { status: 200 })

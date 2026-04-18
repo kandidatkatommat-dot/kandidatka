@@ -391,6 +391,11 @@
 /* ─── HERO PARTICLE & SCROLL CSS ANIMATIONS ────────────
    Run entirely on GPU compositor thread — zero JS per frame.
    Replaces Framer Motion repeat:Infinity on 23+ elements.  */
+@keyframes wing-flutter {
+  0%, 100% { transform: scaleX(1); }
+  25%       { transform: scaleX(1.12); }
+  75%       { transform: scaleX(0.88); }
+}
 @keyframes particle-float {
   0%, 100% { transform: translateY(0px); }
   50%       { transform: translateY(-28px); }

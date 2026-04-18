@@ -75,8 +75,9 @@ export default function CandidatesGallery() {
                 src={p.src}
                 alt={p.alt}
                 fill
+                priority={p.featured}
                 className={`object-cover ${p.pos} transition-transform duration-700 group-hover:scale-105`}
-                sizes="(max-width: 640px) 100vw, 33vw"
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
               />
 
               {/* Gradient overlay */}

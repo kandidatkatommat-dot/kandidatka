@@ -83,13 +83,10 @@ export default function MuchaFly() {
       whileInView={{ opacity: 0.7 }}
       transition={{ opacity: { duration: 0.5 } }}
     >
-      {/* Wing flutter animation */}
-      <motion.div
-        animate={{ scaleX: [1, 1.15, 0.85, 1] }}
-        transition={{ duration: 0.4, repeat: Infinity, ease: 'easeInOut' }}
-      >
+      {/* Wing flutter — CSS animation on compositor thread */}
+      <div style={{ animation: 'wing-flutter 0.4s ease-in-out infinite' }}>
         <FlySvg />
-      </motion.div>
+      </div>
     </motion.div>
   )
 }
