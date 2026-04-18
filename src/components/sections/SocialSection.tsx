@@ -15,8 +15,8 @@ export default function SocialSection() {
     {
       icon: Camera,
       label: 'Instagram',
-      handle: '@volimefei2026',
-      href: 'https://instagram.com/volimefei2026',
+      handle: '@volimefei',
+      href: 'https://www.instagram.com/volimefei/',
       gradient: 'from-pink-500/15 via-purple-500/10 to-indigo-500/15',
       border: 'border-pink-500/20 hover:border-pink-400/40',
       iconColor: 'text-pink-400',
