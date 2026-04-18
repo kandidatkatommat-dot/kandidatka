@@ -24,7 +24,7 @@ export default function SuggestionsSection() {
         style={{ background: 'radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 70%)' }} aria-hidden />
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10 pt-28">
-        <AnimatedSection className="text-center mb-16">
+        <AnimatedSection className="text-center mb-14">
           <span className="inline-block text-xs font-semibold text-blue-400 uppercase tracking-[0.2em] mb-4">
             {t('label')}
           </span>
@@ -36,40 +36,43 @@ export default function SuggestionsSection() {
           </p>
         </AnimatedSection>
 
-        {/* Photo banner — listening candidates, contextual accent */}
-        <AnimatedSection delay={0.1} className="mb-10">
-          <motion.div
-            className="relative w-full rounded-3xl overflow-hidden ring-1 ring-blue-500/10"
-            style={{ height: 'clamp(200px, 22vw, 320px)' }}
-            whileHover={{ scale: 1.008 }}
-            transition={{ type: 'spring', stiffness: 280, damping: 24 }}
-          >
-            <Image
-              src="/photos/spolu-feature.webp"
-              alt="Tomáš Mucha a Martin Buček pred FEI VŠB-TUO"
-              fill
-              className="object-cover object-center"
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 1152px"
-            />
-            {/* Cinematic vignette */}
-            <div className="absolute inset-0 pointer-events-none"
-              style={{ background: 'linear-gradient(to right, rgba(2,8,16,0.72) 0%, transparent 38%, transparent 62%, rgba(2,8,16,0.72) 100%)' }} />
-            <div className="absolute inset-0 pointer-events-none"
-              style={{ background: 'linear-gradient(to bottom, rgba(2,8,16,0.3) 0%, transparent 30%, transparent 65%, rgba(2,8,16,0.55) 100%)' }} />
-            {/* Quote overlay */}
-            <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 z-10 px-6 text-center">
-              <p className="text-white/90 text-lg sm:text-2xl font-bold leading-snug drop-shadow-lg">
-                {t('photo_quote')}
-              </p>
-              <span className="text-blue-300/60 text-xs font-semibold uppercase tracking-[0.22em]">
-                Tomáš &amp; Martin · FEI 2026
-              </span>
-            </div>
-          </motion.div>
-        </AnimatedSection>
+        {/* Desktop: [photo | form | wall]  Mobile: photo accent strip + form/wall */}
+        <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr_1fr] gap-5 items-stretch">
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+          {/* Portrait photo — waist-up, full height of adjacent cards */}
           <AnimatedSection direction="left">
+            <motion.div
+              className="relative rounded-3xl overflow-hidden ring-1 ring-blue-500/15 group
+                         h-48 sm:h-64 lg:h-full min-h-0 lg:min-h-[520px]"
+              whileHover={{ scale: 1.012 }}
+              transition={{ type: 'spring', stiffness: 280, damping: 24 }}
+            >
+              <Image
+                src="/photos/spolu-suggestions.webp"
+                alt="Tomáš Mucha a Martin Buček — každý podnet čítame osobne"
+                fill
+                className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                sizes="(max-width: 1024px) 100vw, 280px"
+              />
+              {/* Bottom vignette */}
+              <div className="absolute inset-0 pointer-events-none"
+                style={{ background: 'linear-gradient(to top, rgba(2,8,16,0.8) 0%, rgba(2,8,16,0.1) 45%, transparent 70%)' }} />
+              {/* Hover border */}
+              <div className="absolute inset-0 rounded-3xl border border-blue-500/0 group-hover:border-blue-500/20 transition-colors duration-300" />
+              {/* Quote */}
+              <div className="absolute bottom-5 left-5 right-5 z-10">
+                <p className="text-white font-bold text-sm leading-snug">
+                  {t('photo_quote')}
+                </p>
+                <span className="text-blue-300/55 text-[10px] font-semibold uppercase tracking-[0.22em] mt-1 block">
+                  Tomáš &amp; Martin · FEI 2026
+                </span>
+              </div>
+            </motion.div>
+          </AnimatedSection>
+
+          {/* Form */}
+          <AnimatedSection direction="up" delay={0.1}>
             <div
               className="glass rounded-3xl p-7 sm:p-8 h-full"
               style={{ borderTop: '2px solid rgba(79,70,229,0.5)' }}
@@ -85,7 +88,8 @@ export default function SuggestionsSection() {
             </div>
           </AnimatedSection>
 
-          <AnimatedSection direction="right" delay={0.15}>
+          {/* Wall */}
+          <AnimatedSection direction="up" delay={0.2}>
             <div
               className="glass rounded-3xl p-7 sm:p-8 h-full"
               style={{ borderTop: '2px solid rgba(6,182,212,0.4)' }}
