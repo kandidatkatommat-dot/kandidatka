@@ -41,9 +41,9 @@ export default function SuggestionWall() {
 
   if (isLoading) {
     return (
-      <div className="columns-1 sm:columns-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 auto-rows-max">
         {Array.from({ length: 6 }).map((_, i) => (
-          <div key={i} className="glass rounded-xl p-4 mb-4 break-inside-avoid space-y-2">
+          <div key={i} className="glass rounded-xl p-4 space-y-2">
             <Skeleton className="h-4 w-20 bg-blue-500/10" />
             <Skeleton className="h-3 w-full bg-blue-500/10" />
             <Skeleton className="h-3 w-4/5 bg-blue-500/10" />
@@ -123,7 +123,7 @@ export default function SuggestionWall() {
           <p className="text-blue-200/40 text-sm">{t('wall_none_in_category', { category: activeFilter ?? '' })}</p>
         </div>
       ) : (
-        <div className="columns-1 sm:columns-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 auto-rows-max">
           {filtered.map((s) => (
             <SuggestionCard key={s.id} suggestion={s} />
           ))}

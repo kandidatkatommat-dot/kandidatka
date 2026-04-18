@@ -49,9 +49,19 @@ export default function ProgramSection() {
 
   useEffect(() => {
     if (selectedItem) {
+      document.body.style.overflow = 'hidden'
       requestAnimationFrame(() => closeButtonRef.current?.focus())
+    } else {
+      document.body.style.overflow = ''
     }
+    return () => { document.body.style.overflow = '' }
   }, [selectedItem])
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setSelectedItem(null) }
+    document.addEventListener('keydown', onKey)
+    return () => document.removeEventListener('keydown', onKey)
+  }, [])
 
   return (
     <section id="program" className="relative py-28 sm:py-36" style={{ background: 'linear-gradient(180deg, #020810 0%, #04101f 100%)' }}>
@@ -163,9 +173,9 @@ export default function ProgramSection() {
             exit={{ opacity: 0 }}
             onClick={() => setSelectedItem(null)}
           >
-            <div className="absolute inset-0 bg-black/60 backdrop-blur-md" />
+            <div className="absolute inset-0 bg-black/60 sm:backdrop-blur-md" />
             <motion.div
-              className="relative max-w-md w-full glass rounded-3xl p-5 sm:p-8 border border-blue-500/20"
+              className="relative max-w-md w-full glass rounded-3xl p-5 sm:p-8 border border-blue-500/20 max-h-[90vh] overflow-y-auto"
               initial={{ scale: 0.95, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.95, opacity: 0, y: 20 }}
