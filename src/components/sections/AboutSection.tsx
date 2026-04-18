@@ -53,14 +53,9 @@ function CandidateCard({ c, direction, accentIdx }: { c: CandidateData; directio
             <span className="text-xs text-blue-400/50">FEI VŠB-TUO</span>
           </div>
           {c.linkedIn && (
-            <a
-              href={c.linkedIn}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 mt-1.5 text-xs text-blue-400/50 hover:text-blue-300 transition-colors"
-            >
-              <ExternalLink size={11} />
-              LinkedIn
+            <a href={c.linkedIn} target="_blank" rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 mt-1.5 text-xs text-blue-400/50 hover:text-blue-300 transition-colors">
+              <ExternalLink size={11} />LinkedIn
             </a>
           )}
         </div>
@@ -125,62 +120,66 @@ export default function AboutSection() {
   ]
 
   return (
-    <section id="o-nas" className="relative" style={{ background: '#020810' }}>
+    <section id="o-nas" className="relative py-28 sm:py-36" style={{ background: '#020810' }}>
 
-      {/* ── HERO BANNER PHOTO ─────────────────────────────────── */}
-      <div
-        className="relative w-full overflow-hidden"
-        style={{ height: 'clamp(360px, 52vw, 560px)' }}
-      >
-        <Image
-          src="/photos/kandidati-banner.webp"
-          alt="Tomáš Mucha a Martin Buček pred Fakultou elektrotechniky a informatiky VŠB-TUO"
-          fill
-          className="object-cover object-top"
-          sizes="100vw"
-          priority
-        />
-        {/* Sides vignette */}
-        <div className="absolute inset-0 pointer-events-none" style={{
-          background: 'linear-gradient(to right, rgba(2,8,16,0.55) 0%, transparent 20%, transparent 80%, rgba(2,8,16,0.55) 100%)',
-        }} />
-        {/* Bottom fade into dark section */}
-        <div className="absolute inset-0 pointer-events-none" style={{
-          background: 'linear-gradient(to bottom, rgba(2,8,16,0.25) 0%, rgba(2,8,16,0) 25%, rgba(2,8,16,0.75) 75%, rgba(2,8,16,1) 100%)',
-        }} />
-
-        {/* Heading overlaid at bottom of photo */}
-        <div className="absolute bottom-0 inset-x-0 px-4 sm:px-6 pb-10 text-center z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <span className="inline-block text-xs font-semibold text-[#818cf8] uppercase tracking-[0.2em] mb-3">
-              {t('label')}
-            </span>
-            <h2 className="text-4xl sm:text-5xl font-black text-white mb-3 leading-tight">
-              {t('heading')}
-            </h2>
-            <p className="text-blue-200/55 max-w-xl mx-auto text-base">
-              {t('subline')}
-            </p>
-          </motion.div>
-        </div>
-      </div>
-
-      {/* Aurora orb */}
       <div className="aurora-orb w-[40vw] h-[40vw] top-0 right-[-10vw] opacity-60 pointer-events-none"
         style={{ background: 'radial-gradient(circle, rgba(249,115,22,0.07) 0%, transparent 70%)' }} aria-hidden />
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10 pt-10 pb-28 sm:pb-36">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-10">
-          {candidates.map((c, i) => (
-            <CandidateCard key={c.id} c={c} direction={i === 0 ? 'left' : 'right'} accentIdx={i} />
-          ))}
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
+
+        {/* ── HEADING ─────────────────────────────────────────── */}
+        <AnimatedSection className="text-center mb-14">
+          <span className="inline-block text-xs font-semibold text-[#818cf8] uppercase tracking-[0.2em] mb-4">
+            {t('label')}
+          </span>
+          <h2 className="text-4xl sm:text-5xl font-black text-white mb-4 leading-tight">
+            {t('heading')}
+          </h2>
+          <p className="text-blue-200/55 max-w-xl mx-auto text-base">{t('subline')}</p>
+        </AnimatedSection>
+
+        {/* ── TRIPTYCH: [karta | foto | karta] ────────────────── */}
+        {/* Mobile: stacked; Desktop lg+: 3 columns */}
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px_1fr] gap-5 items-stretch mb-10">
+
+          {/* Tomáš */}
+          <CandidateCard c={candidates[0]} direction="left" accentIdx={0} />
+
+          {/* Center photo */}
+          <AnimatedSection>
+            <motion.div
+              className="relative rounded-3xl overflow-hidden ring-1 ring-blue-500/15 h-full min-h-[320px]"
+              initial={{ opacity: 0, scale: 0.97 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.15 }}
+              whileHover={{ scale: 1.012 }}
+            >
+              <Image
+                src="/photos/kandidati-triptych.webp"
+                alt="Tomáš Mucha a Martin Buček pred Fakultou elektrotechniky a informatiky"
+                fill
+                className="object-cover object-center"
+                sizes="(max-width: 1024px) 100vw, 300px"
+                priority
+              />
+              {/* Subtle vignette top */}
+              <div className="absolute inset-0 pointer-events-none"
+                style={{ background: 'linear-gradient(to bottom, rgba(2,8,16,0.35) 0%, transparent 30%, transparent 65%, rgba(2,8,16,0.6) 100%)' }} />
+              {/* FEI label bottom-left */}
+              <div className="absolute bottom-4 left-4 right-4 z-10">
+                <p className="text-[10px] font-semibold text-white/50 uppercase tracking-[0.22em]">
+                  FEI VŠB–TUO · 2026
+                </p>
+              </div>
+            </motion.div>
+          </AnimatedSection>
+
+          {/* Martin */}
+          <CandidateCard c={candidates[1]} direction="right" accentIdx={1} />
         </div>
 
+        {/* ── STATS ───────────────────────────────────────────── */}
         <motion.div
           className="grid grid-cols-3 gap-4"
           initial={{ opacity: 0, y: 24 }}

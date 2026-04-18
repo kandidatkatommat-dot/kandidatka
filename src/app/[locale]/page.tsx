@@ -35,9 +35,6 @@ export default function Home() {
         <Suspense fallback={<SectionSkeleton />}>
           <AboutSection />
         </Suspense>
-        <Suspense fallback={null}>
-          <CandidatesGallery />
-        </Suspense>
         <Suspense fallback={<SectionSkeleton />}>
           <ProgramSection />
         </Suspense>
@@ -69,6 +66,9 @@ export default function Home() {
         </div>
         <Suspense fallback={<SectionSkeleton />}>
           <VoteSection />
+        </Suspense>
+        <Suspense fallback={null}>
+          <CandidatesGallery />
         </Suspense>
         <Suspense fallback={<SectionSkeleton />}>
           <SocialSection />
