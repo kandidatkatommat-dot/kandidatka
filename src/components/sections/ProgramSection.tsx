@@ -39,12 +39,12 @@ export default function ProgramSection() {
   const closeButtonRef = useRef<HTMLButtonElement>(null)
 
   const promises: PromiseItem[] = [
-    { icon: DocumentEye, title: t('p1_title'), description: t('p1_desc'), tag: t('p1_tag'), accent: 'blue',   span: 'bento-tall', featured: true, detail: t('p1_detail'), link: '#podnety' },
     { icon: CoinStack,   title: t('p2_title'), description: t('p2_desc'), tag: t('p2_tag'), accent: 'orange', span: '',           detail: t('p2_detail'), link: '#podnety' },
     { icon: ChatBubbleHeart, title: t('p3_title'), description: t('p3_desc'), tag: t('p3_tag'), accent: 'teal', span: '', detail: t('p3_detail'), link: '#podnety' },
     { icon: Scales,      title: t('p4_title'), description: t('p4_desc'), tag: t('p4_tag'), accent: 'orange', span: 'bento-wide', detail: t('p4_detail'), link: '#podnety' },
     { icon: ScreenCode,  title: t('p5_title'), description: t('p5_desc'), tag: t('p5_tag'), accent: 'blue',   span: '',           detail: t('p5_detail'), link: '#podnety' },
     { icon: PeopleTalk,  title: t('p6_title'), description: t('p6_desc'), tag: t('p6_tag'), accent: 'teal',   span: '',           detail: t('p6_detail'), link: '#podnety' },
+    { icon: DocumentEye, title: t('p1_title'), description: t('p1_desc'), tag: t('p1_tag'), accent: 'blue',   span: '',           detail: t('p1_detail'), link: '#podnety' },
   ]
 
   useEffect(() => {
@@ -90,6 +90,30 @@ export default function ProgramSection() {
           viewport={{ once: true, margin: '-60px' }}
           variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.07 } } }}
         >
+          {/* Handshake photo tile — col 1, rows 1-2 (bento-tall portrait) */}
+          <motion.div
+            className="relative rounded-3xl overflow-hidden group bento-tall"
+            variants={cardVariants}
+            whileHover={{ scale: 1.015 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 22 }}
+          >
+            <Image
+              src="/photos/podanie-ruky.webp"
+              alt="Tomáš Mucha a Martin Buček si podávajú ruky pred FEI"
+              fill
+              className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            />
+            <div className="absolute inset-0 pointer-events-none"
+              style={{ background: 'linear-gradient(to top, rgba(2,8,16,0.55) 0%, transparent 45%)' }} />
+            <div className="absolute inset-0 rounded-3xl border border-blue-500/0 group-hover:border-blue-500/20 transition-colors duration-300" />
+            <div className="absolute bottom-5 left-5 z-10">
+              <span className="text-[10px] font-semibold text-white/55 uppercase tracking-[0.22em]">
+                Náš záväzok
+              </span>
+            </div>
+          </motion.div>
+
           {promises.map((p) => {
             const Icon = p.icon
             const a = accentMap[p.accent]
@@ -120,30 +144,6 @@ export default function ProgramSection() {
               </motion.div>
             )
           })}
-
-          {/* Handshake photo tile — col 3, row 3 (empty corner) */}
-          <motion.div
-            className="relative rounded-3xl overflow-hidden group"
-            variants={cardVariants}
-            whileHover={{ scale: 1.015 }}
-            transition={{ type: 'spring', stiffness: 300, damping: 22 }}
-          >
-            <Image
-              src="/photos/podanie-ruky.webp"
-              alt="Tomáš Mucha a Martin Buček si podávajú ruky pred FEI"
-              fill
-              className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            />
-            <div className="absolute inset-0 pointer-events-none"
-              style={{ background: 'linear-gradient(to top, rgba(2,8,16,0.65) 0%, transparent 55%)' }} />
-            <div className="absolute inset-0 rounded-3xl border border-blue-500/0 group-hover:border-blue-500/20 transition-colors duration-300" />
-            <div className="absolute bottom-5 left-5 z-10">
-              <span className="text-[10px] font-semibold text-white/55 uppercase tracking-[0.22em]">
-                Náš záväzok
-              </span>
-            </div>
-          </motion.div>
         </motion.div>
 
         <AnimatedSection delay={0.3} className="text-center mt-10">
