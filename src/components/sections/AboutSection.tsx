@@ -89,17 +89,8 @@ export default function AboutSection() {
   const muchaLang = locale === 'en' ? 'en' : 'sk'
   const bucekLang = locale === 'en' ? 'en' : 'cs'
 
+  // Martin is on the LEFT in the photo, Tomáš (cap) on the RIGHT
   const candidates: CandidateData[] = [
-    {
-      id: 'MUC0075',
-      name: 'Tomáš Mucha',
-      role: 'Kandidát do AS FEI',
-      department: 'FEI VŠB-TUO',
-      bio: t('bio_mucha'),
-      whyRunning: t('why_mucha'),
-      photoUrl: null,
-      lang: muchaLang,
-    },
     {
       id: 'BUC0130',
       name: 'Martin Buček',
@@ -110,6 +101,16 @@ export default function AboutSection() {
       photoUrl: null,
       lang: bucekLang,
       award: t('award_bucek'),
+    },
+    {
+      id: 'MUC0075',
+      name: 'Tomáš Mucha',
+      role: 'Kandidát do AS FEI',
+      department: 'FEI VŠB-TUO',
+      bio: t('bio_mucha'),
+      whyRunning: t('why_mucha'),
+      photoUrl: null,
+      lang: muchaLang,
     },
   ]
 
